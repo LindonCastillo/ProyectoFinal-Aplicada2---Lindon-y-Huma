@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ProyectoFinal_Aplicada2.Models
 {
@@ -23,6 +24,9 @@ namespace ProyectoFinal_Aplicada2.Models
         public decimal Total { get; set; }
         public decimal Balance { get; set; }
 
+        [ForeignKey("ComprasId")]
+        public virtual List<ComprasDetalle> ComprasDetalles { get; set; }
+
         public Compras()
         {
             ComprasId = 0;
@@ -31,6 +35,7 @@ namespace ProyectoFinal_Aplicada2.Models
             Itebis = 0;
             Total = 0;
             Balance = 0;
+            ComprasDetalles = new List<ComprasDetalle>();
         }
     }
 }

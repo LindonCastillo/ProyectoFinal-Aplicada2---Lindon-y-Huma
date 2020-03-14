@@ -19,7 +19,7 @@ namespace ProyectoFinal_Aplicada2.Models
 
         public ComprasDetalle()
         {
-            Id = 0;
+            CompraDetalleId = 0;
             CompraId = 0;
             Nombre = string.Empty;
             ProductoId = 0;
