@@ -17,5 +17,8 @@ namespace ProyectoFinal_Aplicada2.Data
         public DbSet<Productos> Productos { get; set; }
         public DbSet<Proveedores> Proveedores { get; set; }
         public DbSet<Compras> Compras { get; set; }
+        public DbSet<Ventas> Ventas { get; set; }
+        public DbSet<Pagos> Pagos { get; set; }
+        public DbSet<Usuarios> Usuarios { get; set; }
     }
 }

@@ -1,29 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
+﻿using Microsoft.EntityFrameworkCore;
 using ProyectoFinal_Aplicada2.Data;
 using ProyectoFinal_Aplicada2.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace ProyectoFinal_Aplicada2.Controllers
 {
-    public class ComprasControllers
+    public class VentasControllers
     {
-
-        public bool Guardar(Compras compras)
+        public bool Guardar(Ventas ventas)
         {
             bool paso = false;
             Contexto db = new Contexto();
             try
             {
-                if(db.Compras.Any(A=>A.CompraId == compras.CompraId))
+                if (db.Ventas.Any(A => A.VentaId == ventas.VentaId))
                 {
-                    paso = Modificar(compras);
-                } else
+                    paso = Modificar(ventas);
+                }
+                else
                 {
-                    paso = Insertar(compras);
+                    paso = Insertar(ventas);
                 }
             }
             catch (Exception)
@@ -34,13 +34,13 @@ namespace ProyectoFinal_Aplicada2.Controllers
             return paso;
         }
 
-        private bool Insertar(Compras compras)
+        private bool Insertar(Ventas ventas)
         {
             bool paso = false;
             Contexto db = new Contexto();
             try
             {
-                db.Compras.Add(compras);
+                db.Ventas.Add(ventas);
                 paso = db.SaveChanges() > 0;
             }
             catch (Exception)
@@ -51,34 +51,31 @@ namespace ProyectoFinal_Aplicada2.Controllers
             return paso;
         }
 
-
-        private bool Modificar(Compras compras)
+        private bool Modificar(Ventas ventas)
         {
             bool paso = false;
             Contexto db = new Contexto();
             try
             {
-                Compras anterior = Buscar(compras.CompraId);
+                Ventas anterior = Buscar(ventas.VentaId);
 
-                foreach (var item in compras.ComprasDetalles)
+                foreach (var item in ventas.VentasDetalles)
                 {
-                    if(item.Id == 0)
+                    if (item.Id == 0)
                     {
                         db.Entry(item).State = EntityState.Added;
                     }
                 }
 
-                foreach (var item in anterior.ComprasDetalles)
+                foreach (var item in anterior.VentasDetalles)
                 {
-                    if(!compras.ComprasDetalles.Any(A=>A.Id == A.Id))
+                    if (!ventas.VentasDetalles.Any(A => A.Id == A.Id))
                     {
                         db.Entry(item).State = EntityState.Deleted;
                     }
                 }
 
-
-
-                db.Entry(compras).State = EntityState.Modified;
+                db.Entry(ventas).State = EntityState.Modified;
                 paso = db.SaveChanges() > 0;
             }
             catch (Exception)
@@ -96,10 +93,10 @@ namespace ProyectoFinal_Aplicada2.Controllers
 
             try
             {
-                Compras compras = db.Compras.Find(id);
-                if(compras!=null)
+                Ventas ventas = db.Ventas.Find(id);
+                if (ventas != null)
                 {
-                    db.Entry(compras).State = EntityState.Deleted;
+                    db.Entry(ventas).State = EntityState.Deleted;
                     paso = db.SaveChanges() > 0;
                 }
             }
@@ -111,29 +108,29 @@ namespace ProyectoFinal_Aplicada2.Controllers
             return paso;
         }
 
-        public Compras Buscar(int id)
+        public Ventas Buscar(int id)
         {
-            Compras compras = new Compras();
+            Ventas ventas = new Ventas();
             Contexto db = new Contexto();
             try
             {
-                compras = db.Compras.Where(C => C.CompraId == id).Include(D => D.ComprasDetalles).FirstOrDefault();
+                ventas = db.Ventas.Where(C => C.VentaId == id).Include(D => D.VentasDetalles).FirstOrDefault();
             }
             catch (Exception)
             {
 
                 throw;
             }
-            return compras;
+            return ventas;
         }
 
-        public List<Compras> GetList(Expression<Func<Compras,bool>> expression)
+        public List<Ventas> GetList(Expression<Func<Ventas, bool>> expression)
         {
-            List<Compras> lista = new List<Compras>();
+            List<Ventas> lista = new List<Ventas>();
             Contexto db = new Contexto();
             try
             {
-                lista = db.Compras.Where(expression).ToList();
+                lista = db.Ventas.Where(expression).ToList();
             }
             catch (Exception)
             {
