@@ -23,7 +23,7 @@ namespace ProyectoFinal_Aplicada2.Controllers
                     paso = Modificar(compras);
                 } else
                 {
-                    paso = Guardar(compras);
+                    paso = Insertar(compras);
                 }
             }
             catch (Exception)
