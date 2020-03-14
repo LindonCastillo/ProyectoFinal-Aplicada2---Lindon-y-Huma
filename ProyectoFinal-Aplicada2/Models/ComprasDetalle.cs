@@ -9,7 +9,7 @@ namespace ProyectoFinal_Aplicada2.Models
     public class ComprasDetalle
     {
         [Key]
-        public int CompraDetalleId { get; set; }
+        public int Id { get; set; }
         public int CompraId { get; set; }
         public int ProductoId { get; set; }
         public string Nombre { get; set; }
@@ -19,7 +19,7 @@ namespace ProyectoFinal_Aplicada2.Models
 
         public ComprasDetalle()
         {
-            CompraDetalleId = 0;
+            Id = 0;
             CompraId = 0;
             Nombre = string.Empty;
             ProductoId = 0;
