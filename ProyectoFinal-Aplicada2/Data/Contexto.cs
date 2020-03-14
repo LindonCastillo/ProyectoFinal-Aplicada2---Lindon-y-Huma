@@ -13,5 +13,9 @@ namespace ProyectoFinal_Aplicada2.Data
         {
             base.OnConfiguring(optionsBuilder.UseSqlite("Data Source = "));
         }
+
+        public DbSet<Productos> Productos { get; set; }
+        public DbSet<Proveedores> Proveedores { get; set; }
+        public DbSet<Compras> Compras { get; set; }
     }
 }
