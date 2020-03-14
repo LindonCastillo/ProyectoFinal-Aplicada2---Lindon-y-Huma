@@ -9,6 +9,8 @@ namespace ProyectoFinal_Aplicada2.Models
     public class Productos
     {
         [Key]
+        [Range(0,1000000000,ErrorMessage ="El campo Id no puede ser menor que cero")]
+        [Required(ErrorMessage ="El campo Id debe ser un numero")]
         public int ProductoId { get; set; }
         [DataType(DataType.Date,ErrorMessage ="El campo debe ser una fecha")]
         [Required(ErrorMessage ="El campo fecha no puede estar vacio")]
