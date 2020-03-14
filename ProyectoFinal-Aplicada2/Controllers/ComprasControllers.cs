@@ -1,31 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
-using ProyectoFinal_Aplicada2.Models;
+using System.Linq.Expressions;
 using ProyectoFinal_Aplicada2.Data;
+using ProyectoFinal_Aplicada2.Models;
+using System.Threading.Tasks;
 
 namespace ProyectoFinal_Aplicada2.Controllers
 {
-    public class ProveedoresControllers
+    public class ComprasControllers
     {
 
-
-        public bool Guardar(Proveedores proveedores)
+        public bool Guardar(Compras compras)
         {
             bool paso = false;
             Contexto db = new Contexto();
-
             try
             {
-                if(db.Proveedores.Any(A=>A.ProveedoresId == proveedores.ProveedoresId))
+                if(db.Compras.Any(A=>A.ComprasId == compras.ComprasId))
                 {
-                    paso = Modificar(proveedores);
+                    paso = Modificar(compras);
                 } else
                 {
-                    paso = Insertar(proveedores);
+                    paso = Guardar(compras);
                 }
             }
             catch (Exception)
@@ -36,14 +34,13 @@ namespace ProyectoFinal_Aplicada2.Controllers
             return paso;
         }
 
-        private bool Insertar(Proveedores proveedores)
+        private bool Insertar(Compras compras)
         {
             bool paso = false;
             Contexto db = new Contexto();
-
             try
             {
-                db.Proveedores.Add(proveedores).State = EntityState.Added;
+                db.Compras.Add(compras);
                 paso = db.SaveChanges() > 0;
             }
             catch (Exception)
@@ -54,13 +51,34 @@ namespace ProyectoFinal_Aplicada2.Controllers
             return paso;
         }
 
-        private bool Modificar(Proveedores proveedores)
+
+        private bool Modificar(Compras compras)
         {
             bool paso = false;
             Contexto db = new Contexto();
             try
             {
-                db.Entry(proveedores).State = EntityState.Modified;
+                Compras anterior = Buscar(compras.ComprasId);
+
+                foreach (var item in compras.ComprasDetalles)
+                {
+                    if(item.Id == 0)
+                    {
+                        db.Entry(item).State = EntityState.Added;
+                    }
+                }
+
+                foreach (var item in anterior.ComprasDetalles)
+                {
+                    if(!compras.ComprasDetalles.Any(A=>A.Id == A.Id))
+                    {
+                        db.Entry(item).State = EntityState.Deleted;
+                    }
+                }
+
+
+
+                db.Entry(compras).State = EntityState.Modified;
                 paso = db.SaveChanges() > 0;
             }
             catch (Exception)
@@ -75,12 +93,13 @@ namespace ProyectoFinal_Aplicada2.Controllers
         {
             bool paso = false;
             Contexto db = new Contexto();
+
             try
             {
-                Proveedores proveedores = db.Proveedores.Find(id);
-                if(proveedores!=null)
+                Compras compras = db.Compras.Find(id);
+                if(compras!=null)
                 {
-                    db.Entry(proveedores).State = EntityState.Deleted;
+                    db.Entry(compras).State = EntityState.Deleted;
                     paso = db.SaveChanges() > 0;
                 }
             }
@@ -92,30 +111,29 @@ namespace ProyectoFinal_Aplicada2.Controllers
             return paso;
         }
 
-        public Proveedores Buscar(int id)
+        public Compras Buscar(int id)
         {
-            Proveedores proveedores = new Proveedores();
+            Compras compras = new Compras();
             Contexto db = new Contexto();
             try
             {
-                proveedores = db.Proveedores.Find(id);
+                compras = db.Compras.Where(C => C.ComprasId == id).Include(D => D.ComprasDetalles).FirstOrDefault();
             }
             catch (Exception)
             {
 
                 throw;
             }
-            return proveedores;
+            return compras;
         }
 
-        public List<Proveedores> GetList(Expression<Func<Proveedores,bool>> expression)
+        public List<Compras> GetList(Expression<Func<Compras,bool>> expression)
         {
-            List<Proveedores> lista = new List<Proveedores>();
+            List<Compras> lista = new List<Compras>();
             Contexto db = new Contexto();
-
             try
             {
-                lista = db.Proveedores.Where(expression).ToList();
+                lista = db.Compras.Where(expression).ToList();
             }
             catch (Exception)
             {
