@@ -2,29 +2,30 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ProyectoFinal_Aplicada2.Data;
-using ProyectoFinal_Aplicada2.Models;
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
+using ProyectoFinal_Aplicada2.Models;
+using ProyectoFinal_Aplicada2.Data;
 
 namespace ProyectoFinal_Aplicada2.Controllers
 {
-    public class ProductosControllers
+    public class ProveedoresControllers
     {
 
 
-        public bool Guardar(Productos productos)
+        public bool Guardar(Proveedores proveedores)
         {
             bool paso = false;
             Contexto db = new Contexto();
+
             try
             {
-                if(db.Productos.Any(A=>A.ProductoId == productos.ProductoId))
+                if(db.Proveedores.Any(A=>A.ProveedoresId == proveedores.ProveedoresId))
                 {
-                   paso =  Modificar(productos);
+                    paso = Modificar(proveedores);
                 } else
                 {
-                   paso = Insertar(productos);
+                    paso = Insertar(proveedores);
                 }
             }
             catch (Exception)
@@ -32,18 +33,16 @@ namespace ProyectoFinal_Aplicada2.Controllers
 
                 throw;
             }
-            return paso;
         }
 
-
-        private bool Insertar(Productos productos)
+        private bool Insertar(Proveedores proveedores)
         {
-            Contexto db = new Contexto();
             bool paso = false;
+            Contexto db = new Contexto();
 
             try
             {
-                db.Productos.Add(productos);
+                db.Proveedores.Add(proveedores).State = EntityState.Added;
                 paso = db.SaveChanges() > 0;
             }
             catch (Exception)
@@ -51,17 +50,16 @@ namespace ProyectoFinal_Aplicada2.Controllers
 
                 throw;
             }
-
             return paso;
         }
 
-        private bool Modificar(Productos productos)
+        private bool Modificar(Proveedores proveedores)
         {
             bool paso = false;
             Contexto db = new Contexto();
             try
             {
-                db.Entry(productos).State = EntityState.Modified;
+                db.Entry(proveedores).State = EntityState.Modified;
                 paso = db.SaveChanges() > 0;
             }
             catch (Exception)
@@ -76,13 +74,12 @@ namespace ProyectoFinal_Aplicada2.Controllers
         {
             bool paso = false;
             Contexto db = new Contexto();
-
             try
             {
-                Productos productos = db.Productos.Find(id);
-                if(productos!=null)
+                Proveedores proveedores = db.Proveedores.Find(id);
+                if(proveedores!=null)
                 {
-                    db.Entry(productos).State = EntityState.Deleted;
+                    db.Entry(proveedores).State = EntityState.Deleted;
                     paso = db.SaveChanges() > 0;
                 }
             }
@@ -94,30 +91,29 @@ namespace ProyectoFinal_Aplicada2.Controllers
             return paso;
         }
 
-        public Productos Buscar(int id)
+        public Proveedores Buscar(int id)
         {
-            Productos productos = new Productos();
+            Proveedores proveedores = new Proveedores();
             Contexto db = new Contexto();
             try
             {
-                productos = db.Productos.Find(id);
+                proveedores = db.Proveedores.Find(id);
             }
             catch (Exception)
             {
 
                 throw;
             }
-            return productos;
         }
 
-        public List<Productos> GetList(Expression<Func<Productos,bool>> expression)
+        public List<Proveedores> GetList(Expression<Func<Proveedores,bool>> expression)
         {
+            List<Proveedores> lista = new List<Proveedores>();
             Contexto db = new Contexto();
-            List<Productos> lista = new List<Productos>();
 
             try
             {
-                lista = db.Productos.Where(expression).ToList();
+                lista = db.Proveedores.Where(expression).ToList();
             }
             catch (Exception)
             {
