@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ProyectoFinal_Aplicada2.Data;
+using ProyectoFinal_Aplicada2.Controllers;
 
 namespace ProyectoFinal_Aplicada2
 {
@@ -28,7 +29,7 @@ namespace ProyectoFinal_Aplicada2
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddSingleton<WeatherForecastService>();
+            services.AddScoped<ProductosControllers>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
