@@ -19,13 +19,12 @@ namespace ProyectoFinalTests
             Productos productos = new Productos();
             ProductosControllers productosControllers = new ProductosControllers();
 
-            productos.ProductoId = 1;
+            productos.ProductoId = 0;
             productos.FechaEntrada = DateTime.Now;
             productos.Nombre = "Alguien";
             productos.PorcentajeGanancias = 12;
             productos.PrecioVentas = 2000;
             productos.Cantidad = 102;
-            productos.PrecioVentas = 120;
 
             productosControllers.Guardar(productos);
 

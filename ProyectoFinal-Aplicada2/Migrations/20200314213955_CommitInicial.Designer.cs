@@ -9,7 +9,7 @@ using ProyectoFinal_Aplicada2.Data;
 namespace ProyectoFinal_Aplicada2.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20200314213126_CommitInicial")]
+    [Migration("20200314213955_CommitInicial")]
     partial class CommitInicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
