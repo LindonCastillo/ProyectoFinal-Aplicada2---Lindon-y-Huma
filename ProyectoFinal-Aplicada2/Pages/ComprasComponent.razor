@@ -1,5 +1,5 @@
-﻿@page "/Compra"
-@page "/Compra/{Id:int}"
+﻿@page "/Compras"
+@page "/Compras/{Id:int}"
 
 
 <h3>Compras</h3>
@@ -28,10 +28,9 @@
     </style >
 
 <section class="form-register">
-
-    <h3>Productos</h3>
+    <h3>Compras</h3>
     <h3>@mensaje</h3>
-    <EditForm Model="compras" OnValidSubmit="Guardar">
+    <EditForm Model="@compras" OnValidSubmit="Guardar">
         <DataAnnotationsValidator/>
         <label for="Id">CompraId</label>
         <div class="row">
@@ -46,7 +45,7 @@
 
             <div class="col-md-4">
 
-                <button type="button" class="btn btn-success" @onclick="Buscar">Buscar</button>
+                <button type="button" class="btn btn-primary" @onclick="Buscar">Buscar</button>
 
             </div>
         </div>
@@ -86,6 +85,7 @@
         <button class="btn btn-outline-primary" @onclick="AgregarAsignatura" type="button">Agregar</button>
 
         <br />
+        <button class="btn btn-outline-primary" @onclick="AgregarProducto">Agregar</button>
 
         <table class="table">
             <thead class="thead-dark">
@@ -111,7 +111,7 @@
                         <td>@item.Cantidad</td>
                         <td>@item.PrecioCompra</td>
                         <td>@item.SubTotal</td>
-                        <td><button class="btn btn-danger" >Remover</button></td>
+                        <td><button class="btn btn-outline-danger" @onclick="(() => EliminarDetalle(item))">Remover</button></td>
                     </tr>
                 }
 
@@ -137,8 +137,8 @@
             <InputNumber @bind-Value="compras.Balance" disabled class="form-control"></InputNumber>
         </div>
 
-        <button type="button" class="btn btn-info" @onclick="nuevo">Nuevo</button>
-        <button type="submit" class="btn btn-primary" @onclick="CalcularTotalDeCompra">Guardar</button>
+        <button type="button" class="btn btn-secondary" @onclick="Nuevo">Nuevo</button>
+        <button type="submit" class="btn btn-success" @onclick="CalcularTotalDeCompra">Guardar</button>
         <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
     </EditForm>
 </section>
@@ -164,7 +164,7 @@
         productos = new Productos();
     }
 
-    private void nuevo()
+    private void Nuevo()
     {
         this.compras = new Compras();
         mensaje = string.Empty;
@@ -183,13 +183,15 @@
         if(proveedorescontrollers.Buscar(compras.ProveedorId)==null)
         {
             mensaje = "No existe el proveedor";
-        } else
+        } 
+        else
         {
             if(comprascontroller.Guardar(compras))
             {
                 mensaje = "Guardado correctamente";
                 this.compras = new Compras();
-            } else
+            } 
+            else
             {
                 mensaje = "No se pudo guardar";
             }
@@ -202,7 +204,8 @@
         {
             mensaje = "Eliminado correctamente";
             this.compras = new Compras();
-        } else
+        } 
+        else
         {
             mensaje = "No se pudo eliminar";
         }
@@ -223,11 +226,12 @@
     }
 
 
-    private void AgregarAsignatura()
+    private void AgregarProducto()
     {
 
         this.compras.ComprasDetalles.Add(new ComprasDetalle
         {
+            Id = 0,
             CompraId = compras.CompraId,
             ProductoId = productos.ProductoId,
             Nombre = productos.Nombre,
@@ -239,10 +243,17 @@
 
     private void CalcularTotalDeCompra()
     {
-        ComprasDetalle detalle = new ComprasDetalle();
-        compras.Balance = productos.PrecioCompra * productos.Cantidad;
+        compras.Balance = PrecioCompra * Cantidad;
     }
 
+    private void EliminarDetalle(ComprasDetalle detalle)
+    {
+        try
+        {
+            compras.ComprasDetalles.Remove(detalle);
+        }
+        catch (Exception)
+        {
 
     private void BuscarProducto()
     {
@@ -254,6 +265,8 @@
             //sdfsd
         }
 
+            //
+        }
     }
 
 }

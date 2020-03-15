@@ -1,0 +1,48 @@
+﻿@page "/ConsultaVentas"
+
+@using ProyectoFinal_Aplicada2.Controllers;
+@using ProyectoFinal_Aplicada2.Models;
+
+<h3>Consulta de Ventas</h3>
+@if (lista == null)
+{
+    <p>No hay datos que mostrar</p>
+    return;
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Fecha de Venta</th>
+                <th>Total</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in lista)
+            {
+                <tr>
+                    <td>@item.VentaId</td>
+                    <td>@item.FechaVenta</td>
+                    <td>@item.Total</td>
+
+                    <td><a class="btn btn-outline-info" href="Ventas/@item.VentaId">Ver</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    VentasControllers controller = new VentasControllers();
+    List<Ventas> lista = new List<Ventas>();
+
+    protected override void OnInitialized()
+    {
+        lista = controller.GetList(A => true);
+    }
+
+
+}

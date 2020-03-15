@@ -1,6 +1,8 @@
 ﻿@page "/Ventas"
 @page "/Ventas/{Id:int}"
 
+@using ProyectoFinal_Aplicada2.Models;
+
 <style>
     * {
         margin: 0;
@@ -24,8 +26,214 @@
         color: white;
     }
 </style>
-<h3>VentasComponent</h3>
+
+<section class="form-register">
+    <h3>Ventas</h3>
+    <h3>@mensaje</h3>
+    <EditForm Model="@ventas" OnValidSubmit="Guardar">
+        <DataAnnotationsValidator />
+        <label for="Id">CompraId</label>
+        <div class="row">
+            <div class="col-md-8">
+                <div class="form-group">
+
+                    <InputNumber @bind-Value="ventas.VentaId" class="form-control"></InputNumber>
+                    <ValidationMessage For="(()=>ventas.VentaId)"></ValidationMessage>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+
+                <button type="button" class="btn btn-primary" @onclick="Buscar">Buscar</button>
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="FechaVenta">Fecha de Venta</label>
+            <InputDate @bind-Value="ventas.FechaVenta" class="form-control"></InputDate>
+            <ValidationMessage For="(()=>ventas.FechaVenta)"></ValidationMessage>
+        </div>
+
+        <button class="btn btn-outline-primary" @onclick="AgregarProducto">Agregar</button>
+
+        <div class="row">
+            <div class="col">
+                <label for="materia">Materia</label>
+                <InputSelect @bind-Value="@seleccionado" @onchange="CargarProducto" @onclick="CargarProducto" class="form-control">
+                    @foreach (var item in MiLista)
+                    {
+                        <option value="@item.ProductoId">@item.Nombre</option>
+                    }
+                </InputSelect>
+                <button type="button" class="btn btn-outline-info" @onclick="AgregarProducto">Agregar</button>
+            </div>
+            <div class="col">
+                <label for="creditos">Descripcion</label>
+                <InputNumber id="creditos" class="form-control" @bind-Value="productos.Nombre" ReadOnly="true"></InputNumber>
+            </div>
+        </div>
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Id</th>
+                    <th>VentaId</th>
+                    <th>ProductoId</th>
+                    <th>Nombre</th>
+                    <th>Cantidad</th>
+                    <th>PrecioVentas</th>
+                    <th>SubTotal</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody class="bg-white">
+                @foreach (var item in ventas.VentasDetalles)
+                {
+                    <tr>
+                        <td>@item.Id</td>
+                        <td>@item.VentaId</td>
+                        <td>@item.ProductoId</td>
+                        <td>@item.Nombre</td>
+                        <td>@item.Cantidad</td>
+                        <td>@item.PrecioVenta</td>
+                        <td>@item.SubTotal</td>
+                        <td><button class="btn btn-outline-danger" @onclick="(() => EliminarDetalle(item))">Remover</button></td>
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+
+        <div class="form-group">
+            <label for="Balance">Balance</label>
+            <InputNumber @bind-Value="ventas.Balance" disabled class="form-control"></InputNumber>
+        </div>
+
+        <button type="button" class="btn btn-secondary" @onclick="Nuevo">Nuevo</button>
+        <button type="submit" class="btn btn-success" @onclick="CalcularTotalDeVenta">Guardar</button>
+        <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
+    </EditForm>
+</section>
 
 @code {
 
-}
+
+
+    [Parameter]
+    public int Id { get; set; }
+    private string mensaje { get; set; }
+    private string seleccionado { get; set; }
+    
+    Ventas ventas = new Ventas();
+    private Productos productos;
+    List<Productos> MiLista = new List<Productos>();
+
+
+    protected override void OnInitialized()
+    {
+        if(Id>0)
+        {
+            ventas = ventascontroller.Buscar(Id);
+        }
+        MiLista = productoscontrollers.GetList(A => true);
+    }
+
+    private void CargarProducto()
+    {
+        try
+        {
+             productos = productoscontrollers.Buscar(Int32.Parse(seleccionado));
+        }
+        catch (Exception)
+        {
+
+            //wefrbrvr
+        }
+    }
+
+    private void Nuevo()
+    {
+        this.ventas = new Ventas();
+        mensaje = string.Empty;
+    }
+
+    private void Guardar()
+    {
+        if(ventas.VentasDetalles == null)
+        {
+            mensaje = "La lista esta vacía";
+            return;
+        }
+
+        if(ventascontroller.Guardar(ventas))
+        {
+            mensaje = "Guardado correctamente";
+            this.ventas = new Ventas();
+        }
+        else
+        {
+                mensaje = "No se pudo guardar";
+        }
+    }
+
+    private void Eliminar()
+    {
+        if(ventascontroller.Eliminar(ventas.VentaId))
+        {
+            mensaje = "Eliminado correctamente";
+            this.ventas = new Ventas();
+        } else
+        {
+            mensaje = "No se pudo eliminar";
+        }
+    }
+
+    private void Buscar()
+    {
+        Ventas busca = ventascontroller.Buscar(ventas.VentaId);
+        if (busca != null)
+        {
+            this.ventas = busca;
+            mensaje = "Encontrado correctamente";
+        }
+        else
+        {
+            mensaje = "No se pudo encontrar";
+        }
+    }
+
+
+    private void AgregarProducto()
+    {
+
+        this.ventas.VentasDetalles.Add(new VentasDetalle
+        {
+            Id = 0,
+            VentaId = ventas.VentaId,
+            ProductoId = ProductoId,
+            Nombre = 
+            Cantidad = 
+            PrecioVenta = 
+            SubTotal =  
+        });
+    }
+
+    private void CalcularTotalDeVenta()
+    {
+        ventas.Balance =  * ;
+    }
+
+    private void EliminarDetalle(VentasDetalle detalle)
+    {
+        try
+        {
+            ventas.VentasDetalles.Remove(detalle);
+        }
+        catch (Exception)
+        {
+
+            //
+        }
+    }
+    }
