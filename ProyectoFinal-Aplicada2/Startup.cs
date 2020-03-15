@@ -12,6 +12,7 @@ using Microsoft.Extensions.Hosting;
 using ProyectoFinal_Aplicada2.Data;
 using ProyectoFinal_Aplicada2.Controllers;
 
+
 namespace ProyectoFinal_Aplicada2
 {
     public class Startup
@@ -30,6 +31,8 @@ namespace ProyectoFinal_Aplicada2
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddScoped<ProductosControllers>();
+            services.AddScoped<ProveedoresControllers>();
+            services.AddScoped<ComprasControllers>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

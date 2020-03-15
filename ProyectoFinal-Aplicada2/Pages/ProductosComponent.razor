@@ -1,0 +1,164 @@
+﻿@page "/productos"
+@page "/productos/{Id:int}"
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    .form-register {
+        width: 500px;
+        background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
+        padding: 30px;
+        margin: auto;
+        margin-top: 100px;
+        border-radius: 4px;
+        font-family: 'calibri';
+        color: white;
+        box-shadow: 7px 13px 37px #000;
+    }
+
+    .h3 {
+        color: white;
+    }
+</style>
+
+
+<section class="form-register">
+    
+    <h3>Productos</h3>
+    <h3>@mensaje</h3>
+    <EditForm Model="productos" OnValidSubmit="Guardar">
+        <DataAnnotationsValidator></DataAnnotationsValidator>
+        <label for="Id">ProductoId</label>
+        <div class="row">
+            <div class="col-md-8">
+                <div class="form-group">
+
+                    <InputNumber @bind-Value="productos.ProductoId" class="form-control"></InputNumber>
+                    <ValidationMessage For="(()=>productos.ProductoId)"></ValidationMessage>
+                </div>
+            </div>
+
+
+            <div class="col-md-4">
+
+                <button type="button" class="btn btn-success" @onclick="Buscar">Buscar</button>
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="FechaEntrada">Fecha de entrada</label>
+            <InputDate @bind-Value="productos.FechaEntrada" class="form-control"></InputDate>
+            <ValidationMessage For="(()=>productos.FechaEntrada)"></ValidationMessage>
+        </div>
+
+        <div class="form-group">
+            <label for="Nombre">Nombre</label>
+            <InputText @bind-Value="productos.Nombre" class="form-control"></InputText>
+            <ValidationMessage For="(()=>productos.Nombre)"></ValidationMessage>
+        </div>
+
+        <div class="form-group">
+            <label for="Cantidad">Cantidad</label>
+            <InputNumber @bind-Value="productos.Cantidad" class="form-control"></InputNumber>
+            <ValidationMessage For="(()=>productos.Cantidad)"></ValidationMessage>
+        </div>
+
+        <div class="form-group">
+            <label for="PrecioCompra">Precio de compra</label>
+            <InputNumber @bind-Value="productos.PrecioCompra"  @onfocusin="CalcularPrecioDeVenta" @onfocusout="CalcularPrecioDeVenta" class="form-control"></InputNumber>
+            <ValidationMessage For="(()=>productos.PrecioCompra)"></ValidationMessage>
+        </div>
+
+        <div class="form-group">
+            <label for="PorcentajeGanancia">Porcentaje de ganancia</label>
+            <InputNumber @bind-Value="productos.PorcentajeGanancias" @onfocusin="CalcularPrecioDeVenta" @onfocusout="CalcularPrecioDeVenta" class="form-control"></InputNumber>
+            <ValidationMessage For="(()=>productos.PorcentajeGanancias)"></ValidationMessage>
+        </div>
+
+        <div class="form-group">
+            <label for="PrecioVenta">Precio de venta</label>
+            <InputNumber @bind-Value="productos.PrecioVentas" ReadOnly="true" class="form-control" @onchange="CalcularPrecioDeVenta"></InputNumber>
+        </div>
+
+        <button type="button" class="btn btn-primary" @onclick="Nuevo">Nuevo</button>
+        <button type="submit" class="btn btn-primary" @onclick="CalcularPrecioDeVenta">Guardar</button>
+        <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
+
+    </EditForm>
+
+
+</section>
+
+@code {
+    private string mensaje;
+    Productos productos = new Productos();
+
+    [Parameter]
+    public int Id { get; set; }
+
+    protected override void OnInitialized()
+    {
+        if(Id>0)
+        {
+            productos = productoscontrollers.Buscar(Id);
+        }
+
+    }
+
+    private void Nuevo()
+    {
+        this.productos = new Productos();
+        mensaje = string.Empty;
+    }
+
+    private void Guardar()
+    {
+        if(productoscontrollers.Guardar(productos))
+        {
+            mensaje = "Guardado correctamente";
+            this.productos = new Productos();
+        }
+    }
+
+
+    private void Eliminar()
+    {
+        if(productoscontrollers.Eliminar(productos.ProductoId))
+        {
+            mensaje = "Eliminado correctamente";
+            this.productos = new Productos();
+
+        } else
+        {
+            mensaje = "No se pudo Eliminar";
+        }
+    }
+
+    private void Buscar()
+    {
+        Productos busca = productoscontrollers.Buscar(productos.ProductoId);
+        if(busca!=null)
+        {
+            this.productos = busca;
+            mensaje = "Producto encontrado";
+        } else
+        {
+            mensaje = "No se pudo encontrar";
+        }
+    }
+
+
+    private void CalcularPrecioDeVenta()
+    {
+        productos.PrecioVentas = (productos.PrecioCompra * (productos.PorcentajeGanancias / 100)) + productos.PrecioCompra;
+    }
+
+
+
+
+}

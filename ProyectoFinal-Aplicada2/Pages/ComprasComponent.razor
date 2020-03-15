@@ -1,0 +1,245 @@
+﻿@page "/compra"
+@page "/Compra/{Id:int}"
+
+
+<h3>Compras</h3>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    .form-register {
+        width: 800px;
+        background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
+        padding: 30px;
+        margin: auto;
+        margin-top: 100px;
+        border-radius: 4px;
+        font-family: 'calibri';
+        color: white;
+        box-shadow: 7px 13px 37px #000;
+    }
+
+    .h3 {
+        color: white;
+    }
+    </style >
+
+<section class="form-register">
+
+    <h3>Productos</h3>
+    <h3>@mensaje</h3>
+    <EditForm Model="compras" OnValidSubmit="Guardar">
+        <DataAnnotationsValidator></DataAnnotationsValidator>
+        <label for="Id">CompraId</label>
+        <div class="row">
+            <div class="col-md-8">
+                <div class="form-group">
+
+                    <InputNumber @bind-Value="compras.CompraId" class="form-control"></InputNumber>
+                    <ValidationMessage For="(()=>compras.CompraId)"></ValidationMessage>
+                </div>
+            </div>
+
+
+            <div class="col-md-4">
+
+                <button type="button" class="btn btn-success" @onclick="Buscar">Buscar</button>
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="FechaCompra">Fecha de compra</label>
+            <InputDate @bind-Value="compras.FechaCompra" class="form-control"></InputDate>
+            <ValidationMessage For="(()=>compras.FechaCompra)"></ValidationMessage>
+        </div>
+
+
+        <div class="row">
+            <div class="col">
+                <label for="ProductoId">ProductoId</label>
+                <InputNumber @bind-Value="ProductoId" class="form-control"></InputNumber>
+            </div>
+            <div class="col">
+                <label for="Cantidad">Cantidad</label>
+                <InputNumber @bind-Value="Cantidad" class="form-control" @onchange="CalcularTotalDeCompra" @onfocusin="CalcularTotalDeCompra" @onfocusout="CalcularTotalDeCompra"></InputNumber>
+            </div>
+
+            <div class="col">
+                <label for="PrecioCompra">Precio de compra</label>
+                <InputNumber @bind-Value="PrecioCompra" class="form-control" @onchange="CalcularTotalDeCompra" @onfocusin="CalcularTotalDeCompra" @onfocusout="CalcularTotalDeCompra"></InputNumber>
+            </div>
+
+            <div class="col">
+                <label for="Nombre">Nombre</label>
+                <InputText @bind-Value="nombre" class="form-control"></InputText>
+            </div>
+
+
+        </div>
+        <br />
+        <button class="btn btn-outline-primary" @onclick="AgregarAsignatura">Agregar</button>
+
+        <br />
+
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Id</th>
+                    <th>CompraId</th>
+                    <th>ProductoId</th>
+                    <th>Nombre</th>
+                    <th>Cantidad</th>
+                    <th>PrecioCompra</th>
+                    <th>SubTotal</th>
+                    <th>Remover</th>
+                </tr>
+            </thead>
+            <tbody class="bg-white">
+                @foreach (var item in compras.ComprasDetalles)
+                {
+                    <tr>
+                        <td>@item.Id</td>
+                        <td>@item.CompraId</td>
+                        <td>@item.ProductoId</td>
+                        <td>@item.Nombre</td>
+                        <td>@item.Cantidad</td>
+                        <td>@item.PrecioCompra</td>
+                        <td>@item.SubTotal</td>
+                        <td><button class="btn btn-danger" @onclick="EliminarDetalle">Remover</button></td>
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+
+        <div class="form-group">
+            <label for="ProveedorId">ProveedorId</label>
+            <InputNumber @bind-Value="compras.ProveedorId" class="form-control"></InputNumber>
+            <ValidationMessage For="(()=>compras.ProveedorId)"></ValidationMessage>
+        </div>
+
+
+        <div class="form-group">
+            <label for="ITEBIS">ITEBIS</label>
+            <InputNumber @bind-Value="compras.Itbis" class="form-control"></InputNumber>
+            <ValidationMessage For="(()=>compras.Itbis)"></ValidationMessage>
+        </div>
+
+        <div class="form-group">
+            <label for="Balance">Balance</label>
+            <InputNumber @bind-Value="compras.Balance" disabled class="form-control"></InputNumber>
+        </div>
+
+        <button type="button" class="btn btn-info" @onclick="nuevo">Nuevo</button>
+        <button type="submit" class="btn btn-primary" @onclick="CalcularTotalDeCompra">Guardar</button>
+        <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
+    </EditForm>
+</section>
+@code {
+    private string mensaje;
+    Compras compras = new Compras();
+    private int ProductoId;
+    private decimal PrecioCompra;
+    private int Cantidad;
+    private string nombre;
+
+    [Parameter]
+    public int Id { get; set; }
+
+    protected override void OnInitialized()
+    {
+        if(Id>0)
+        {
+            compras = comprascontroller.Buscar(Id);
+        }
+    }
+
+    private void nuevo()
+    {
+        this.compras = new Compras();
+        mensaje = string.Empty;
+    }
+
+    private void Guardar()
+    {
+        if(compras.ComprasDetalles == null)
+        {
+            mensaje = "La lista esta vacía";
+            return;
+        }
+
+
+        Proveedores proveedores = new Proveedores();
+        if(proveedorescontrollers.Buscar(compras.ProveedorId)==null)
+        {
+            mensaje = "No existe el proveedor";
+        } else
+        {
+            if(comprascontroller.Guardar(compras))
+            {
+                mensaje = "Guardado correctamente";
+                this.compras = new Compras();
+            } else
+            {
+                mensaje = "No se pudo guardar";
+            }
+        }
+    }
+
+    private void Eliminar()
+    {
+        if(comprascontroller.Eliminar(compras.CompraId))
+        {
+            mensaje = "Eliminado correctamente";
+            this.compras = new Compras();
+        } else
+        {
+            mensaje = "No se pudo eliminar";
+        }
+    }
+
+    private void Buscar()
+    {
+        Compras busca = comprascontroller.Buscar(compras.CompraId);
+        if (busca != null)
+        {
+            this.compras = busca;
+            mensaje = "Encontrado correctamente";
+        }
+        else
+        {
+            mensaje = "No se pudo encontrar";
+        }
+    }
+
+
+    private void AgregarAsignatura()
+    {
+
+        this.compras.ComprasDetalles.Add(new ComprasDetalle
+        {
+            CompraId = compras.CompraId,
+            ProductoId = ProductoId,
+            Nombre = nombre,
+            Cantidad = Cantidad,
+            PrecioCompra = PrecioCompra,
+            SubTotal = Cantidad * PrecioCompra
+        });
+    }
+
+    private void CalcularTotalDeCompra()
+    {
+        ComprasDetalle detalle = new ComprasDetalle();
+        compras.Balance = PrecioCompra * Cantidad;
+    }
+
+    private void EliminarDetalle()
+    {
+
+    }
+}

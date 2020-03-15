@@ -28,8 +28,7 @@ namespace ProyectoFinal_Aplicada2.Models
         [Required(ErrorMessage ="Porcentaje ganancias debe ser un numero ")]
         [Range(1, 10000000000000000000,ErrorMessage ="El porcentaje de gananacias debe ser un numero")]
         public decimal PorcentajeGanancias { get; set; }
-        [Required(ErrorMessage ="Precio ventas debe ser un numero")]
-        [Range(1, 10000000000000000000,ErrorMessage ="El precio de venta no puede ser mayor que cero")]
+       
         public decimal PrecioVentas { get; set; }
 
         public Productos()

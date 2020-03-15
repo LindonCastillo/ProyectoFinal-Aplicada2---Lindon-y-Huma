@@ -1,0 +1,175 @@
+﻿@page "/proveedores"
+@page "/proveedores/{Id:int}"
+
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    .form-register {
+        width: 500px;
+        background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
+        padding: 30px;
+        margin: auto;
+        margin-top: 100px;
+        border-radius: 4px;
+        font-family: 'calibri';
+        color: white;
+        box-shadow: 7px 13px 37px #000;
+    }
+
+    .h3 {
+        color: white;
+    }
+</style>
+<section class="form-register">
+
+    <h3>Proveedores</h3>
+    <h3>@mensaje</h3>
+    <EditForm Model="proveedores" OnValidSubmit="Guardar">
+        <DataAnnotationsValidator></DataAnnotationsValidator>
+        <label for="Id">ProveedorId</label>
+        <div class="row">
+            <div class="col-md-8">
+                <div class="form-group">
+
+                    <InputNumber @bind-Value="proveedores.ProveedoresId" class="form-control"></InputNumber>
+                    <ValidationMessage For="(()=>proveedores.ProveedoresId)"></ValidationMessage>
+                </div>
+            </div>
+
+
+            <div class="col-md-4">
+                <button type="button" class="btn btn-success" @onclick="Buscar">Buscar</button>
+            </div>
+        </div>
+
+   
+        <div class="form-group">
+            <label for="NombreProveedor">Nombre</label>
+            <InputText @bind-Value="proveedores.NombreProveedor" class="form-control"></InputText>
+            <ValidationMessage For="(()=>proveedores.NombreProveedor)"></ValidationMessage>
+        </div>
+
+        <div class="form-group">
+            <label for="Telefono">Telefono</label>
+            <InputText @bind-Value="proveedores.Telefono" class="form-control"></InputText>
+            <ValidationMessage For="(()=>proveedores.Telefono)"></ValidationMessage>
+        </div>
+
+        <div class="form-group">
+            <label for="RNC">RNC</label>
+            <InputText @bind-Value="proveedores.RNC" class="form-control"></InputText>
+            <ValidationMessage For="(()=>proveedores.RNC)"></ValidationMessage>
+        </div>
+
+        <div class="form-group">
+            <label for="TipoNegocio">Tipo de negocio</label>
+            <InputSelect @bind-Value="proveedores.TipoNegocio" class="form-control">
+                <option value="">Elija una opción</option>
+                <option value="Compra">Compra</option>
+                <option value="Venta">Venta</option>
+                <option value="Servicios">Servicios</option>
+                <option value="Manufactura">Manufactura</option>
+                <ValidationMessage For="(()=>proveedores.TipoNegocio)"></ValidationMessage>
+            </InputSelect>
+        </div>
+
+        <div class="form-group">
+            <label for="Direccion">Dirección</label>
+            <InputText @bind-Value="proveedores.Direcciones"  class="form-control" ></InputText>
+            <ValidationMessage For="(()=>proveedores.Direcciones)"></ValidationMessage>
+        </div>
+
+        <div class="form-group">
+            <label for="TipoMoneda">Tipo Moneda</label>
+
+            <InputSelect @bind-Value="proveedores.TipoMoneda" class="form-control">
+                <option value="">Elija una opción</option>
+                <option value="Peso">Peso</option>
+                <option value="Dolar">Dolar</option>
+                <option value="Euro">Euro</option>
+                <ValidationMessage For="(()=>proveedores.TipoMoneda)"></ValidationMessage>
+            </InputSelect>
+        </div>
+
+        <button type="button" class="btn btn-primary" @onclick="Nuevo">Nuevo</button>
+        <button type="submit" class="btn btn-primary">Guardar</button>
+        <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
+
+    </EditForm>
+
+</section>
+    
+
+
+
+@code {
+    private string mensaje;
+
+    Proveedores proveedores = new Proveedores();
+
+    [Parameter]
+    public int Id { get; set; }
+
+    protected override void OnInitialized()
+    {
+        if(Id>0)
+        {
+            proveedores = proveedorescontrollers.Buscar(Id);
+        }
+
+    }
+
+    private void Guardar()
+    {
+        if(proveedorescontrollers.Guardar(proveedores))
+        {
+            mensaje = "Guardado correctamente";
+            this.proveedores = new Proveedores();
+        } else
+        {
+            mensaje = "No se pudo guardar";
+        }
+    }
+
+    private void Nuevo()
+    {
+        this.proveedores = new Proveedores();
+        this.mensaje = string.Empty;
+    }
+
+    private void Eliminar()
+    {
+        if(proveedorescontrollers.Eliminar(proveedores.ProveedoresId))
+        {
+            mensaje = "Eliminado correctamente";
+            this.proveedores = new Proveedores();
+        } else
+        {
+            mensaje = "No se pudo eliminar";
+        }
+    }
+
+    private void Buscar()
+    {
+        Proveedores busca = proveedorescontrollers.Buscar(proveedores.ProveedoresId);
+        if(busca!=null)
+        {
+            this.proveedores = busca;
+            mensaje = "Encontrado correctamente";
+        } else
+        {
+            mensaje = "No se pudo encontrar";
+        }
+    }
+
+    
+
+
+
+
+}

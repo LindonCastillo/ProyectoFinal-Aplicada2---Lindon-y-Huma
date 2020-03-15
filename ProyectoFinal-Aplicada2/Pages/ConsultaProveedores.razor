@@ -1,0 +1,51 @@
+﻿@page "/consultaproveedor"
+
+<h3>Consulta de Proveedores</h3>
+@if(proveedores == null)
+{
+    <p>No hay datos</p>
+} else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nombre</th>
+                <th>Telefono</th>
+                <th>Dirección</th>
+                <th>RNC</th>
+                <th>TipoNegocio</th>
+                <th>Tipo moneda</th>
+                <th>Ir a</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in proveedores)
+            {
+                <tr>
+                    <td>@item.ProveedoresId</td>
+                    <td>@item.NombreProveedor</td>
+                    <td>@item.Telefono</td>
+                    <td>@item.Direcciones</td>
+                    <td>@item.RNC</td>
+                    <td>@item.TipoNegocio</td>
+                    <td>@item.TipoMoneda</td>
+                    <td><a class="btn btn-primary" href="proveedores/@item.ProveedoresId">Ver</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+
+
+
+@code {
+    List<Proveedores> proveedores;
+
+    protected override void OnInitialized()
+    {
+        proveedores = proveedorescontrollers.GetList(P => true);
+    }
+}

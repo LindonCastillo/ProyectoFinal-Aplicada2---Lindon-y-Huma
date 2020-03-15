@@ -1,0 +1,53 @@
+﻿@page "/consultaproductos"
+
+<h3>Consulta de Productos</h3>
+
+@if(productos == null)
+{
+    <p>No hay datos que mostrar</p>
+    return;
+} else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nombre</th>
+                <th>Cantidad</th>
+                <th>Fecha de entrada</th>
+                <th>Precio de compra</th>
+                <th>Porcentaje de ganancia</th>
+                <th>Precio de venta</th>
+                <th>Ir a</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in productos)
+            {
+                <tr>
+                    <td>@item.ProductoId</td>
+                    <td>@item.Nombre</td>
+                    <td>@item.Cantidad</td>
+                    <td>@item.FechaEntrada</td>
+                    <td>@item.PrecioCompra</td>
+                    <td>@item.PorcentajeGanancias</td>
+                    <td>@item.PrecioVentas</td>
+                    <td><a class="btn btn-primary" href="productos/@item.ProductoId">Ver</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+
+
+
+@code {
+    List<Productos> productos = new List<Productos>();
+
+    protected override void OnInitialized()
+    {
+        productos = productoscontrollers.GetList(P => true);
+    }
+}

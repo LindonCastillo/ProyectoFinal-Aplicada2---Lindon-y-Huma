@@ -1,0 +1,55 @@
+﻿@page "/consultacompras"
+
+<h3>Consulta de Compras</h3>
+
+<div class="form-row">
+    <div class="col">
+        <InputText @bind-Value=""></InputText>
+    </div>
+</div>
+
+
+@if (Compras == null)
+{
+    <p>No hay datos que mostrar</p>
+    return;
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Fecha de compra</th>
+                <th>ProveedorId</th>
+                <th>Itebis</th>
+                <th>Balance</th>
+                <th>Ir a</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Compras)
+            {
+                <tr>
+                    <td>@item.CompraId</td>
+                    <td>@item.FechaCompra</td>
+                    <td>@item.ProveedorId</td>
+                    <td>@item.Itbis</td>
+                    <td>@item.Balance</td>
+                    <td><a class="btn btn-primary" href="compra/@item.CompraId">Ver</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+@code {
+    List<Compras> Compras = new List<Compras>();
+
+    protected override void OnInitialized()
+    {
+        Compras = comprascontroller.GetList(p => true);
+    }
+
+    private string filtro;
+    private string Criterio;
+}
