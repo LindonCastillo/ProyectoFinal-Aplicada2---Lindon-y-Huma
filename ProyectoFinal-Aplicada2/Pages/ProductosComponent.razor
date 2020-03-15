@@ -31,44 +31,44 @@
     <EditForm Model="@productos" OnValidSubmit="Guardar">
         <label class="text-muted form-text">@Mensaje</label>
         <div class="form-group">
-            <label for="id_number">UsuarioId</label>
+            <label for="id_number">ProductosId</label>
             <InputNumber id="id_number" class="form-control" @bind-Value="productos.ProductoId"></InputNumber>
             <ValidationMessage For="(() => productos.ProductoId)" />
             <button type="button" class="btn btn-primary" @onclick="Buscar">Buscar</button>
         </div>
 
         <div class="form-group">
-            <label for="FechaEntrada_date"></label>
+            <label for="FechaEntrada_date">Fecha de Entrada</label>
             <InputDate id="FechaEntrada_date" class="form-control" @bind-Value="productos.FechaEntrada"></InputDate>
             <ValidationMessage For="(() => productos.FechaEntrada)" />
         </div>
 
         <div class="form-group">
-            <label for="Nombre_text"></label>
+            <label for="Nombre_text">Nombre</label>
             <InputText id="Nombre_text" class="form-control" @bind-Value="productos.Nombre"></InputText>
             <ValidationMessage For="(() => productos.Nombre)" />
         </div>
 
         <div class="form-group">
-            <label for="Cantidad_number"></label>
+            <label for="Cantidad_number">Cantidad</label>
             <InputNumber id="Cantidad_number" class="form-control" @bind-Value="productos.Cantidad"></InputNumber>
             <ValidationMessage For="(() => productos.Cantidad)" />
         </div>
 
         <div class="form-group">
-            <label for="PrecioCompra_number"></label>
+            <label for="PrecioCompra_number">Precio de Compra</label>
             <InputNumber id="PrecioCompra_number" class="form-control" @onfocusin="CalcularPrecio" @onfocusout="CalcularPrecio" @bind-Value="productos.PrecioCompra"></InputNumber>
             <ValidationMessage For="(() => productos.PrecioCompra)" />
         </div>
 
         <div class="form-group">
-            <label for="PorcentajeGanancias_number"></label>
+            <label for="PorcentajeGanancias_number">Porcentaje de Ganancias</label>
             <InputNumber id="PorcentajeGanancias_number" class="form-control" @onfocusin="CalcularPrecio" @onfocusout="CalcularPrecio" @bind-Value="productos.PorcentajeGanancias"></InputNumber>
             <ValidationMessage For="(() => productos.PorcentajeGanancias)" />
         </div>
 
         <div class="form-group">
-            <label for="PrecioVentas_number"></label>
+            <label for="PrecioVentas_number">Precio de Ventas</label>
             <InputNumber id="PrecioVentas_number" ReadOnly="true" class="form-control" @bind-Value="productos.PrecioVentas"></InputNumber>
             <ValidationMessage For="(() => productos.PrecioVentas)" />
         </div>
