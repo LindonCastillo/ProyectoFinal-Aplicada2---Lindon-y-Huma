@@ -33,6 +33,9 @@ namespace ProyectoFinal_Aplicada2
             services.AddScoped<ProductosControllers>();
             services.AddScoped<ProveedoresControllers>();
             services.AddScoped<ComprasControllers>();
+            services.AddScoped<VentasControllers>();
+            services.AddScoped<UsuariosControllers>();
+            services.AddScoped<PagosControllers>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -4,7 +4,13 @@
 
 <div class="form-row">
     <div class="col">
-        <InputText @bind-Value=""></InputText>
+        <InputSelect @bind-Value="Criterio" class="form-control">
+            <option value="">Elija una opcion</option>
+            <option value="Todos">Todos</option>
+            <option value="Itebis">Itebis</option>
+            <option value="ProveedorId">ProveedorId</option>
+            <option value="Balance">Balance</option>
+        </InputSelect>
     </div>
 </div>
 
@@ -52,4 +58,36 @@ else
 
     private string filtro;
     private string Criterio;
+
+    public List<Compras> listado { get; set; }
+
+    private void Filtrar()
+    {
+        if(Criterio.Trim().Length>0)
+            try
+            {
+                if(Criterio == "Todos")
+                {
+                    listado = comprascontroller.GetList(P => true);
+                }
+                else
+                 if(Criterio == "Itebis")
+                {
+                    listado = comprascontroller.GetList(p => p.ProveedorId.ToString() == Criterio);
+                }
+                else if(Criterio == "Itebis")
+                {
+                    listado = comprascontroller.GetList(p => p.Itbis.ToString() == Criterio);
+                } else
+                {
+                    listado = comprascontroller.GetList(p => p.Balance.ToString() == Criterio);
+                }
+
+            }catch
+            {
+                throw;
+            }
+    }
+    }
+
 }
