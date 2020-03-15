@@ -35,7 +35,7 @@
         <div class="row">
             <div class="col-md-8">
                 <div class="form-group">
-                    <label for="Id">CompraId</label>
+                    <label for="Id">VentaId</label>
                     <InputNumber id="id" @bind-Value="ventas.VentaId" class="form-control"></InputNumber>
                     <ValidationMessage For="(()=>ventas.VentaId)"></ValidationMessage>
                 </div>
@@ -108,7 +108,7 @@
                         <td>@item.Cantidad</td>
                         <td>@item.PrecioVenta</td>
                         <td>@item.SubTotal</td>
-                        <td><button class="btn btn-outline-danger" @onclick="(() => EliminarDetalle(item))" type="button">Remover</button></td>
+                        <td><button type="button" class="btn btn-outline-danger" @onclick="(() => EliminarDetalle(item))">Remover</button></td>
                     </tr>
                 }
 
@@ -117,8 +117,8 @@
         </table>
 
         <div class="form-group">
-            <label for="Balance">Balance</label>
-            <InputNumber @bind-Value="ventas.Balance" disabled class="form-control"></InputNumber>
+            <label for="balance">Balance</label>
+            <InputNumber id="balance" @bind-Value="ventas.Balance" disabled class="form-control"></InputNumber>
         </div>
 
         <button type="button" class="btn btn-secondary" @onclick="Nuevo">Nuevo</button>
@@ -136,7 +136,8 @@
     private string mensaje { get; set; }
     private string seleccionado { get; set; }
     private int cantidad { get; set; }
-    private Productos productos { get; set; }
+
+    public Productos productos { get; set; }
 
     Ventas ventas = new Ventas();
     List<Productos> MiLista = new List<Productos>();
@@ -148,7 +149,9 @@
         {
             ventas = ventascontroller.Buscar(Id);
         }
+        MiLista = new List<Productos>();
         MiLista = productoscontrollers.GetList(A => true);
+        
     }
 
     private void CargarProducto()
