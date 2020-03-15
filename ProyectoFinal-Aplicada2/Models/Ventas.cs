@@ -26,7 +26,7 @@ namespace ProyectoFinal_Aplicada2.Models
             VentaId = 0;
             FechaVenta = DateTime.Now;
             Total = 0;
-
+            Balance = 0;
             VentasDetalles = new List<VentasDetalle>();
         }
     }

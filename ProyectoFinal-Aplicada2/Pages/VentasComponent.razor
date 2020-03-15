@@ -1,7 +1,6 @@
 ﻿@page "/Ventas"
 @page "/Ventas/{Id:int}"
 
-@using ProyectoFinal_Aplicada2.Models;
 
 <style>
     * {
@@ -29,7 +28,7 @@
 
 <section class="form-register">
     <h3>Ventas</h3>
-    <h3>@mensaje</h3>
+    <h3 class="form-text text-muted">@mensaje</h3>
     <EditForm Model="@ventas" OnValidSubmit="Guardar">
         <DataAnnotationsValidator />
         <div class="row">
@@ -139,7 +138,7 @@
 
     protected override void OnInitialized()
     {
-        if(Id>0)
+        if (Id > 0)
         {
             ventas = ventascontroller.Buscar(Id);
         }
