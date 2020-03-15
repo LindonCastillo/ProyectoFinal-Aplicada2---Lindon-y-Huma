@@ -4,14 +4,27 @@
 
 <div class="form-row">
     <div class="col">
-        <InputSelect @bind-Value="Criterio" class="form-control">
-            <option value="">Elija una opcion</option>
+        
+        <select @bind="Criterio">
+            <option value="">Elija un campo</option>
             <option value="Todos">Todos</option>
-            <option value="Itebis">Itebis</option>
+            <option value="Id">Id</option>
             <option value="ProveedorId">ProveedorId</option>
+            <option value="Itebis">Itebis</option>
             <option value="Balance">Balance</option>
-        </InputSelect>
+        </select>
+
+
     </div>
+
+    <div class="col">
+        <input type="text" @bind="filtro" />
+    </div>
+
+    <div class="col">
+        <button type="button" class="btn btn-primary" @onclick="Filtrar">Filtrar</button>
+    </div>
+
 </div>
 
 
@@ -70,17 +83,21 @@ else
                 {
                     listado = comprascontroller.GetList(P => true);
                 }
-                else
-                 if(Criterio == "Itebis")
+                else if(Criterio == "Id")
                 {
-                    listado = comprascontroller.GetList(p => p.ProveedorId.ToString() == Criterio);
+                    listado = comprascontroller.GetList(p => p.CompraId.ToString() == filtro);
+                }
+                else
+                 if(Criterio == "ProveedorId")
+                {
+                    listado = comprascontroller.GetList(p => p.ProveedorId.ToString() == filtro);
                 }
                 else if(Criterio == "Itebis")
                 {
-                    listado = comprascontroller.GetList(p => p.Itbis.ToString() == Criterio);
+                    listado = comprascontroller.GetList(p => p.Itbis.ToString() == filtro);
                 } else
                 {
-                    listado = comprascontroller.GetList(p => p.Balance.ToString() == Criterio);
+                    listado = comprascontroller.GetList(p => p.Balance.ToString() == filtro);
                 }
 
             }catch
