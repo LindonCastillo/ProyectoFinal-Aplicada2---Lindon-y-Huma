@@ -28,7 +28,6 @@
 <section class="form-register">
 
     <h3>Proveedores</h3>
-    <h3 class="form-text text-muted">@mensaje</h3>
     <EditForm Model="proveedores" OnValidSubmit="Guardar">
         <DataAnnotationsValidator></DataAnnotationsValidator>
         <label for="Id">ProveedorId</label>
@@ -108,7 +107,6 @@
 
 
 @code {
-    private string mensaje;
 
     Proveedores proveedores = new Proveedores();
 
@@ -126,31 +124,38 @@
 
     private void Guardar()
     {
-        if(proveedorescontrollers.Guardar(proveedores))
+        if(proveedores.ProveedoresId>0)
         {
-            mensaje = "Guardado correctamente";
+            proveedorescontrollers.Guardar(proveedores);
+            toastService.ShowSuccess("Has modificado el proveedor exitosamente", "Modificado!");
+            this.proveedores = new Proveedores();
+
+        } else if(proveedores.ProveedoresId == 0)
+        {
+            proveedorescontrollers.Guardar(proveedores);
+            toastService.ShowSuccess("Has guardado el proveedor exitosamente", "Guardado!");
             this.proveedores = new Proveedores();
         } else
         {
-            mensaje = "No se pudo guardar";
+            toastService.ShowError("No se guardar", "Error!");
         }
+
     }
 
     private void Nuevo()
     {
         this.proveedores = new Proveedores();
-        this.mensaje = string.Empty;
     }
 
     private void Eliminar()
     {
         if(proveedorescontrollers.Eliminar(proveedores.ProveedoresId))
         {
-            mensaje = "Eliminado correctamente";
+            toastService.ShowInfo("Has eliminado el proveedor exitosamente","Eliminado!");
             this.proveedores = new Proveedores();
         } else
         {
-            mensaje = "No se pudo eliminar";
+            toastService.ShowError("No se pudo eliminar","Error");
         }
     }
 
@@ -160,16 +165,12 @@
         if(busca!=null)
         {
             this.proveedores = busca;
-            mensaje = "Encontrado correctamente";
+            toastService.ShowInfo("El proveedor se ha encontrado","Encontrado!");
         } else
         {
-            mensaje = "No se pudo encontrar";
+            toastService.ShowWarning("No se pudo encontrar el proveedor", "No encontrado!");
         }
     }
-
-    
-
-
 
 
 }
