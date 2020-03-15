@@ -54,7 +54,7 @@
             <ValidationMessage For="(()=>ventas.FechaVenta)"></ValidationMessage>
         </div>
 
-        @*<button class="btn btn-outline-primary" @onclick="AgregarProducto">Agregar</button>*@
+        <button class="btn btn-outline-primary" @onclick="AgregarProducto">Agregar</button>
 
         <div class="row">
             <div class="col">
@@ -68,7 +68,7 @@
             </div>
             <div class="col">
                 <label for="descripcion">Descripcion</label>
-                <InputText id="descripcion" class="form-control" @bind-Value="productos.Nombre" disabled ></InputText>
+                <InputText id="descripcion" class="form-control" @bind-Value="nombre" disabled ></InputText>
             </div>
         </div>
 
@@ -79,7 +79,7 @@
             </div>
             <div class="col">
                 <label for="precio">Precio</label>
-                <InputNumber id="precio" class="form-control" @bind-Value="productos.PrecioVentas" disabled></InputNumber>
+                <InputNumber id="precio" class="form-control" @bind-Value="precioVenta" disabled></InputNumber>
                 <button type="button" class="btn btn-outline-info" @onclick="AgregarProducto">Agregar</button>
             </div>
         </div>
@@ -137,6 +137,9 @@
     private string seleccionado { get; set; }
     private int cantidad { get; set; }
 
+    private string nombre = string.Empty;
+    private decimal precioVenta = 0;
+
     public Productos productos { get; set; }
 
     Ventas ventas = new Ventas();
@@ -149,7 +152,6 @@
         {
             ventas = ventascontroller.Buscar(Id);
         }
-        MiLista = new List<Productos>();
         MiLista = productoscontrollers.GetList(A => true);
         
     }
@@ -159,6 +161,8 @@
         try
         {
             productos = productoscontrollers.Buscar(Int32.Parse(seleccionado));
+            nombre = productos.Nombre;
+            precioVenta = productos.PrecioVentas;
         }
         catch (Exception)
         {
