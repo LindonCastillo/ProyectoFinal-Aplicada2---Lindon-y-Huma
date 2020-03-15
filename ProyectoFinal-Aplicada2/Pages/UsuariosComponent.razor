@@ -2,90 +2,90 @@
 
 @using ProyectoFinal_Aplicada2.Controllers;
 @using ProyectoFinal_Aplicada2.Models;
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+@using ProyectoFinal_Aplicada2.Data;
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
 
-        .form-register {
-            width: 500px;
-            background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
-            padding: 30px;
-            margin: auto;
-            margin-top: 100px;
-            border-radius: 4px;
-            font-family: 'calibri';
-            color: white;
-            box-shadow: 7px 13px 37px #000;
-        }
+    .form-register {
+        width: 500px;
+        background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
+        padding: 30px;
+        margin: auto;
+        margin-top: 100px;
+        border-radius: 4px;
+        font-family: 'calibri';
+        color: white;
+        box-shadow: 7px 13px 37px #000;
+    }
 
-        .h3 {
-            color: white;
-        }
-    </style>
+    .h3 {
+        color: white;
+    }
+</style>
 
-    <section class="form-register">
-        <h3>Usuarios Component</h3>
-        <EditForm Model="@usuarios" OnValidSubmit="Guardar">
-            <DataAnnotationsValidator />
+<section class="form-register">
+    <h3>Usuarios Component</h3>
+    <EditForm Model="@usuarios" OnValidSubmit="Guardar">
+        <DataAnnotationsValidator />
+        <label class="text-muted form-text">@Mensaje</label>
+        <div class="form-group">
+            <label for="usuario_number">UsuarioId</label>
+            <InputNumber id="usuario_number" class="form-control" @bind-Value="usuarios.UsuarioId"></InputNumber>
+            <ValidationMessage For="(() => usuarios.UsuarioId)" />
+            <button type="button" class="btn btn-primary" @onclick="Buscar">Buscar</button>
+        </div>
 
-            <div class="form-group">
-                <label for="usuario_number">UsuarioId</label>
-                <InputNumber id="usuario_number" class="form-control" @bind-Value="usuarios.UsuarioId"></InputNumber>
-                <ValidationMessage For="(() => usuarios.UsuarioId)" />
-                <button type="button" class="btn btn-primary" @onclick="Buscar">Buscar</button>
-            </div>
+        <div class="form-group">
+            <label for="NombrePersona_text"></label>
+            <InputText id="NombrePersona_text" class="form-control" @bind-Value="usuarios.NombrePersona"></InputText>
+            <ValidationMessage For="(() => usuarios.NombrePersona)" />
+        </div>
 
-            <div class="form-group">
-                <label for="NombrePersona_text"></label>
-                <InputText id="NombrePersona_text" class="form-control" @bind-Value="usuarios.NombrePersona"></InputText>
-                <ValidationMessage For="(() => usuarios.NombrePersona)" />
-            </div>
+        <div class="form-group">
+            <label for="EmailUsuario_text"></label>
+            <InputText id="EmailUsuario_text" class="form-control" @bind-Value="usuarios.EmailUsuario"></InputText>
+            <ValidationMessage For="(() => usuarios.EmailUsuario)" />
+        </div>
 
-            <div class="form-group">
-                <label for="EmailUsuario_text"></label>
-                <InputText id="EmailUsuario_text" class="form-control" @bind-Value="usuarios.EmailUsuario"></InputText>
-                <ValidationMessage For="(() => usuarios.EmailUsuario)" />
-            </div>
+        <div class="form-group">
+            <label for="Clave_text"></label>
+            <InputText id="Clave_text" type="password" class="form-control" @bind-Value="usuarios.Clave"></InputText>
+            <ValidationMessage For="(() => usuarios.Clave)" />
+        </div>
 
-            <div class="form-group">
-                <label for="Clave_text"></label>
-                <InputText id="Clave_text" class="form-control" @bind-Value="usuarios.Clave"></InputText>
-                <ValidationMessage For="(() => usuarios.Clave)" />
-            </div>
+        <div class="form-group">
+            <label for="ConfirmarClave_text"></label>
+            <InputText id="ConfirmarClave_text" type="password" class="form-control" @bind-Value="usuarios.ConfirmarClave"></InputText>
+            <ValidationMessage For="(() => usuarios.ConfirmarClave)" />
+        </div>
 
-            <div class="form-group">
-                <label for="ConfirmarClave_text"></label>
-                <InputText id="ConfirmarClave_text" class="form-control" @bind-Value="usuarios.ConfirmarClave"></InputText>
-                <ValidationMessage For="(() => usuarios.ConfirmarClave)" />
-            </div>
+        <div class="form-group">
+            <label for="NivelUsuario_text" class="form-control"></label>
+            <InputSelect @bind-Value="@usuarios.NivelUsuario">
+                <option value="Administrador">Administrador</option>
+                <option value="Contador">Contador</option>
+                <option value="Cajero">Cajero</option>
+            </InputSelect>
+            <ValidationMessage For="(() => usuarios.NivelUsuario)" />
+        </div>
 
-            <div class="form-group">
-                <label for="NivelUsuario_text" class="form-control" ></label>
-                <InputSelect @bind-Value="@usuarios.NivelUsuario">
-                    <option value="Administrador" >Administrador</option>
-                    <option value="Contador" >Contador</option>
-                    <option value="Cajero" >Cajero</option>
-                </InputSelect>
-                <ValidationMessage For="(() => usuarios.NivelUsuario)" />
-            </div>
+        <div class="form-group">
+            <label for="FechaIngreso_date"></label>
+            <InputDate id="FechaIngreso_date" class="form-control" @bind-Value="usuarios.FechaIngreso"></InputDate>
+            <ValidationMessage For="(() => usuarios.FechaIngreso)" />
+        </div>
 
-            <div class="form-group">
-                <label for="FechaIngreso_date"></label>
-                <InputDate id="FechaIngreso_date" class="form-control" @bind-Value="usuarios.FechaIngreso"></InputDate>
-                <ValidationMessage For="(() => usuarios.FechaIngreso)" />
-            </div>
-
-
-            <div>
-                <button type="button" class="btn btn-danger" @onclick="Limpiar">Nuevo</button>
-                <button type="submit" class="btn btn-success">Guardar</button>
-                <button type="button" class="btn btn-secondary" @onclick="Eliminar">Eliminar</button>
-            </div>
-        </EditForm>
-    </section>
+        <div>
+            <button type="button" class="btn btn-danger" @onclick="Limpiar">Nuevo</button>
+            <button type="submit" class="btn btn-success">Guardar</button>
+            <button type="button" class="btn btn-secondary" @onclick="Eliminar">Eliminar</button>
+        </div>
+    </EditForm>
+</section>
 <br />
 <br />
 
@@ -102,7 +102,7 @@
         UsuariosControllers controller = new UsuariosControllers();
         Limpiar();
         Mensaje = string.Empty;
-        if(Id != 0)
+        if (Id != 0)
         {
             usuarios = controller.Buscar(Id);
         }
@@ -126,23 +126,99 @@
         return resultado;
     }
 
+    public bool ExisteEnLaBaseDeDatos(int id)
+    {
+        Contexto db = new Contexto();
+        var buscado = db.Usuarios.Find(id);
+        bool paso = true;
+
+        if (buscado == null)
+        {
+            paso = false;
+        }
+
+        return paso;
+    }
+
     private void Limpiar()
     {
         usuarios = new Usuarios();
     }
-    
+
     private void Guardar()
     {
+        UsuariosControllers controller = new UsuariosControllers();
+        
+         if(usuarios.UsuarioId > 0)
+        {
+            if (ExisteEnLaBaseDeDatos(usuarios.UsuarioId))
+            {
+                if (controller.Guardar(usuarios))
+                {
+                    Mensaje = "Se modifico correctamente";
+                    Limpiar();
+                }
+                else
+                {
+                    Mensaje = "No se pudo modificar";
+                }
 
+            }
+            else
+            {
+                Mensaje = "No se puede modificar un Usuario que no exista";
+            }
+        }
+        else
+        {
+            if (controller.Guardar(usuarios))
+            {
+                Mensaje = "Se guardo correctamente";
+                Limpiar();
+            }
+            else
+            {
+                Mensaje = "No se pudo Guardar";
+            }
+        }
     }
-    
+
     private void Eliminar()
     {
-
+        UsuariosControllers controller = new UsuariosControllers();
+        int id = usuarios.UsuarioId;
+        if (id > 0)
+        {
+            if (ExisteEnLaBaseDeDatos(id))
+            {
+                controller.Eliminar(id);
+                Limpiar();
+                Mensaje = "Se elimino Correctamente";
+            }
+            else
+            {
+                Mensaje = "No se puede eliminar un Caso que no Exista";
+            }
+        }
+        else
+        {
+            Mensaje = "No se puede eliminar asi";
+        }
     }
-    
+
     private void Buscar()
     {
+        UsuariosControllers controller = new UsuariosControllers();
+        var buscado = controller.Buscar(usuarios.UsuarioId);
 
+        if (buscado != null)
+        {
+            usuarios = buscado;
+            Mensaje = "Se encontro el Usuario";
+        }
+        else
+        {
+            Mensaje = "No existe este Usuario";
+        }
     }
 }
