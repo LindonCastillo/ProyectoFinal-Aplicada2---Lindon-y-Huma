@@ -33,11 +33,20 @@
     <EditForm Model="@usuarios" OnValidSubmit="Guardar">
         <DataAnnotationsValidator />
         <label class="text-muted form-text">@Mensaje</label>
-        <div class="form-group">
-            <label for="usuario_number">UsuarioId</label>
-            <InputNumber id="usuario_number" class="form-control" @bind-Value="usuarios.UsuarioId"></InputNumber>
-            <ValidationMessage For="(() => usuarios.UsuarioId)" />
-            <button type="button" class="btn btn-primary" @onclick="Buscar">Buscar</button>
+        <div class="row">
+            <div class="col-md-8">
+                <div class="form-group">
+                    <label for="Id">UsuarioId</label>
+                    <InputNumber id="id" @bind-Value="usuarios.UsuarioId" class="form-control"></InputNumber>
+                    <ValidationMessage For="(()=>usuarios.UsuarioId)"></ValidationMessage>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+
+                <button type="button" class="btn btn-primary" @onclick="Buscar">Buscar</button>
+
+            </div>
         </div>
 
         <div class="form-group">

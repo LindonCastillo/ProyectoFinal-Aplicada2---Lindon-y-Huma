@@ -54,8 +54,6 @@
             <ValidationMessage For="(()=>ventas.FechaVenta)"></ValidationMessage>
         </div>
 
-        <button class="btn btn-outline-primary" @onclick="AgregarProducto">Agregar</button>
-
         <div class="row">
             <div class="col">
                 <label for="producto_select">Producto</label>
@@ -67,20 +65,13 @@
                 </InputSelect>
             </div>
             <div class="col">
-                <label for="descripcion">Descripcion</label>
-                <InputText id="descripcion" class="form-control" @bind-Value="nombre" disabled ></InputText>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col">
                 <label for="cantidad">Cantidad</label>
                 <InputNumber id="cantidad" class="form-control" @bind-Value="cantidad"></InputNumber>
             </div>
             <div class="col">
                 <label for="precio">Precio</label>
                 <InputNumber id="precio" class="form-control" @bind-Value="precioVenta" disabled></InputNumber>
-                <button type="button" class="btn btn-outline-info" @onclick="AgregarProducto">Agregar</button>
+                <button type="button" class="btn btn-info" @onclick="AgregarProducto">Agregar</button>
             </div>
         </div>
 
@@ -118,11 +109,11 @@
 
         <div class="form-group">
             <label for="balance">Balance</label>
-            <InputNumber id="balance" @bind-Value="ventas.Balance" disabled class="form-control"></InputNumber>
+            <InputNumber id="balance" @bind-Value="ventas.Total" disabled class="form-control"></InputNumber>
         </div>
 
         <button type="button" class="btn btn-secondary" @onclick="Nuevo">Nuevo</button>
-        <button type="submit" class="btn btn-success" @onclick="DarBalance">Guardar</button>
+        <button type="submit" class="btn btn-success" @onclick="CalcularTotalDeVenta">Guardar</button>
         <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
     </EditForm>
 </section>
@@ -241,9 +232,8 @@
                 PrecioVenta = productos.PrecioVentas,
                 SubTotal = productos.PrecioVentas * cantidad
             });
-            CalcularTotalDeVenta();
         }
-
+        CalcularTotalDeVenta();
 
     }
 
@@ -257,16 +247,13 @@
         ventas.Total = total;
     }
 
-    private void DarBalance()
-    {
-        ventas.Balance = ventas.Total;
-    }
 
     private void EliminarDetalle(VentasDetalle detalle)
     {
         try
         {
             ventas.VentasDetalles.Remove(detalle);
+            CalcularTotalDeVenta();
         }
         catch (Exception)
         {
