@@ -89,6 +89,7 @@
         <button type="submit" class="btn btn-success" @onclick="CalcularPrecioDeVenta">Guardar</button>
         <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
         <button type="button" class="btn btn-primary">A ver si funciona</button>
+        <button class="btn btn-success" @onclick="@(() => toastService.ShowInfo("I'm a SUCCESS message with a custom title", "Error!"))">Success Toast</button>
 
     </EditForm>
 
