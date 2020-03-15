@@ -31,7 +31,7 @@
     <h3>Productos</h3>
     <h3 class="form-text text-muted">@mensaje</h3>
     <EditForm Model="productos" OnValidSubmit="Guardar">
-        <DataAnnotationsValidator/>
+        <DataAnnotationsValidator />
         <label for="Id">ProductoId</label>
         <div class="row">
             <div class="col-md-8">
@@ -70,7 +70,7 @@
 
         <div class="form-group">
             <label for="PrecioCompra">Precio de compra</label>
-            <InputNumber @bind-Value="productos.PrecioCompra"  @onfocusin="CalcularPrecioDeVenta" @onfocusout="CalcularPrecioDeVenta" class="form-control"></InputNumber>
+            <InputNumber @bind-Value="productos.PrecioCompra" @onfocusin="CalcularPrecioDeVenta" @onfocusout="CalcularPrecioDeVenta" class="form-control"></InputNumber>
             <ValidationMessage For="(()=>productos.PrecioCompra)"></ValidationMessage>
         </div>
 
@@ -88,6 +88,7 @@
         <button type="button" class="btn btn-secondary" @onclick="Nuevo">Nuevo</button>
         <button type="submit" class="btn btn-success" @onclick="CalcularPrecioDeVenta">Guardar</button>
         <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
+        <button type="button" class="btn btn-primary">A ver si funciona</button>
 
     </EditForm>
 

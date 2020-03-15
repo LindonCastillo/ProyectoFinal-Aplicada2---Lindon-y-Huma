@@ -115,13 +115,10 @@
 
         </table>
 
-        <div class="form-group">
-            <label for="Balance">Balance</label>
-            <InputNumber @bind-Value="ventas.Balance" disabled class="form-control"></InputNumber>
-        </div>
+       
 
         <button type="button" class="btn btn-secondary" @onclick="Nuevo">Nuevo</button>
-        <button type="submit" class="btn btn-success" @onclick="DarBalance">Guardar</button>
+        <button type="submit" class="btn btn-success">Guardar</button>
         <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
     </EditForm>
 </section>
@@ -256,10 +253,7 @@
         ventas.Total = total;
     }
 
-    private void DarBalance()
-    {
-        ventas.Balance = ventas.Total;
-    }
+    
 
     private void EliminarDetalle(VentasDetalle detalle)
     {

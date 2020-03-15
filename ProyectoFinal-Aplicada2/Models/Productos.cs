@@ -14,6 +14,8 @@ namespace ProyectoFinal_Aplicada2.Models
         public int ProductoId { get; set; }
         [DataType(DataType.Date,ErrorMessage ="El campo debe ser una fecha")]
         [Required(ErrorMessage = "El campo fecha no puede estar vacío")]
+        [DisplayFormat(DataFormatString = "{0:dd,mm, yyyy}")]
+
         public DateTime FechaEntrada { get; set; }
         [Required(ErrorMessage = "El nombre no puede estar vacío")]
         [MinLength(2, ErrorMessage ="El Nombre muy corto")]

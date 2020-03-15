@@ -14,6 +14,8 @@ namespace ProyectoFinal_Aplicada2.Models
         [Range(0, 100000000, ErrorMessage = "El campo Id no puede ser menor que cero")]
         public int VentaId { get; set; }
         [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:dd,mm, yyyy}")]
+
         [Required(ErrorMessage = "El campo fecha no puede estar vacío")]
         public DateTime FechaVenta { get; set; }
         public decimal Total { get; set; }

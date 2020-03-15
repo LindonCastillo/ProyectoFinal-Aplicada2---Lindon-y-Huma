@@ -13,6 +13,8 @@ namespace ProyectoFinal_Aplicada2.Models
         [Required(ErrorMessage = "El campo Id debe ser un numero")]
         [Range(0, 100000000, ErrorMessage = "El campo Id no puede ser menor que cero")]
         public int PagoId { get; set; }
+        [DisplayFormat(DataFormatString = "{0:dd,mm, yyyy}")]
+
         [DataType(DataType.DateTime)]
         [Required(ErrorMessage = "El campo fecha no puede estar vacío")]
         public DateTime PagoFecha { get; set; } 

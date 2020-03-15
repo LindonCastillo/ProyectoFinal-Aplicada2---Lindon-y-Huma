@@ -11,7 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ProyectoFinal_Aplicada2.Data;
 using ProyectoFinal_Aplicada2.Controllers;
-
+using Blazored.Toast;
 
 namespace ProyectoFinal_Aplicada2
 {
@@ -35,7 +35,10 @@ namespace ProyectoFinal_Aplicada2
             services.AddScoped<ComprasControllers>();
             services.AddScoped<VentasControllers>();
             services.AddScoped<UsuariosControllers>();
+            services.AddBlazoredToast();
+
             services.AddScoped<PagosControllers>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

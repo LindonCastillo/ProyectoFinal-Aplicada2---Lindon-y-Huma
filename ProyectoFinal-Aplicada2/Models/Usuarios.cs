@@ -30,6 +30,8 @@ namespace ProyectoFinal_Aplicada2.Models
         public string NivelUsuario { get; set; }
         [DataType(DataType.DateTime)]
         [Required(ErrorMessage = "El campo fecha no puede estar vacío")]
+        [DisplayFormat(DataFormatString = "{0:dd,mm, yyyy}")]
+
         public DateTime FechaIngreso { get; set; }
 
         public Usuarios()

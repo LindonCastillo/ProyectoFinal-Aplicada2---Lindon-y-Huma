@@ -14,6 +14,8 @@ namespace ProyectoFinal_Aplicada2.Models
         [Range(0,100000000,ErrorMessage ="El campo Id no puede ser menor que cero")]
         public int CompraId { get; set; }
         [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:dd,mm, yyyy}")]
+        
         [Required(ErrorMessage = "El campo fecha no puede estar vacío")]
         public DateTime FechaCompra { get; set; }
         [Required(ErrorMessage ="El campo ProveedorId debe ser un numero")]
