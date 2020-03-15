@@ -17,8 +17,6 @@ namespace ProyectoFinal_Aplicada2.Models
         [MaxLength(50, ErrorMessage = "Nombre Persona muy largo")]
         public string NombrePersona { get; set; }
         [Required(ErrorMessage = "El Email Usuario no puede estar vacío")]
-        [MinLength(2, ErrorMessage = "El Email Usuario muy corto")]
-        [MaxLength(50, ErrorMessage = "Email Usuario muy largo")]
         public string EmailUsuario { get; set; }
         [Required(ErrorMessage = "El Clave no puede estar vacío")]
         [MinLength(2, ErrorMessage = "El Clave muy corto")]
