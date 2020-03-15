@@ -108,7 +108,7 @@
                         <td>@item.Cantidad</td>
                         <td>@item.PrecioCompra</td>
                         <td>@item.SubTotal</td>
-                        <td><button class="btn btn-danger" @onclick="EliminarDetalle">Remover</button></td>
+                        <td><button class="btn btn-outline-danger" @onclick="(() => EliminarDetalle(item))">Remover</button></td>
                     </tr>
                 }
 
@@ -134,8 +134,8 @@
             <InputNumber @bind-Value="compras.Balance" disabled class="form-control"></InputNumber>
         </div>
 
-        <button type="button" class="btn btn-info" @onclick="nuevo">Nuevo</button>
-        <button type="submit" class="btn btn-primary" @onclick="CalcularTotalDeCompra">Guardar</button>
+        <button type="button" class="btn btn-secondary" @onclick="Nuevo">Nuevo</button>
+        <button type="submit" class="btn btn-success" @onclick="CalcularTotalDeCompra">Guardar</button>
         <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
     </EditForm>
 </section>
@@ -233,7 +233,6 @@
 
     private void CalcularTotalDeCompra()
     {
-        ComprasDetalle detalle = new ComprasDetalle();
         compras.Balance = PrecioCompra * Cantidad;
     }
 
