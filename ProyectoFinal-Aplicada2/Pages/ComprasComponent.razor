@@ -30,7 +30,7 @@
 <section class="form-register">
     <h3>Compras</h3>
     <h3>@mensaje</h3>
-    <EditForm Model="compras" OnValidSubmit="Guardar">
+    <EditForm Model="@compras" OnValidSubmit="Guardar">
         <DataAnnotationsValidator/>
         <label for="Id">CompraId</label>
         <div class="row">
@@ -177,13 +177,15 @@
         if(proveedorescontrollers.Buscar(compras.ProveedorId)==null)
         {
             mensaje = "No existe el proveedor";
-        } else
+        } 
+        else
         {
             if(comprascontroller.Guardar(compras))
             {
                 mensaje = "Guardado correctamente";
                 this.compras = new Compras();
-            } else
+            } 
+            else
             {
                 mensaje = "No se pudo guardar";
             }
@@ -196,7 +198,8 @@
         {
             mensaje = "Eliminado correctamente";
             this.compras = new Compras();
-        } else
+        } 
+        else
         {
             mensaje = "No se pudo eliminar";
         }
@@ -222,6 +225,7 @@
 
         this.compras.ComprasDetalles.Add(new ComprasDetalle
         {
+            Id = 0,
             CompraId = compras.CompraId,
             ProductoId = ProductoId,
             Nombre = nombre,

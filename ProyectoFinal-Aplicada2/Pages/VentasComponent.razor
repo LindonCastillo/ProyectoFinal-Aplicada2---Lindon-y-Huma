@@ -24,8 +24,221 @@
         color: white;
     }
 </style>
-<h3>Ventas</h3>
+
+<section class="form-register">
+    <h3>Ventas</h3>
+    <h3>@mensaje</h3>
+    <EditForm Model="@compras" OnValidSubmit="Guardar">
+        <DataAnnotationsValidator />
+        <label for="Id">CompraId</label>
+        <div class="row">
+            <div class="col-md-8">
+                <div class="form-group">
+
+                    <InputNumber @bind-Value="compras.CompraId" class="form-control"></InputNumber>
+                    <ValidationMessage For="(()=>compras.CompraId)"></ValidationMessage>
+                </div>
+            </div>
+
+
+            <div class="col-md-4">
+
+                <button type="button" class="btn btn-primary" @onclick="Buscar">Buscar</button>
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="FechaCompra">Fecha de compra</label>
+            <InputDate @bind-Value="compras.FechaCompra" class="form-control"></InputDate>
+            <ValidationMessage For="(()=>compras.FechaCompra)"></ValidationMessage>
+        </div>
+
+
+        <div class="row">
+            <div class="col">
+                <label for="ProductoId">ProductoId</label>
+                <InputNumber @bind-Value="ProductoId" class="form-control"></InputNumber>
+            </div>
+            <div class="col">
+                <label for="Cantidad">Cantidad</label>
+                <InputNumber @bind-Value="Cantidad" class="form-control" @onchange="CalcularTotalDeCompra" @onfocusin="CalcularTotalDeCompra" @onfocusout="CalcularTotalDeCompra"></InputNumber>
+            </div>
+
+            <div class="col">
+                <label for="PrecioCompra">Precio de compra</label>
+                <InputNumber @bind-Value="PrecioCompra" class="form-control" @onchange="CalcularTotalDeCompra" @onfocusin="CalcularTotalDeCompra" @onfocusout="CalcularTotalDeCompra"></InputNumber>
+            </div>
+
+            <div class="col">
+                <label for="Nombre">Nombre</label>
+                <InputText @bind-Value="nombre" class="form-control"></InputText>
+            </div>
+
+
+        </div>
+        <br />
+        <button class="btn btn-outline-primary" @onclick="AgregarProducto">Agregar</button>
+
+        <br />
+
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Id</th>
+                    <th>CompraId</th>
+                    <th>ProductoId</th>
+                    <th>Nombre</th>
+                    <th>Cantidad</th>
+                    <th>PrecioCompra</th>
+                    <th>SubTotal</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody class="bg-white">
+                @foreach (var item in ventas.VentasDetalles)
+                {
+                    <tr>
+                        <td>@item.Id</td>
+                        <td>@item.VentaId</td>
+                        <td>@item.ProductoId</td>
+                        <td>@item.Nombre</td>
+                        <td>@item.Cantidad</td>
+                        <td>@item.PrecioVenta</td>
+                        <td>@item.SubTotal</td>
+                        <td><button class="btn btn-outline-danger" @onclick="(() => EliminarDetalle(item))">Remover</button></td>
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+
+        <div class="form-group">
+            <label for="ProveedorId">ProveedorId</label>
+            <InputNumber @bind-Value="compras.ProveedorId" class="form-control"></InputNumber>
+            <ValidationMessage For="(()=>compras.ProveedorId)"></ValidationMessage>
+        </div>
+
+
+        <div class="form-group">
+            <label for="ITEBIS">ITEBIS</label>
+            <InputNumber @bind-Value="compras.Itbis" class="form-control"></InputNumber>
+            <ValidationMessage For="(()=>compras.Itbis)"></ValidationMessage>
+        </div>
+
+        <div class="form-group">
+            <label for="Balance">Balance</label>
+            <InputNumber @bind-Value="compras.Balance" disabled class="form-control"></InputNumber>
+        </div>
+
+        <button type="button" class="btn btn-secondary" @onclick="Nuevo">Nuevo</button>
+        <button type="submit" class="btn btn-success" @onclick="CalcularTotalDeVenta">Guardar</button>
+        <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
+    </EditForm>
+</section>
 
 @code {
+    private string mensaje;
+    Ventas ventas = new Ventas();
+    private int ProductoId;
+    private decimal PrecioVenta;
+    private int Cantidad;
+    private string nombre;
 
-}
+    [Parameter]
+    public int Id { get; set; }
+
+    protected override void OnInitialized()
+    {
+        if(Id>0)
+        {
+            ventas = ventascontroller.Buscar(Id);
+        }
+    }
+
+    private void Nuevo()
+    {
+        this.ventas = new Ventas();
+        mensaje = string.Empty;
+    }
+
+    private void Guardar()
+    {
+        if(ventas.VentasDetalles == null)
+        {
+            mensaje = "La lista esta vacía";
+            return;
+        }
+
+        if(ventascontroller.Guardar(ventas))
+        {
+            mensaje = "Guardado correctamente";
+            this.ventas = new Ventas();
+        }
+        else
+        {
+                mensaje = "No se pudo guardar";
+        }
+    }
+
+    private void Eliminar()
+    {
+        if(ventascontroller.Eliminar(ventas.VentaId))
+        {
+            mensaje = "Eliminado correctamente";
+            this.ventas = new Ventas();
+        } else
+        {
+            mensaje = "No se pudo eliminar";
+        }
+    }
+
+    private void Buscar()
+    {
+        Compras busca = comprascontroller.Buscar(ventas.VentaId);
+        if (busca != null)
+        {
+            this.ventas = busca;
+            mensaje = "Encontrado correctamente";
+        }
+        else
+        {
+            mensaje = "No se pudo encontrar";
+        }
+    }
+
+
+    private void AgregarProducto()
+    {
+
+        this.ventas.VentasDetalles.Add(new VentasDetalle
+        {
+            Id = 0,
+            VentaId = ventas.VentaId,
+            ProductoId = ProductoId,
+            Nombre = nombre,
+            Cantidad = Cantidad,
+            PrecioVenta = PrecioVentas,
+            SubTotal = Cantidad * PrecioVentas
+        });
+    }
+
+    private void CalcularTotalDeVenta()
+    {
+        ventas.Balance = PrecioVentas * Cantidad;
+    }
+
+    private void EliminarDetalle(ComprasDetalle detalle)
+    {
+        try
+        {
+            compras.ComprasDetalles.Remove(detalle);
+        }
+        catch (Exception)
+        {
+
+            //
+        }
+    }
+    }
