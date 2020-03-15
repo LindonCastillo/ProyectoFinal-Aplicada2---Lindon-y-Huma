@@ -3,6 +3,22 @@
 <h3>Consulta de Compras</h3>
 
 <div class="form-row">
+
+    <div class="col">
+        <label for="desde_date" >Desdes</label>
+        <input id="desde_date" class="form-control" type="datetime-local" @bind="desdeFecha" @onclick="Filtrar" />
+    </div>
+
+    <div class="col">
+        <label for="hasta_date">Hasta</label>
+        <input id="hasta_date" class="form-control" type="datetime-local" @bind="hastaFecha" @onclick="Filtrar" />
+        <input type="checkbox" @bind="fechaFiltro" />
+    </div>
+
+    <div class="col">
+        <input type="text" placeholder="Criterio" @onclick="Filtrar" @bind="Criterio" />
+    </div>
+
     <div class="col">
         <select class="form-control" @bind="filtro">
             <option value="0">Todos</option>
@@ -12,14 +28,6 @@
             <option value="4">Balance</option>
         </select>
     </div>
-    <div class="col">
-        <input type="datetime-local" @onclick="Filtrar" />
-        <input type="checkbox" @bind="fechaFiltro"  />
-    </div>
-    <div class="col">
-        <input type="text" placeholder="Criterio" @onclick="Filtrar" @bind="Criterio" />
-    </div>
-
 </div>
 
 
@@ -58,7 +66,7 @@ else
 }
 
 @code {
-        List<Compras> ListaCompras = new List<Compras>();
+    List<Compras> ListaCompras = new List<Compras>();
 
     protected override void OnInitialized()
     {
@@ -68,6 +76,9 @@ else
     private string filtro;
     private string Criterio;
     private bool fechaFiltro;
+
+    DateTime hastaFecha = DateTime.Now;
+    DateTime desdeFecha = DateTime.Now;
 
     public List<Compras> listado { get; set; }
 
@@ -131,6 +142,11 @@ else
         {
             listado = comprascontroller.GetList(p => true);
             ListaCompras = listado;
+        }
+
+        if(fechaFiltro == true) 
+        {
+            ListaCompras = ListaCompras.Where(p => p.FechaCompra >= desdeFecha && p.FechaCompra <= hastaFecha).ToList();
         }
     }
 }
