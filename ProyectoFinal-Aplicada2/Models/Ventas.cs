@@ -17,7 +17,6 @@ namespace ProyectoFinal_Aplicada2.Models
         [Required(ErrorMessage = "El campo fecha no puede estar vacío")]
         public DateTime FechaVenta { get; set; }
         public decimal Total { get; set; }
-        public decimal Balance { get; set; }
 
         [ForeignKey("VentaId")]
         public virtual List<VentasDetalle> VentasDetalles { get; set; }
@@ -27,7 +26,6 @@ namespace ProyectoFinal_Aplicada2.Models
             VentaId = 0;
             FechaVenta = DateTime.Now;
             Total = 0;
-            Balance = 0;
             VentasDetalles = new List<VentasDetalle>();
         }
     }
