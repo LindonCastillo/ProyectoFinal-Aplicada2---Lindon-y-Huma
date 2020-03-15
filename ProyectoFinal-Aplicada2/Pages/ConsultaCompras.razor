@@ -3,7 +3,7 @@
 <h3>Consulta de Compras</h3>
 
 <div class="form-row">
-    <div class="col">       
+    <div class="col">
         <select class="form-control" @bind="filtro">
             <option value="0">Todos</option>
             <option value="1">Id</option>
@@ -12,14 +12,14 @@
             <option value="4">Balance</option>
         </select>
     </div>
-
     <div class="col">
-        <input type="text" placeholder="Criterio" @bind="Criterio" />
+        <input type="datetime-local" @onclick="Filtrar" />
+        <input type="checkbox" @bind="fechaFiltro"  />
+    </div>
+    <div class="col">
+        <input type="text" placeholder="Criterio" @onclick="Filtrar" @bind="Criterio" />
     </div>
 
-    <div class="col">
-        <button type="button" class="btn btn-primary" @onclick="Filtrar">Filtrar</button>
-    </div>
 </div>
 
 
@@ -67,6 +67,7 @@ else
 
     private string filtro;
     private string Criterio;
+    private bool fechaFiltro;
 
     public List<Compras> listado { get; set; }
 
@@ -95,11 +96,11 @@ else
                     break;
                 //ProveedorId
                 case 2:
-                    int id = 0;
-                    if (int.TryParse(Criterio, out id))
+                    int id2 = 0;
+                    if (int.TryParse(Criterio, out id2))
                     {
-                        id = Convert.ToInt32(Criterio);
-                        listado = comprascontroller.GetList(p => true);
+                        id2 = Convert.ToInt32(Criterio);
+                        listado = comprascontroller.GetList(p => p.ProveedorId == id2);
                         ListaCompras = listado;
                     }
                     break;

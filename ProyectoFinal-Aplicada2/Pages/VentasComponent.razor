@@ -117,11 +117,11 @@
 
         <div class="form-group">
             <label for="Balance">Balance</label>
-            <InputNumber @bind-Value="ventas.Balance" disabled class="form-control"></InputNumber>
+            <InputNumber @bind-Value="ventas.Total" disabled class="form-control"></InputNumber>
         </div>
 
         <button type="button" class="btn btn-secondary" @onclick="Nuevo">Nuevo</button>
-        <button type="submit" class="btn btn-success" @onclick="DarBalance">Guardar</button>
+        <button type="submit" class="btn btn-success" @onclick="CalcularTotalDeVenta">Guardar</button>
         <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
     </EditForm>
 </section>
