@@ -57,7 +57,7 @@ namespace ProyectoFinal_Aplicada2.Controllers
             Contexto db = new Contexto();
             try
             {
-                Ventas anterior = Buscar(pagos.PagoId);
+                Pagos anterior = Buscar(pagos.PagoId);
 
                 foreach (var item in pagos.PagosDetalles)
                 {
@@ -67,7 +67,7 @@ namespace ProyectoFinal_Aplicada2.Controllers
                     }
                 }
 
-                foreach (var item in anterior.VentasDetalles)
+                foreach (var item in anterior.PagosDetalles)
                 {
                     if (!pagos.PagosDetalles.Any(A => A.Id == A.Id))
                     {
