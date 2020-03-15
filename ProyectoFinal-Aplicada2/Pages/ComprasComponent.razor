@@ -60,28 +60,30 @@
 
         <div class="row">
             <div class="col">
-                <label for="ProductoId">ProductoId</label>
-                <InputNumber @bind-Value="ProductoId" class="form-control"></InputNumber>
+                <label for="Producto">Producto</label>
+                <InputSelect @bind-Value="ProductoId" @onclick="BuscarProducto" @onchange="BuscarProducto" class="form-control">
+                    <option value="">Elija una opción</option>
+                    @foreach (var item in listaProductos)
+                    {
+                        <option value="@item.ProductoId">@item.Nombre</option>
+                    }
+                </InputSelect>
             </div>
+
             <div class="col">
                 <label for="Cantidad">Cantidad</label>
-                <InputNumber @bind-Value="Cantidad" class="form-control" @onchange="CalcularTotalDeCompra" @onfocusin="CalcularTotalDeCompra" @onfocusout="CalcularTotalDeCompra"></InputNumber>
+                <InputNumber @bind-Value="productos.Cantidad" class="form-control"></InputNumber>
             </div>
 
             <div class="col">
                 <label for="PrecioCompra">Precio de compra</label>
-                <InputNumber @bind-Value="PrecioCompra" class="form-control" @onchange="CalcularTotalDeCompra" @onfocusin="CalcularTotalDeCompra" @onfocusout="CalcularTotalDeCompra"></InputNumber>
+                <InputNumber @bind-Value="productos.PrecioCompra" class="form-control"></InputNumber>
             </div>
-
-            <div class="col">
-                <label for="Nombre">Nombre</label>
-                <InputText @bind-Value="nombre" class="form-control"></InputText>
-            </div>
-
-
+            <br />
+            <br />
         </div>
-        <br />
-        <button class="btn btn-outline-primary" @onclick="AgregarAsignatura">Agregar</button>
+   
+        <button class="btn btn-outline-primary" @onclick="AgregarAsignatura" type="button">Agregar</button>
 
         <br />
 
@@ -109,7 +111,7 @@
                         <td>@item.Cantidad</td>
                         <td>@item.PrecioCompra</td>
                         <td>@item.SubTotal</td>
-                        <td><button class="btn btn-danger" @onclick="EliminarDetalle">Remover</button></td>
+                        <td><button class="btn btn-danger" >Remover</button></td>
                     </tr>
                 }
 
@@ -143,10 +145,10 @@
 @code {
     private string mensaje;
     Compras compras = new Compras();
-    private int ProductoId;
-    private decimal PrecioCompra;
-    private int Cantidad;
-    private string nombre;
+    Productos productos = new Productos();
+    List<Productos> listaProductos = new List<Productos>();
+    private string ProductoId;
+
 
     [Parameter]
     public int Id { get; set; }
@@ -157,6 +159,9 @@
         {
             compras = comprascontroller.Buscar(Id);
         }
+
+        listaProductos = productoscontrollers.GetList(p => true);
+        productos = new Productos();
     }
 
     private void nuevo()
@@ -224,22 +229,31 @@
         this.compras.ComprasDetalles.Add(new ComprasDetalle
         {
             CompraId = compras.CompraId,
-            ProductoId = ProductoId,
-            Nombre = nombre,
-            Cantidad = Cantidad,
-            PrecioCompra = PrecioCompra,
-            SubTotal = Cantidad * PrecioCompra
+            ProductoId = productos.ProductoId,
+            Nombre = productos.Nombre,
+            Cantidad = productos.Cantidad,
+            PrecioCompra = productos.PrecioCompra,
+            SubTotal = productos.Cantidad * productos.PrecioCompra
         });
     }
 
     private void CalcularTotalDeCompra()
     {
         ComprasDetalle detalle = new ComprasDetalle();
-        compras.Balance = PrecioCompra * Cantidad;
+        compras.Balance = productos.PrecioCompra * productos.Cantidad;
     }
 
-    private void EliminarDetalle()
+
+    private void BuscarProducto()
     {
+        try
+        {
+           productos = productoscontrollers.Buscar(Int32.Parse(ProductoId));
+        }catch
+        {
+            //sdfsd
+        }
 
     }
+
 }

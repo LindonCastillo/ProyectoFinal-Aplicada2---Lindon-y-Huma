@@ -76,35 +76,38 @@ else
 
     private void Filtrar()
     {
-        if(Criterio.Trim().Length>0)
+        if (Criterio.Trim().Length > 0)
+        {
             try
             {
-                if(Criterio == "Todos")
+                switch (Criterio)
                 {
-                    listado = comprascontroller.GetList(P => true);
-                }
-                else if(Criterio == "Id")
-                {
-                    listado = comprascontroller.GetList(p => p.CompraId.ToString() == filtro);
-                }
-                else
-                 if(Criterio == "ProveedorId")
-                {
-                    listado = comprascontroller.GetList(p => p.ProveedorId.ToString() == filtro);
-                }
-                else if(Criterio == "Itebis")
-                {
-                    listado = comprascontroller.GetList(p => p.Itbis.ToString() == filtro);
-                } else
-                {
-                    listado = comprascontroller.GetList(p => p.Balance.ToString() == filtro);
+                    case "Todos":
+                        listado = comprascontroller.GetList(p => true);
+                        break;
+                    case "Id":
+                        listado = comprascontroller.GetList(p => p.CompraId.ToString() == filtro);
+                        break;
+                    case "ProveedorId":
+                        listado = comprascontroller.GetList(p => p.ProveedorId.ToString() == filtro);
+                        break;
                 }
 
-            }catch
+            } catch
             {
-                throw;
+
             }
-    }
+        }
+
+
     }
 
+
+
+
+
+
+    }
 }
+
+
