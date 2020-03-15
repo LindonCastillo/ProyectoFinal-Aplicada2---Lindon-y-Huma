@@ -34,7 +34,7 @@
         <div class="row">
             <div class="col-md-8">
                 <div class="form-group">
-                    <label for="Id">CompraId</label>
+                    <label for="Id">VentaId</label>
                     <InputNumber id="id" @bind-Value="ventas.VentaId" class="form-control"></InputNumber>
                     <ValidationMessage For="(()=>ventas.VentaId)"></ValidationMessage>
                 </div>
@@ -67,7 +67,7 @@
             </div>
             <div class="col">
                 <label for="descripcion">Descripcion</label>
-                <InputText id="descripcion" class="form-control" @bind-Value="productos.Nombre" disabled ></InputText>
+                <InputText id="descripcion" class="form-control" @bind-Value="nombre" disabled ></InputText>
             </div>
         </div>
 
@@ -78,7 +78,7 @@
             </div>
             <div class="col">
                 <label for="precio">Precio</label>
-                <InputNumber id="precio" class="form-control" @bind-Value="productos.PrecioVentas" disabled></InputNumber>
+                <InputNumber id="precio" class="form-control" @bind-Value="precioVenta" disabled></InputNumber>
                 <button type="button" class="btn btn-outline-info" @onclick="AgregarProducto">Agregar</button>
             </div>
         </div>
@@ -107,7 +107,7 @@
                         <td>@item.Cantidad</td>
                         <td>@item.PrecioVenta</td>
                         <td>@item.SubTotal</td>
-                        <td><button class="btn btn-outline-danger" @onclick="(() => EliminarDetalle(item))" type="button">Remover</button></td>
+                        <td><button type="button" class="btn btn-outline-danger" @onclick="(() => EliminarDetalle(item))">Remover</button></td>
                     </tr>
                 }
 
@@ -116,8 +116,8 @@
         </table>
 
         <div class="form-group">
-            <label for="Balance">Balance</label>
-            <InputNumber @bind-Value="ventas.Balance" class="form-control"></InputNumber>
+            <label for="balance">Balance</label>
+            <InputNumber id="balance" @bind-Value="ventas.Balance" disabled class="form-control"></InputNumber>
         </div>
 
         <button type="button" class="btn btn-secondary" @onclick="Nuevo">Nuevo</button>
@@ -135,6 +135,10 @@
     private string mensaje { get; set; }
     private string seleccionado { get; set; }
     private int cantidad { get; set; }
+
+    private string nombre = string.Empty;
+    private decimal precioVenta = 0;
+
     public Productos productos { get; set; }
 
     Ventas ventas = new Ventas();
@@ -148,6 +152,7 @@
             ventas = ventascontroller.Buscar(Id);
         }
         MiLista = productoscontrollers.GetList(A => true);
+        
     }
 
     private void CargarProducto()
@@ -155,6 +160,8 @@
         try
         {
             productos = productoscontrollers.Buscar(Int32.Parse(seleccionado));
+            nombre = productos.Nombre;
+            precioVenta = productos.PrecioVentas;
         }
         catch (Exception)
         {
