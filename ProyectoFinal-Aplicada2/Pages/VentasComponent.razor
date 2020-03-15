@@ -124,7 +124,7 @@
     public int Id { get; set; }
     private string mensaje { get; set; }
     private string seleccionado { get; set; }
-    
+
     Ventas ventas = new Ventas();
     private Productos productos;
     List<Productos> MiLista = new List<Productos>();
@@ -143,7 +143,7 @@
     {
         try
         {
-             productos = productoscontrollers.Buscar(Int32.Parse(seleccionado));
+            productos = productoscontrollers.Buscar(Int32.Parse(seleccionado));
         }
         catch (Exception)
         {
@@ -173,7 +173,7 @@
         }
         else
         {
-                mensaje = "No se pudo guardar";
+            mensaje = "No se pudo guardar";
         }
     }
 
@@ -211,17 +211,17 @@
         {
             Id = 0,
             VentaId = ventas.VentaId,
-            ProductoId = ProductoId,
-            Nombre = 
-            Cantidad = 
-            PrecioVenta = 
-            SubTotal =  
+            ProductoId = productos.ProductoId,
+            Nombre = productos.Nombre,
+            Cantidad = productos.Cantidad,
+            PrecioVenta = productos.PrecioCompra,
+            SubTotal = productos.PrecioCompra * productos.Cantidad
         });
     }
 
     private void CalcularTotalDeVenta()
     {
-        ventas.Balance =  * ;
+        
     }
 
     private void EliminarDetalle(VentasDetalle detalle)

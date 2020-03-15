@@ -78,13 +78,10 @@
                 <label for="PrecioCompra">Precio de compra</label>
                 <InputNumber @bind-Value="productos.PrecioCompra" class="form-control"></InputNumber>
             </div>
-            <br />
-            <br />
+            
         </div>
    
-        <button class="btn btn-outline-primary" @onclick="AgregarAsignatura" type="button">Agregar</button>
 
-        <br />
         <button class="btn btn-outline-primary" @onclick="AgregarProducto">Agregar</button>
 
         <table class="table">
@@ -183,14 +180,14 @@
         if(proveedorescontrollers.Buscar(compras.ProveedorId)==null)
         {
             mensaje = "No existe el proveedor";
-        } 
+        }
         else
         {
             if(comprascontroller.Guardar(compras))
             {
                 mensaje = "Guardado correctamente";
                 this.compras = new Compras();
-            } 
+            }
             else
             {
                 mensaje = "No se pudo guardar";
@@ -204,7 +201,7 @@
         {
             mensaje = "Eliminado correctamente";
             this.compras = new Compras();
-        } 
+        }
         else
         {
             mensaje = "No se pudo eliminar";
@@ -243,7 +240,7 @@
 
     private void CalcularTotalDeCompra()
     {
-        compras.Balance = PrecioCompra * Cantidad;
+        compras.Balance = productos.PrecioCompra * productos.Cantidad;
     }
 
     private void EliminarDetalle(ComprasDetalle detalle)
@@ -255,18 +252,21 @@
         catch (Exception)
         {
 
+        }
+    }
+
     private void BuscarProducto()
     {
         try
         {
-           productos = productoscontrollers.Buscar(Int32.Parse(ProductoId));
+            productos = productoscontrollers.Buscar(Int32.Parse(ProductoId));
         }catch
         {
             //sdfsd
         }
 
-            //
-        }
+        //
     }
-
 }
+
+
