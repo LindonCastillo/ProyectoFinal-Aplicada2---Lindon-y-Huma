@@ -1,0 +1,207 @@
+﻿@page "/ProductosComponent/{Id:int}"
+
+@using ProyectoFinal_Aplicada2.Controllers;
+@using ProyectoFinal_Aplicada2.Models;
+@using ProyectoFinal_Aplicada2.Data;
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    .form-register {
+        width: 500px;
+        background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
+        padding: 30px;
+        margin: auto;
+        margin-top: 100px;
+        border-radius: 4px;
+        font-family: 'calibri';
+        color: white;
+        box-shadow: 7px 13px 37px #000;
+    }
+
+    .h3 {
+        color: white;
+    }
+</style>
+
+<section class="form-register">
+    <EditForm Model="@productos" OnValidSubmit="Guardar">
+        <label class="text-muted form-text">@Mensaje</label>
+        <div class="form-group">
+            <label for="id_number">UsuarioId</label>
+            <InputNumber id="id_number" class="form-control" @bind-Value="productos.ProductoId"></InputNumber>
+            <ValidationMessage For="(() => productos.ProductoId)" />
+            <button type="button" class="btn btn-primary" @onclick="Buscar">Buscar</button>
+        </div>
+
+        <div class="form-group">
+            <label for="FechaEntrada_date"></label>
+            <InputDate id="FechaEntrada_date" class="form-control" @bind-Value="productos.FechaEntrada"></InputDate>
+            <ValidationMessage For="(() => productos.FechaEntrada)" />
+        </div>
+
+        <div class="form-group">
+            <label for="Nombre_text"></label>
+            <InputText id="Nombre_text" class="form-control" @bind-Value="productos.Nombre"></InputText>
+            <ValidationMessage For="(() => productos.Nombre)" />
+        </div>
+
+        <div class="form-group">
+            <label for="Cantidad_number"></label>
+            <InputNumber id="Cantidad_number" class="form-control" @bind-Value="productos.Cantidad"></InputNumber>
+            <ValidationMessage For="(() => productos.Cantidad)" />
+        </div>
+
+        <div class="form-group">
+            <label for="PrecioCompra_number"></label>
+            <InputNumber id="PrecioCompra_number" class="form-control" @onfocusin="CalcularPrecio" @onfocusout="CalcularPrecio" @bind-Value="productos.PrecioCompra"></InputNumber>
+            <ValidationMessage For="(() => productos.PrecioCompra)" />
+        </div>
+
+        <div class="form-group">
+            <label for="PorcentajeGanancias_number"></label>
+            <InputNumber id="PorcentajeGanancias_number" class="form-control" @onfocusin="CalcularPrecio" @onfocusout="CalcularPrecio" @bind-Value="productos.PorcentajeGanancias"></InputNumber>
+            <ValidationMessage For="(() => productos.PorcentajeGanancias)" />
+        </div>
+
+        <div class="form-group">
+            <label for="PrecioVentas_number"></label>
+            <InputNumber id="PrecioVentas_number" ReadOnly="true" class="form-control" @bind-Value="productos.PrecioVentas"></InputNumber>
+            <ValidationMessage For="(() => productos.PrecioVentas)" />
+        </div>
+
+        <div>
+            <button type="button" class="btn btn-danger" @onclick="Limpiar">Nuevo</button>
+            <button type="submit" class="btn btn-success">Guardar</button>
+            <button type="button" class="btn btn-secondary" @onclick="Eliminar">Eliminar</button>
+        </div>
+    </EditForm>
+</section>
+<h3>Productos Component</h3>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+    public string Mensaje { get; set; }
+    public string Seleccion { get; set; }
+
+    Productos productos =new Productos();
+
+    protected override void OnInitialized()
+    {
+        ProductosControllers controller = new ProductosControllers();
+        Limpiar();
+        Mensaje = string.Empty;
+        if (Id != 0)
+        {
+            productos = controller.Buscar(Id);
+        }
+    }
+
+    public void CalcularPrecio()
+    {
+        decimal calculo = productos.PrecioCompra*(productos.PorcentajeGanancias/100);
+        productos.PrecioVentas = productos.PrecioCompra + calculo;
+    } 
+
+    public bool ExisteEnLaBaseDeDatos(int id)
+    {
+        Contexto db = new Contexto();
+        var buscado = db.Productos.Find(id);
+        bool paso = true;
+
+        if (buscado == null)
+        {
+            paso = false;
+        }
+
+        return paso;
+    }
+
+    private void Limpiar()
+    {
+        productos = new Productos();
+
+    }
+
+    private void Guardar()
+    {
+        ProductosControllers controller = new ProductosControllers();
+
+        if(productos.ProductoId > 0)
+        {
+            if (ExisteEnLaBaseDeDatos(productos.ProductoId))
+            {
+                if (controller.Guardar(productos))
+                {
+                    Mensaje = "Se modifico correctamente";
+                    Limpiar();
+                }
+                else
+                {
+                    Mensaje = "No se pudo modificar";
+                }
+
+            }
+            else
+            {
+                Mensaje = "No se puede modificar un producto que no exista";
+            }
+        }
+        else
+        {
+            if (controller.Guardar(productos))
+            {
+                Mensaje = "Se guardo correctamente";
+                Limpiar();
+            }
+            else
+            {
+                Mensaje = "No se pudo Guardar";
+            }
+        }
+    }
+
+    private void Eliminar()
+    {
+        ProductosControllers controller = new ProductosControllers();
+        int id = productos.ProductoId;
+        if (id > 0)
+        {
+            if (ExisteEnLaBaseDeDatos(id))
+            {
+                controller.Eliminar(id);
+                Limpiar();
+                Mensaje = "Se elimino Correctamente";
+            }
+            else
+            {
+                Mensaje = "No se puede eliminar un Producto que no Exista";
+            }
+        }
+        else
+        {
+            Mensaje = "No se puede eliminar asi";
+        }
+    }
+
+    private void Buscar()
+    {
+        ProductosControllers controller = new ProductosControllers();
+        var buscado = controller.Buscar(productos.ProductoId);
+
+        if (buscado != null)
+        {
+            productos = buscado;
+            Mensaje = "Se encontro el Producto";
+        }
+        else
+        {
+            Mensaje = "No existe este Producto";
+        }
+    }
+
+}

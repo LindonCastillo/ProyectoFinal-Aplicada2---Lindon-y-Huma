@@ -93,7 +93,6 @@
     [Parameter]
     public int Id { get; set; }
     public string Mensaje { get; set; }
-    public string Seleccion { get; set; }
 
     Usuarios usuarios = new Usuarios();
 
@@ -197,7 +196,7 @@
             }
             else
             {
-                Mensaje = "No se puede eliminar un Caso que no Exista";
+                Mensaje = "No se puede eliminar un Usuario que no Exista";
             }
         }
         else
