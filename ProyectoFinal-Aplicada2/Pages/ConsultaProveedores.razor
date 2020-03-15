@@ -1,4 +1,4 @@
-﻿@page "/consultaproveedor"
+﻿@page "/ConsultaProveedor"
 
 <h3>Consulta de Proveedores</h3>
 @if(proveedores == null)
@@ -16,7 +16,7 @@
                 <th>RNC</th>
                 <th>TipoNegocio</th>
                 <th>Tipo moneda</th>
-                <th>Ir a</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -30,7 +30,7 @@
                     <td>@item.RNC</td>
                     <td>@item.TipoNegocio</td>
                     <td>@item.TipoMoneda</td>
-                    <td><a class="btn btn-primary" href="proveedores/@item.ProveedoresId">Ver</a></td>
+                    <td><a class="btn btn-outline-info" href="proveedores/@item.ProveedoresId">Ver</a></td>
                 </tr>
             }
         </tbody>
