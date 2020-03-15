@@ -2,6 +2,24 @@
 
 <h3>Consulta de Productos</h3>
 
+
+<div class="form-inline">
+    <label for="Filtro">Filtro</label>
+    <select @bind="Filtro">
+        <option value="">Filtro</option>
+        <option value="Todos">Todos</option>
+        <option value="Id">Id</option>
+        <option value="Nombre">Nombre</option>
+        <option value="Cantidad">Cantidad</option>
+        <option value="PrecioCompra">Precio Compra</option>
+        <option value="PorCentajeGanancia">Porcentaje negocio</option>
+    </select>
+
+
+</div>
+
+
+
 @if(productos == null)
 {
     <p>No hay datos que mostrar</p>
@@ -50,4 +68,11 @@
     {
         productos = productoscontrollers.GetList(P => true);
     }
+
+    private string Filtro;
+    private string Criterio;
+
+
+
+
 }

@@ -1,7 +1,6 @@
 ﻿@page "/Ventas"
 @page "/Ventas/{Id:int}"
 
-@using ProyectoFinal_Aplicada2.Models;
 
 <style>
     * {
@@ -29,7 +28,7 @@
 
 <section class="form-register">
     <h3>Ventas</h3>
-    <h3>@mensaje</h3>
+    <h3 class="form-text text-muted">@mensaje</h3>
     <EditForm Model="@ventas" OnValidSubmit="Guardar">
         <DataAnnotationsValidator />
         <div class="row">
@@ -54,7 +53,7 @@
             <ValidationMessage For="(()=>ventas.FechaVenta)"></ValidationMessage>
         </div>
 
-        @*<button class="btn btn-outline-primary" @onclick="AgregarProducto">Agregar</button>*@
+        <button class="btn btn-outline-primary" @onclick="AgregarProducto">Agregar</button>
 
         <div class="row">
             <div class="col">
@@ -118,7 +117,7 @@
 
         <div class="form-group">
             <label for="Balance">Balance</label>
-            <InputNumber @bind-Value="ventas.Balance" disabled class="form-control"></InputNumber>
+            <InputNumber @bind-Value="ventas.Balance" class="form-control"></InputNumber>
         </div>
 
         <button type="button" class="btn btn-secondary" @onclick="Nuevo">Nuevo</button>
@@ -136,7 +135,7 @@
     private string mensaje { get; set; }
     private string seleccionado { get; set; }
     private int cantidad { get; set; }
-    private Productos productos { get; set; }
+    public Productos productos { get; set; }
 
     Ventas ventas = new Ventas();
     List<Productos> MiLista = new List<Productos>();
@@ -144,7 +143,7 @@
 
     protected override void OnInitialized()
     {
-        if(Id>0)
+        if (Id > 0)
         {
             ventas = ventascontroller.Buscar(Id);
         }
