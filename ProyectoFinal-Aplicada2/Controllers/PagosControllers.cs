@@ -1,28 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.EntityFrameworkCore;
 using ProyectoFinal_Aplicada2.Data;
 using ProyectoFinal_Aplicada2.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
-using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace ProyectoFinal_Aplicada2.Controllers
 {
-    public class ProductosControllers
+    public class PagosControllers
     {
-        public bool Guardar(Productos productos)
+        public bool Guardar(Pagos pagos)
         {
             bool paso = false;
             Contexto db = new Contexto();
             try
             {
-                if(db.Productos.Any(A=>A.ProductoId == productos.ProductoId))
+                if (db.Pagos.Any(A => A.PagoId == pagos.PagoId))
                 {
-                   paso =  Modificar(productos);
-                } else
+                    paso = Modificar(pagos);
+                }
+                else
                 {
-                   paso = Insertar(productos);
+                    paso = Insertar(pagos);
                 }
             }
             catch (Exception)
@@ -33,15 +34,13 @@ namespace ProyectoFinal_Aplicada2.Controllers
             return paso;
         }
 
-
-        private bool Insertar(Productos productos)
+        private bool Insertar(Pagos pagos)
         {
-            Contexto db = new Contexto();
             bool paso = false;
-
+            Contexto db = new Contexto();
             try
             {
-                db.Productos.Add(productos);
+                db.Pagos.Add(pagos);
                 paso = db.SaveChanges() > 0;
             }
             catch (Exception)
@@ -49,17 +48,34 @@ namespace ProyectoFinal_Aplicada2.Controllers
 
                 throw;
             }
-
             return paso;
         }
 
-        private bool Modificar(Productos productos)
+        private bool Modificar(Pagos pagos)
         {
             bool paso = false;
             Contexto db = new Contexto();
             try
             {
-                db.Entry(productos).State = EntityState.Modified;
+                Ventas anterior = Buscar(pagos.PagoId);
+
+                foreach (var item in pagos.PagosDetalles)
+                {
+                    if (item.Id == 0)
+                    {
+                        db.Entry(item).State = EntityState.Added;
+                    }
+                }
+
+                foreach (var item in anterior.VentasDetalles)
+                {
+                    if (!pagos.PagosDetalles.Any(A => A.Id == A.Id))
+                    {
+                        db.Entry(item).State = EntityState.Deleted;
+                    }
+                }
+
+                db.Entry(pagos).State = EntityState.Modified;
                 paso = db.SaveChanges() > 0;
             }
             catch (Exception)
@@ -77,10 +93,10 @@ namespace ProyectoFinal_Aplicada2.Controllers
 
             try
             {
-                Productos productos = db.Productos.Find(id);
-                if(productos!=null)
+                Pagos pagos = db.Pagos.Find(id);
+                if (pagos != null)
                 {
-                    db.Entry(productos).State = EntityState.Deleted;
+                    db.Entry(pagos).State = EntityState.Deleted;
                     paso = db.SaveChanges() > 0;
                 }
             }
@@ -92,30 +108,29 @@ namespace ProyectoFinal_Aplicada2.Controllers
             return paso;
         }
 
-        public Productos Buscar(int id)
+        public Pagos Buscar(int id)
         {
-            Productos productos = new Productos();
+            Pagos pagos;
             Contexto db = new Contexto();
             try
             {
-                productos = db.Productos.Find(id);
+                pagos = db.Pagos.Where(C => C.PagoId == id).Include(D => D.PagosDetalles).FirstOrDefault();
             }
             catch (Exception)
             {
 
                 throw;
             }
-            return productos;
+            return pagos;
         }
 
-        public List<Productos> GetList(Expression<Func<Productos,bool>> expression)
+        public List<Pagos> GetList(Expression<Func<Pagos, bool>> expression)
         {
+            List<Pagos> lista = new List<Pagos>();
             Contexto db = new Contexto();
-            List<Productos> lista = new List<Productos>();
-
             try
             {
-                lista = db.Productos.Where(expression).ToList();
+                lista = db.Pagos.Where(expression).ToList();
             }
             catch (Exception)
             {
@@ -124,6 +139,5 @@ namespace ProyectoFinal_Aplicada2.Controllers
             }
             return lista;
         }
-
     }
 }

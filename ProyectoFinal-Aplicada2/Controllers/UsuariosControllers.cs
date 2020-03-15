@@ -1,28 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.EntityFrameworkCore;
 using ProyectoFinal_Aplicada2.Data;
 using ProyectoFinal_Aplicada2.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
-using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace ProyectoFinal_Aplicada2.Controllers
 {
-    public class ProductosControllers
+    public class UsuariosControllers
     {
-        public bool Guardar(Productos productos)
+        public bool Guardar(Usuarios usuarios)
         {
             bool paso = false;
             Contexto db = new Contexto();
             try
             {
-                if(db.Productos.Any(A=>A.ProductoId == productos.ProductoId))
+                if (db.Usuarios.Any(A => A.UsuarioId == usuarios.UsuarioId))
                 {
-                   paso =  Modificar(productos);
-                } else
+                    paso = Modificar(usuarios);
+                }
+                else
                 {
-                   paso = Insertar(productos);
+                    paso = Insertar(usuarios);
                 }
             }
             catch (Exception)
@@ -34,14 +35,14 @@ namespace ProyectoFinal_Aplicada2.Controllers
         }
 
 
-        private bool Insertar(Productos productos)
+        private bool Insertar(Usuarios usuarios)
         {
             Contexto db = new Contexto();
             bool paso = false;
 
             try
             {
-                db.Productos.Add(productos);
+                db.Usuarios.Add(usuarios);
                 paso = db.SaveChanges() > 0;
             }
             catch (Exception)
@@ -53,13 +54,13 @@ namespace ProyectoFinal_Aplicada2.Controllers
             return paso;
         }
 
-        private bool Modificar(Productos productos)
+        private bool Modificar(Usuarios usuarios)
         {
             bool paso = false;
             Contexto db = new Contexto();
             try
             {
-                db.Entry(productos).State = EntityState.Modified;
+                db.Entry(usuarios).State = EntityState.Modified;
                 paso = db.SaveChanges() > 0;
             }
             catch (Exception)
@@ -77,10 +78,10 @@ namespace ProyectoFinal_Aplicada2.Controllers
 
             try
             {
-                Productos productos = db.Productos.Find(id);
-                if(productos!=null)
+                Usuarios usuarios = db.Usuarios.Find(id);
+                if (usuarios != null)
                 {
-                    db.Entry(productos).State = EntityState.Deleted;
+                    db.Entry(usuarios).State = EntityState.Deleted;
                     paso = db.SaveChanges() > 0;
                 }
             }
@@ -92,30 +93,30 @@ namespace ProyectoFinal_Aplicada2.Controllers
             return paso;
         }
 
-        public Productos Buscar(int id)
+        public Usuarios Buscar(int id)
         {
-            Productos productos = new Productos();
+            Usuarios usuarios;
             Contexto db = new Contexto();
             try
             {
-                productos = db.Productos.Find(id);
+                usuarios = db.Usuarios.Find(id);
             }
             catch (Exception)
             {
 
                 throw;
             }
-            return productos;
+            return usuarios;
         }
 
-        public List<Productos> GetList(Expression<Func<Productos,bool>> expression)
+        public List<Usuarios> GetList(Expression<Func<Usuarios, bool>> expression)
         {
             Contexto db = new Contexto();
-            List<Productos> lista = new List<Productos>();
+            List<Usuarios> lista = new List<Usuarios>();
 
             try
             {
-                lista = db.Productos.Where(expression).ToList();
+                lista = db.Usuarios.Where(expression).ToList();
             }
             catch (Exception)
             {
@@ -126,4 +127,5 @@ namespace ProyectoFinal_Aplicada2.Controllers
         }
 
     }
+
 }
