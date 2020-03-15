@@ -6,14 +6,15 @@
 <h3>Consulta de Usuario</h3>
 @if (lista == null)
 {
-    <a>No hay elementos agregados....</a>
+    <p>No hay datos que mostrar</p>
+    return;
 }
 else
 {
     <table class="table">
         <thead>
             <tr>
-                <th>UsuarioId</th>
+                <th>Id</th>
                 <th>Nombre</th>
                 <th>Email</th>
                 <th>Nivel de Usuario</th>

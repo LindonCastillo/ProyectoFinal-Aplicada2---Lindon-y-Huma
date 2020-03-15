@@ -2,13 +2,6 @@
 
 <h3>Consulta de Compras</h3>
 
-<div class="form-row">
-    <div class="col">
-        <InputText @bind-Value=""></InputText>
-    </div>
-</div>
-
-
 @if (Compras == null)
 {
     <p>No hay datos que mostrar</p>
@@ -24,7 +17,7 @@ else
                 <th>ProveedorId</th>
                 <th>Itebis</th>
                 <th>Balance</th>
-                <th>Ir a</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>

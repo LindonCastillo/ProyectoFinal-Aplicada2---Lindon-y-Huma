@@ -6,42 +6,43 @@
 <h3>Consulta de Producto</h3>
 @if (lista == null)
 {
-    <a>No hay elementos agregados....</a>
+    <p>No hay datos que mostrar</p>
+    return;
 }
 else
 {
-    <table class="table">
-        <thead>
-            <tr>
-                <th>ProductoId</th>
-                <th>Fecha de Entrada</th>
-                <th>Nombre</th>
-                <th>Precio de Compra</th>
-                <th>Porcentaje de Ganancias</th>
-                <th>Precio de Ventas</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in lista)
-            {
-            <tr>
-                <td>@item.ProductoId</td>
-                <td>@item.FechaEntrada</td>
-                <td>@item.Nombre</td>
-                <td>@item.PrecioCompra</td>
-                <td>@item.PorcentajeGanancias</td>
-                <td>@item.PrecioVentas</td>
-                <td><a class="btn btn-outline-info" href="ProductosComponent/@item.ProductoId">Ver</a></td>
-            </tr>
-            }
-        </tbody>
-    </table>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Fecha de Entrada</th>
+                    <th>Nombre</th>
+                    <th>Precio de Compra</th>
+                    <th>Porcentaje de Ganancias</th>
+                    <th>Precio de Ventas</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in lista)
+                {
+                    <tr>
+                        <td>@item.ProductoId</td>
+                        <td>@item.FechaEntrada</td>
+                        <td>@item.Nombre</td>
+                        <td>@item.PrecioCompra</td>
+                        <td>@item.PorcentajeGanancias</td>
+                        <td>@item.PrecioVentas</td>
+                        <td><a class="btn btn-outline-info" href="ProductosComponent/@item.ProductoId">Ver</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
 }
 
-@code {
-    ProductosControllers controller = new ProductosControllers();
-    List<Productos> lista = new List<Productos>();
+    @code {
+        ProductosControllers controller = new ProductosControllers();
+        List<Productos> lista = new List<Productos>();
 
     protected override void OnInitialized()
     {
@@ -49,4 +50,4 @@ else
     }
 
 
-}
+    }
