@@ -66,13 +66,25 @@
                         <option value="@item.ProductoId">@item.Nombre</option>
                     }
                 </InputSelect>
-                <button type="button" class="btn btn-outline-info" @onclick="AgregarProducto">Agregar</button>
             </div>
             <div class="col">
-                <label for="creditos">Descripcion</label>
-                <InputNumber id="creditos" class="form-control" @bind-Value="productos.Nombre" ReadOnly="true"></InputNumber>
+                <label for="descripcion">Descripcion</label>
+                <InputText id="descripcion" class="form-control" @bind-Value="productos.Nombre" disabled ></InputText>
             </div>
         </div>
+
+        <div class="row">
+            <div class="col">
+                <label for="cantidad">Cantidad</label>
+                <InputNumber id="cantidad" class="form-control" @bind-Value="cantidad"></InputNumber>
+            </div>
+            <div class="col">
+                <label for="precio">Precio</label>
+                <InputNumber id="precio" class="form-control" @bind-Value="productos.PrecioVentas" disabled></InputNumber>
+                <button type="button" class="btn btn-outline-info" @onclick="AgregarProducto">Agregar</button>
+            </div>
+        </div>
+
         <table class="table">
             <thead class="thead-dark">
                 <tr>
@@ -111,7 +123,7 @@
         </div>
 
         <button type="button" class="btn btn-secondary" @onclick="Nuevo">Nuevo</button>
-        <button type="submit" class="btn btn-success" @onclick="CalcularTotalDeVenta">Guardar</button>
+        <button type="submit" class="btn btn-success" @onclick="DarBalance">Guardar</button>
         <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
     </EditForm>
 </section>
@@ -124,6 +136,9 @@
     public int Id { get; set; }
     private string mensaje { get; set; }
     private string seleccionado { get; set; }
+
+
+    private int cantidad;
 
     Ventas ventas = new Ventas();
     private Productos productos;
@@ -206,22 +221,41 @@
 
     private void AgregarProducto()
     {
-
-        this.ventas.VentasDetalles.Add(new VentasDetalle
+        if(ventas.VentasDetalles.Any(A => A.ProductoId == productos.ProductoId))
         {
-            Id = 0,
-            VentaId = ventas.VentaId,
-            ProductoId = productos.ProductoId,
-            Nombre = productos.Nombre,
-            Cantidad = productos.Cantidad,
-            PrecioVenta = productos.PrecioCompra,
-            SubTotal = productos.PrecioCompra * productos.Cantidad
-        });
+            mensaje = "Este producto ya esta registrado";
+        }
+        else
+        {
+            this.ventas.VentasDetalles.Add(new VentasDetalle
+            {
+                Id = 0,
+                VentaId = ventas.VentaId,
+                ProductoId = productos.ProductoId,
+                Nombre = productos.Nombre,
+                Cantidad = cantidad,
+                PrecioVenta = productos.PrecioVentas,
+                SubTotal = productos.PrecioVentas * cantidad
+            });
+            CalcularTotalDeVenta();
+        }
+
+
     }
 
     private void CalcularTotalDeVenta()
     {
-        
+        decimal total = 0;
+        foreach (var item in ventas.VentasDetalles)
+        {
+            total += item.SubTotal;
+        }
+        ventas.Total = total;
+    }
+
+    private void DarBalance()
+    {
+        ventas.Balance = ventas.Total;
     }
 
     private void EliminarDetalle(VentasDetalle detalle)
