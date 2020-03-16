@@ -4,7 +4,35 @@
 @using ProyectoFinal_Aplicada2.Models;
 
 <h3>Consulta de Ventas</h3>
-@if (lista == null)
+
+<div class="form-row">
+
+    <div class="col">
+        <label for="desde_date">Desde:</label>
+        <input id="desde_date" class="form-control" type="datetime-local" @bind="desdeFecha" />
+    </div>
+
+    <div class="col">
+        <label for="hasta_date">Hasta:</label>
+        <input id="hasta_date" class="form-control" type="datetime-local" @bind="hastaFecha" />
+        <button class="btn btn-primary" @onclick="filtradoPorFecha">Filtar por Fecha</button>
+    </div>
+
+    <div class="col">
+        <input type="text" class="form-control" placeholder="Criterio" @onfocusin="Filtrar" @onfocusout="Filtrar" @onclick="Filtrar" @bind="Criterio" />
+    </div>
+
+    <div class="col">
+        <select class="form-control" @onclick="Filtrar" @bind="filtro">
+            <option value="0">Todos</option>
+            <option value="1">Id</option>
+            <option value="2">Total</option>
+        </select>
+    </div>
+</div>
+
+
+@if (Lista == null)
 {
     <p>No hay datos que mostrar</p>
     return;
@@ -21,7 +49,7 @@ else
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in lista)
+            @foreach (var item in Lista)
             {
                 <tr>
                     <td>@item.VentaId</td>
@@ -36,13 +64,89 @@ else
 }
 
 @code {
-    VentasControllers controller = new VentasControllers();
-    List<Ventas> lista = new List<Ventas>();
+
+    List<Ventas> Lista = new List<Ventas>();
 
     protected override void OnInitialized()
     {
-        lista = controller.GetList(A => true);
+        Lista = ventascontroller.GetList(A => true);
     }
 
 
+    private string filtro;
+    private string Criterio;
+    private bool fechaFiltro;
+
+    DateTime hastaFecha = DateTime.Now;
+    DateTime desdeFecha = DateTime.Now;
+
+    
+    public List<Ventas> listado { get; set; }
+
+
+    private void filtradoPorFecha()
+    {
+        try
+        {
+            Lista = Lista.Where(p => p.FechaVenta >= desdeFecha && p.FechaVenta <= hastaFecha).ToList();
+        }
+        catch (Exception)
+        {
+
+            //wey klok
+        }
+        
+    }
+
+    private void Filtrar()
+    {
+
+        try
+        {
+            int filtroIndex = Int32.Parse(filtro);
+
+            if (Criterio.Trim().Length > 0)
+            {
+                switch (filtroIndex)
+                {
+                    //Todos
+                    case 0:
+                        listado = ventascontroller.GetList(p => true);
+                        Lista = listado;
+                        break;
+
+                    //Id
+                    case 1:
+                        int id = 0;
+                        if (int.TryParse(Criterio, out id))
+                        {
+                            id = Convert.ToInt32(Criterio);
+                            listado = ventascontroller.GetList(p => p.VentaId == id);
+                            Lista = listado;
+                        }
+                        break;
+                    //Total
+                    case 2:
+                        decimal total = 0;
+                        if (decimal.TryParse(Criterio, out total))
+                        {
+                            total = Convert.ToInt32(Criterio);
+                            listado = ventascontroller.GetList(p => p.Total == total);
+                            Lista = listado;
+                        }
+                        break;
+                }
+            }
+            else
+            {
+                listado = ventascontroller.GetList(p => true);
+                Lista = listado;
+            }
+
+        }
+        catch (Exception)
+        {
+            //papichulo
+        }
+    }
 }

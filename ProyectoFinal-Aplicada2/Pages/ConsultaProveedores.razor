@@ -1,7 +1,26 @@
 ﻿@page "/ConsultaProveedores"
 
+    <div class="form-row">
+        <div class="col">
+            <input type="text" class="form-control" placeholder="Criterio" @onfocusin="Filtrar" @onfocusout="Filtrar" @onclick="Filtrar" @bind="Criterio" />
+        </div>
+
+        <div class="col">
+            <select class="form-control" @onclick="Filtrar" @bind="filtro">
+                <option value="0">Todos</option>
+                <option value="1">Id</option>
+                <option value="2">Nombre Proveedor</option>
+                <option value="3">Telefono</option>
+                <option value="4">Direcciones</option>
+                <option value="5">RNC</option>
+                <option value="6">TipoNegocio</option>
+                <option value="7">TipoMoneda</option>
+            </select>
+        </div>
+    </div>
+
 <h3>Consulta de Proveedores</h3>
-@if(proveedores == null)
+@if(Lista == null)
 {
     <p>No hay datos</p>
 } else
@@ -20,7 +39,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in proveedores)
+            @foreach (var item in Lista)
             {
                 <tr>
                     <td>@item.ProveedoresId</td>
@@ -42,10 +61,87 @@
 
 
 @code {
-    List<Proveedores> proveedores;
+    List<Proveedores> Lista = new List<Proveedores>();
 
     protected override void OnInitialized()
     {
-        proveedores = proveedorescontrollers.GetList(P => true);
+        Lista = proveedorescontrollers.GetList(P => true);
+    }
+
+
+    private string filtro;
+    private string Criterio;
+    private bool fechaFiltro;
+
+    DateTime hastaFecha = DateTime.Now;
+    DateTime desdeFecha = DateTime.Now;
+
+    
+    public List<Proveedores> listado { get; set; }
+
+    private void Filtrar()
+    {
+
+        try
+        {
+            int filtroIndex = Int32.Parse(filtro);
+
+            if (Criterio.Trim().Length > 0)
+            {
+                switch (filtroIndex)
+                {
+                    //Todos
+                    case 0:
+                        listado = proveedorescontrollers.GetList(p => true);
+                        Lista = listado;
+                        break;
+
+                    //Id
+                    case 1:
+                        int id = 0;
+                        if (int.TryParse(Criterio, out id))
+                        {
+                            id = Convert.ToInt32(Criterio);
+                            listado = proveedorescontrollers.GetList(p => p.ProveedoresId == id);
+                            Lista = listado;
+                        }
+                        break;
+                    //Nombre
+                    case 2:
+                            listado = proveedorescontrollers.GetList(p => p.NombreProveedor.Contains(Criterio));
+                        break;   
+                    //Telefono   
+                    case 3:
+                            listado = proveedorescontrollers.GetList(p => p.Telefono.Contains(Criterio));
+                        break;   
+                    //Direccion    
+                    case 4:
+                            listado = proveedorescontrollers.GetList(p => p.Direcciones.Contains(Criterio));
+                        break;     
+                    //RNC    
+                    case 5:
+                            listado = proveedorescontrollers.GetList(p => p.RNC.Contains(Criterio));
+                        break; 
+                    //TipoNegocio
+                    case 6:
+                            listado = proveedorescontrollers.GetList(p => p.TipoNegocio.Contains(Criterio));
+                        break;
+                    //TipoMoneda
+                    case 7:
+                            listado = proveedorescontrollers.GetList(p => p.TipoMoneda.Contains(Criterio));
+                        break;
+                }
+            }
+            else
+            {
+                listado = proveedorescontrollers.GetList(p => true);
+                Lista = listado;
+            }
+
+        }
+        catch (Exception)
+        {
+            //papichulo
+        }
     }
 }

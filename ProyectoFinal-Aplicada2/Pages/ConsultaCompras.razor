@@ -31,7 +31,7 @@
 </div>
 
 
-@if (ListaCompras == null)
+@if (Lista == null)
 {
     <p>No hay datos que mostrar</p>
     return;
@@ -50,7 +50,7 @@ else
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in ListaCompras)
+            @foreach (var item in Lista)
             {
                 <tr>
                     <td>@item.CompraId</td>
@@ -66,11 +66,11 @@ else
 }
 
 @code {
-    List<Compras> ListaCompras = new List<Compras>();
+    List<Compras> Lista = new List<Compras>();
 
     protected override void OnInitialized()
     {
-        ListaCompras = comprascontroller.GetList(p => true);
+        Lista = comprascontroller.GetList(p => true);
     }
 
     private string filtro;
@@ -86,7 +86,7 @@ else
     {
         try
         {
-            ListaCompras = ListaCompras.Where(p => p.FechaCompra >= desdeFecha && p.FechaCompra <= hastaFecha).ToList();
+            Lista = Lista.Where(p => p.FechaCompra >= desdeFecha && p.FechaCompra <= hastaFecha).ToList();
         }
         catch (Exception)
         {
@@ -110,7 +110,7 @@ else
                     //Todos
                     case 0:
                         listado = comprascontroller.GetList(p => true);
-                        ListaCompras = listado;
+                        Lista = listado;
                         break;
                     //Int
                     case 1:
@@ -119,7 +119,7 @@ else
                         {
                             id = Convert.ToInt32(Criterio);
                             listado = comprascontroller.GetList(p => p.CompraId == id);
-                            ListaCompras = listado;
+                            Lista = listado;
                         }
                         break;
                     //ProveedorId
@@ -129,7 +129,7 @@ else
                         {
                             id2 = Convert.ToInt32(Criterio);
                             listado = comprascontroller.GetList(p => p.ProveedorId == id2);
-                            ListaCompras = listado;
+                            Lista = listado;
                         }
                         break;
                     //Itbis
@@ -139,7 +139,7 @@ else
                         {
                             Itbis = Convert.ToDecimal(Criterio);
                             listado = comprascontroller.GetList(p => p.Itbis == Itbis);
-                            ListaCompras = listado;
+                            Lista = listado;
                         }
                         break;
                     //Balance
@@ -149,7 +149,7 @@ else
                         {
                             balance = Convert.ToDecimal(Criterio);
                             listado = comprascontroller.GetList(p => p.Balance == balance);
-                            ListaCompras = listado;
+                            Lista = listado;
                         }
                         break;
                 }
@@ -157,7 +157,7 @@ else
             else
             {
                 listado = comprascontroller.GetList(p => true);
-                ListaCompras = listado;
+                Lista = listado;
             }
 
         }
