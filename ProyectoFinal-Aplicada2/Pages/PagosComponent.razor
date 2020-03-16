@@ -1,5 +1,7 @@
-﻿@page "/Pagos"
-@page "/Pagos/{Id:int}"
+﻿@page "/pagos"
+@page "/pagos{Id:int}"
+
+<h3>Pagos</h3>
 
 <style>
     * {
@@ -9,7 +11,7 @@
     }
 
     .form-register {
-        width: 450px;
+        width: 800px;
         background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
         padding: 30px;
         margin: auto;
@@ -26,15 +28,40 @@
 </style>
 
 
-<h3>Pagos</h3>
-
-<section class="form-register">
-
-</section>
-
 @code {
     [Parameter]
     public int Id { get; set; }
 
     Pagos pagos = new Pagos();
+    Compras compras = new Compras();
+    List<Compras> ListaCompras = new List<Compras>();
+
+    protected override void OnInitialized()
+    {
+        if(Id>0)
+        {
+            pagos = pagoscontroller.Buscar(Id);
+        }
+        ListaCompras = comprascontroller.GetList(p => true);
+
+        compras = new Compras();
+
+    }
+
+    private void Guardar()
+    {
+
+    }
+
+    private bool ExisteCompra()
+    {
+        bool paso = false;
+
+
+
+
+        return paso;
+    }
+
+
 }
