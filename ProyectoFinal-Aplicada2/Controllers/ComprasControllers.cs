@@ -38,8 +38,16 @@ namespace ProyectoFinal_Aplicada2.Controllers
         {
             bool paso = false;
             Contexto db = new Contexto();
+            ProductosControllers controllers = new ProductosControllers();
             try
             {
+                foreach (var item in compras.ComprasDetalles)
+                {
+                    Productos temp = controllers.Buscar(item.ProductoId);
+                    temp.Cantidad += item.Cantidad;
+                    controllers.Guardar(temp);
+                }
+
                 db.Compras.Add(compras);
                 paso = db.SaveChanges() > 0;
             }
@@ -56,9 +64,18 @@ namespace ProyectoFinal_Aplicada2.Controllers
         {
             bool paso = false;
             Contexto db = new Contexto();
+            ProductosControllers controllers = new ProductosControllers();
+
             try
             {
                 Compras anterior = Buscar(compras.CompraId);
+
+                foreach (var item in compras.ComprasDetalles)
+                {
+                    Productos temp = controllers.Buscar(item.ProductoId);
+                    temp.Cantidad -= item.Cantidad;
+                    controllers.Guardar(temp);
+                }
 
                 foreach (var item in compras.ComprasDetalles)
                 {
@@ -76,7 +93,12 @@ namespace ProyectoFinal_Aplicada2.Controllers
                     }
                 }
 
-
+                foreach (var item in compras.ComprasDetalles)
+                {
+                    Productos temp = controllers.Buscar(item.ProductoId);
+                    temp.Cantidad += item.Cantidad;
+                    controllers.Guardar(temp);
+                }
 
                 db.Entry(compras).State = EntityState.Modified;
                 paso = db.SaveChanges() > 0;
@@ -93,12 +115,20 @@ namespace ProyectoFinal_Aplicada2.Controllers
         {
             bool paso = false;
             Contexto db = new Contexto();
+            ProductosControllers controllers = new ProductosControllers();
 
             try
             {
                 Compras compras = db.Compras.Find(id);
                 if(compras!=null)
                 {
+                    foreach (var item in compras.ComprasDetalles)
+                    {
+                        Productos temp = controllers.Buscar(item.ProductoId);
+                        temp.Cantidad -= item.Cantidad;
+                        controllers.Guardar(temp);
+                    }
+
                     db.Entry(compras).State = EntityState.Deleted;
                     paso = db.SaveChanges() > 0;
                 }
