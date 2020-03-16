@@ -2,7 +2,6 @@
 @page "/Compras/{Id:int}"
 
 
-<h3>Compras</h3>
 <style>
     * {
         margin: 0;
@@ -29,7 +28,6 @@
 
 <section class="form-register">
     <h3>Compras</h3>
-    <h3 class="form-text text-muted">@mensaje</h3>
     <EditForm Model="@compras" OnValidSubmit="Guardar">
         <DataAnnotationsValidator/>
         <label for="Id">CompraId</label>
@@ -142,7 +140,7 @@
     </EditForm>
 </section>
 @code {
-    private string mensaje;
+
     Compras compras = new Compras();
     Productos productos = new Productos();
     List<Productos> listaProductos = new List<Productos>();
@@ -166,14 +164,13 @@
     private void Nuevo()
     {
         this.compras = new Compras();
-        mensaje = string.Empty;
     }
 
     private void Guardar()
     {
         if(compras.ComprasDetalles == null)
         {
-            mensaje = "La lista esta vacía";
+            toastService.ShowWarning("La lista está vacía", "Lista nula!");
             return;
         }
 
@@ -181,19 +178,26 @@
         Proveedores proveedores = new Proveedores();
         if(proveedorescontrollers.Buscar(compras.ProveedorId)==null)
         {
-            mensaje = "No existe el proveedor";
+            toastService.ShowWarning("Parece que el Id el proovedor no existe","No existel proovedor");
         }
         else
         {
-            if(comprascontroller.Guardar(compras))
+            if(compras.CompraId > 0)
             {
-                mensaje = "Guardado correctamente";
+                comprascontroller.Guardar(compras);
+                toastService.ShowSuccess("Se ha modifcado la compra correctamente","Modificado!");
                 this.compras = new Compras();
                 compras.ComprasDetalles = new List<ComprasDetalle>();
             }
-            else
+            else if(compras.CompraId == 0)
             {
-                mensaje = "No se pudo guardar";
+                comprascontroller.Guardar(compras);
+                toastService.ShowSuccess("Se ha guardado la compra exitosamente","Guardado!");
+                this.compras = new Compras();
+                compras.ComprasDetalles = new List<ComprasDetalle>();
+            }  else
+            {
+                toastService.ShowError("No se ha podido guardar", "Error!");
             }
         }
     }
@@ -202,12 +206,12 @@
     {
         if(comprascontroller.Eliminar(compras.CompraId))
         {
-            mensaje = "Eliminado correctamente";
+            toastService.ShowInfo("Has eliminado correctamente","Eliminado!");
             this.compras = new Compras();
         }
         else
         {
-            mensaje = "No se pudo eliminar";
+            toastService.ShowWarning("No se pudo eliminar la compra", "No eliminado");
         }
     }
 
@@ -217,11 +221,11 @@
         if (busca != null)
         {
             this.compras = busca;
-            mensaje = "Encontrado correctamente";
+            toastService.ShowSuccess("Se ha encontado la compra exitosamente","Encontrado!");
         }
         else
         {
-            mensaje = "No se pudo encontrar";
+            toastService.ShowWarning("Se se pudo econtrar la compra", "No encontrado!");
         }
     }
 
