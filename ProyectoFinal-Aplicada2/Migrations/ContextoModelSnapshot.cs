@@ -25,6 +25,11 @@ namespace ProyectoFinal_Aplicada2.Migrations
                     b.Property<decimal>("Balance")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("DescripcionCompra")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(30);
+
                     b.Property<DateTime>("FechaCompra")
                         .HasColumnType("TEXT");
 
@@ -230,9 +235,6 @@ namespace ProyectoFinal_Aplicada2.Migrations
                     b.Property<int>("VentaId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
-
-                    b.Property<decimal>("Balance")
-                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("FechaVenta")
                         .HasColumnType("TEXT");

@@ -9,8 +9,8 @@ using ProyectoFinal_Aplicada2.Data;
 namespace ProyectoFinal_Aplicada2.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20200315000822_pa")]
-    partial class pa
+    [Migration("20200316122938_CommitInicial")]
+    partial class CommitInicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -26,6 +26,11 @@ namespace ProyectoFinal_Aplicada2.Migrations
 
                     b.Property<decimal>("Balance")
                         .HasColumnType("TEXT");
+
+                    b.Property<string>("DescripcionCompra")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasMaxLength(30);
 
                     b.Property<DateTime>("FechaCompra")
                         .HasColumnType("TEXT");
@@ -208,8 +213,7 @@ namespace ProyectoFinal_Aplicada2.Migrations
 
                     b.Property<string>("EmailUsuario")
                         .IsRequired()
-                        .HasColumnType("TEXT")
-                        .HasMaxLength(50);
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("FechaIngreso")
                         .HasColumnType("TEXT");

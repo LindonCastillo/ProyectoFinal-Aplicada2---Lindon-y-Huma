@@ -127,6 +127,22 @@ namespace ProyectoFinal_Aplicada2.Controllers
             return compras;
         }
 
+        public Compras SoloCompra(int id)
+        {
+            Compras compras = new Compras();
+            Contexto contexto = new Contexto();
+            try
+            {
+                compras = contexto.Compras.Find(id);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            return compras;
+        }
+
         public List<Compras> GetList(Expression<Func<Compras,bool>> expression)
         {
             List<Compras> lista = new List<Compras>();

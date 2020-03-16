@@ -29,7 +29,7 @@
 <section class="form-register">
     <h3>Compras</h3>
     <EditForm Model="@compras" OnValidSubmit="Guardar">
-        <DataAnnotationsValidator/>
+        <DataAnnotationsValidator />
         <label for="Id">CompraId</label>
         <div class="row">
             <div class="col-md-8">
@@ -54,6 +54,11 @@
             <ValidationMessage For="(()=>compras.FechaCompra)"></ValidationMessage>
         </div>
 
+        <div class="form-group">
+            <label for="Descripcion">Descripcion</label>
+            <InputText @bind-Value="compras.DescripcionCompra" class="form-control" placeholder="descripcion aquí"></InputText>
+        </div>
+
 
         <div class="row">
             <div class="col">
@@ -63,7 +68,7 @@
                     @foreach (var item in listaProductos)
                     {
                         <option value="@item.ProductoId">@item.Nombre</option>
-                    }
+                    }o
                 </InputSelect>
                 <button class="btn btn-outline-primary" @onclick="AgregarProducto" type="button">Agregar</button>
             </div>
@@ -77,9 +82,9 @@
                 <label for="PrecioCompra">Precio de compra</label>
                 <InputNumber @bind-Value="productos.PrecioCompra" class="form-control"></InputNumber>
             </div>
-            
+
         </div>
-   
+
 
 
         <br />
@@ -98,7 +103,7 @@
                 </tr>
             </thead>
             <tbody class="bg-white">
-                @foreach (var item in compras.ComprasDetalles) 
+                @foreach (var item in compras.ComprasDetalles)
                 {
                     <tr>
                         <td>@item.Id</td>
@@ -127,6 +132,11 @@
             <label for="ITEBIS">ITEBIS</label>
             <InputNumber @bind-Value="compras.Itbis" class="form-control"></InputNumber>
             <ValidationMessage For="(()=>compras.Itbis)"></ValidationMessage>
+        </div>
+
+        <div class="form-group">
+            <label for="Total">Total</label>
+            <InputNumber @bind-Value="compras.Total" disabled class="form-control"></InputNumber>
         </div>
 
         <div class="form-group">
@@ -247,7 +257,8 @@
 
     private void CalcularTotalDeCompra()
     {
-        compras.Balance = productos.PrecioCompra * productos.Cantidad;
+        compras.Total = productos.PrecioCompra * productos.Cantidad;
+        compras.Balance = compras.Total;
     }
 
     private void EliminarDetalle(ComprasDetalle detalle)

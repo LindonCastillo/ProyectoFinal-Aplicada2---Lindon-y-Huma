@@ -1,5 +1,5 @@
 ﻿@page "/pagos"
-@page "/pagos{Id:int}"
+@page "/pagos/{Id:int}"
 
 <h3>Pagos</h3>
 
@@ -27,6 +27,99 @@
     }
 </style>
 
+<section class="form-register">
+    <h3>Pagos</h3>
+    <EditForm Model="@pagos" OnValidSubmit="Guardar">
+        <DataAnnotationsValidator />
+        <label for="Id">PagoId</label>
+
+        <div class="row">
+            <div class="col-md-8">
+                <div class="form-group">
+                    <InputNumber id="id" @bind-Value="pagos.PagoId" class="form-control"></InputNumber>
+                    <ValidationMessage For="(()=>pagos.PagoId)"></ValidationMessage>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <button type="button" class="btn btn-primary" @onclick="Buscar">Buscar</button>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="PagoFecha">Fecha de pago</label>
+            <InputDate @bind-Value="pagos.PagoFecha" class="form-control"></InputDate>
+            <ValidationMessage For="(()=>pagos.PagoFecha)"></ValidationMessage>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <label for="CompraId">CompraId</label>
+                <InputSelect @bind-Value="CompraId" class="form-control" @onclick="BuscarCompra" @onchange="BuscarCompra">
+                    <option value="">Elija una compra</option>
+                    @foreach (var item in ListaCompras)
+                    {
+                        <option value="@item.CompraId">@item.CompraId</option>
+                    }
+                </InputSelect>
+                <button type="button" class="btn btn-outline-primary">Agregar</button>
+            </div>
+
+            <div class="col">
+                <label for="TipoPago">Tipo de pago</label>
+                <InputSelect @bind-Value="TipoPago" class="form-control">
+                    <option value="">Tipo de pago</option>
+                    <option value="Efectivo">Efectivo</option>
+                    <option value="Cheque">Cheque</option>
+                </InputSelect>
+            </div>
+
+            <div class="col">
+                <label for="Balance">Balance</label>
+                <InputNumber @bind-Value="compras.Balance" class="form-control"></InputNumber>
+            </div>
+
+        </div>
+
+        <br />
+
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Id</th>
+                    <th>PagoId</th>
+                    <th>CompraId</th>
+                    <th>Tipo de pago</th>
+                    <th>Pago</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in pagos.PagosDetalles)
+                {
+                    <tr>
+                        <td>@item.Id</td>
+                        <td>@item.PagoId</td>
+                        <td>@item.CompraId</td>
+                        <td>@item.TipoPago</td>
+                        <td>@item.Pago</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <div class="form-group">
+            <label for="PagoTotal">Pago Total</label>
+            <InputNumber @bind-Value="pagos.PagoTotal" class="form-control"></InputNumber>
+            <ValidationMessage For="(()=>pagos.PagoTotal)"></ValidationMessage>
+        </div>
+
+
+    </EditForm>
+</section>
+
+
+
+
 
 @code {
     [Parameter]
@@ -35,6 +128,9 @@
     Pagos pagos = new Pagos();
     Compras compras = new Compras();
     List<Compras> ListaCompras = new List<Compras>();
+
+    private string CompraId;
+    private string TipoPago;
 
     protected override void OnInitialized()
     {
@@ -51,17 +147,131 @@
     private void Guardar()
     {
 
+        if(string.IsNullOrEmpty(TipoPago))
+        {
+            toastService.ShowError("Tienes que pagar de alguna manera","Error!");
+            return;
+        }
+
+
+        if(!ExisteCompra())
+        {
+            toastService.ShowWarning("El Id de compra no existe", "No existe Compra!");
+            return;
+        }
+
+        if(pagos.PagoId>0)
+        {
+            pagoscontroller.Guardar(pagos);
+            toastService.ShowSuccess("Has modificado el pago exitosamente", "Modificado!");
+            this.pagos = new Pagos();
+
+        } else if(pagos.PagoId == 0)
+        {
+            pagoscontroller.Guardar(pagos);
+            toastService.ShowSuccess("Has guardado el producto exitosamente", "Guardado!");
+            this.pagos = new Pagos();
+        } else
+        {
+            toastService.ShowError("No se guardar", "Error!");
+        }
+
+
     }
 
     private bool ExisteCompra()
     {
         bool paso = false;
 
-
-
-
+        if(comprascontroller.Buscar(Convert.ToInt32(CompraId))!=null)
+        {
+            paso = true;
+        }
         return paso;
     }
 
+    private void Eliminar()
+    {
+        if(pagoscontroller.Eliminar(pagos.PagoId))
+        {
+            toastService.ShowInfo("Se ha eliminado el pago exitosamente","Eliminado!");
+            this.pagos = new Pagos();
+        } else
+        {
+            toastService.ShowWarning("No se pudo eliminar el pago","No se pudo eliminar!");
+        }
+    }
 
+    private void Buscar()
+    {
+        Pagos busca = pagoscontroller.Buscar(pagos.PagoId);
+        if(busca!=null)
+        {
+            this.pagos = busca;
+            toastService.ShowSuccess("El pago se ha encontrado exitosamente","Encontrado");
+        } else
+        {
+            toastService.ShowWarning("El pago no se ha podido encontrar","No encontrado!");
+        }
+    }
+
+    private void AgregarCompra()
+    {
+        if(pagos.PagosDetalles.Any(C=>C.CompraId == compras.CompraId))
+        {
+            toastService.ShowWarning("No puedes agregar una compra repetida","Compra Existente!");
+        } else
+        {
+            this.pagos.PagosDetalles.Add(new PagosDetalle()
+            {
+                PagoId = pagos.PagoId,
+                CompraId = compras.CompraId,
+                TipoPago = TipoPago,
+                Pago = compras.Total
+            });
+        }
+    }
+
+    private void RemoverDetalle(PagosDetalle detalle)
+    {
+        try
+        {
+            pagos.PagosDetalles.Remove(detalle);
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+    }
+
+    private void BuscarCompra()
+    {
+        try
+        {
+            compras = comprascontroller.SoloCompra(Int32.Parse(CompraId));
+        }catch
+        {
+            //Cargo
+        }
+    }
+       
+    string nombre;
+
+
+    private string BuscarProveedor()
+    {
+        try
+        {
+
+            Proveedores proveedores = new Proveedores();
+            proveedores = proveedorescontrollers.Buscar(compras.ProveedorId);
+            nombre = proveedores.NombreProveedor;
+
+        }catch
+        {
+            //comentario
+        }
+        return nombre;
+    }
 }

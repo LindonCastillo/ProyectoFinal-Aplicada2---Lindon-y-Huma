@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ProyectoFinal_Aplicada2.Migrations
 {
-    public partial class pa : Migration
+    public partial class CommitInicial : Migration
     {
-        protected override void Up(MigrationBuilder migrationBuilder) 
+        protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
                 name: "Compras",
@@ -16,6 +16,7 @@ namespace ProyectoFinal_Aplicada2.Migrations
                     FechaCompra = table.Column<DateTime>(nullable: false),
                     ProveedorId = table.Column<int>(nullable: false),
                     Itbis = table.Column<decimal>(nullable: false),
+                    DescripcionCompra = table.Column<string>(maxLength: 30, nullable: false),
                     Total = table.Column<decimal>(nullable: false),
                     Balance = table.Column<decimal>(nullable: false)
                 },
@@ -81,7 +82,7 @@ namespace ProyectoFinal_Aplicada2.Migrations
                     UsuarioId = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     NombrePersona = table.Column<string>(maxLength: 50, nullable: false),
-                    EmailUsuario = table.Column<string>(maxLength: 50, nullable: false),
+                    EmailUsuario = table.Column<string>(nullable: false),
                     Clave = table.Column<string>(maxLength: 60, nullable: false),
                     ConfirmarClave = table.Column<string>(maxLength: 60, nullable: false),
                     NivelUsuario = table.Column<string>(nullable: false),

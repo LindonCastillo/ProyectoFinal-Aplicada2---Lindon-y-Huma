@@ -13,6 +13,7 @@ namespace ProyectoFinal_Aplicada2.Controllers
     {
         public bool Guardar(Pagos pagos)
         {
+
             bool paso = false;
             Contexto db = new Contexto();
             try
@@ -38,10 +39,23 @@ namespace ProyectoFinal_Aplicada2.Controllers
         {
             bool paso = false;
             Contexto db = new Contexto();
+            decimal balance;
+            Compras compras = new Compras();
+            ComprasControllers comprasControllers = new ComprasControllers();
             try
             {
-                db.Pagos.Add(pagos);
-                paso = db.SaveChanges() > 0;
+                pagos.PagosDetalles = new List<PagosDetalle>();
+                PagosDetalle pagosDetalle = new PagosDetalle();
+
+                compras = comprasControllers.Buscar(pagosDetalle.CompraId);
+
+                if(pagos.PagosDetalles.Any(A=>A.CompraId == ))
+                     
+
+
+
+               db.Pagos.Add(pagos);
+               paso = db.SaveChanges() > 0;
             }
             catch (Exception)
             {
@@ -57,7 +71,7 @@ namespace ProyectoFinal_Aplicada2.Controllers
             Contexto db = new Contexto();
             try
             {
-                Pagos anterior = Buscar(pagos.PagoId);
+                var anterior = Buscar(pagos.PagoId);
 
                 foreach (var item in pagos.PagosDetalles)
                 {

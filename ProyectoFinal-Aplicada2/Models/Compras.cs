@@ -22,7 +22,14 @@ namespace ProyectoFinal_Aplicada2.Models
         [Range(1,1000000000,ErrorMessage ="El campo ProveedorId debe ser mayor que cero")]
         public int ProveedorId { get; set; }
         [Range(0, 100, ErrorMessage = "El campo Itbis no puede ser menor que cero ni mayor a 100")]
+
         public decimal Itbis { get; set; }
+        [Required(ErrorMessage ="La descripción de compra no puede estar vacía")]
+        [MinLength(4,ErrorMessage ="Descripción muy corta")]
+        [MaxLength(30, ErrorMessage = "Descripción muy larga")]
+
+        public string DescripcionCompra { get; set; }
+
         public decimal Total { get; set; }
         public decimal Balance { get; set; }
 
@@ -36,6 +43,7 @@ namespace ProyectoFinal_Aplicada2.Models
             ProveedorId = 0;
             Itbis = 0;
             Total = 0;
+            DescripcionCompra = string.Empty;
             Balance = 0;
             ComprasDetalles = new List<ComprasDetalle>();
         }
