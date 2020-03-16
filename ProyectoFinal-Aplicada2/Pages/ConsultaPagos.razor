@@ -1,10 +1,32 @@
 ﻿@page "/ConsultaPagos"
+    
+<div class="form-row">
 
-@using ProyectoFinal_Aplicada2.Controllers;
-@using ProyectoFinal_Aplicada2.Models;
+        <div class="col">
+            <label for="desde_date">Desde:</label>
+            <input id="desde_date" class="form-control" type="datetime-local" @bind="desdeFecha" />
+        </div>
 
+        <div class="col">
+            <label for="hasta_date">Hasta:</label>
+            <input id="hasta_date" class="form-control" type="datetime-local" @bind="hastaFecha" />
+            <button class="btn btn-primary" @onclick="filtradoPorFecha">Filtar por Fecha</button>
+        </div>
+
+        <div class="col">
+            <input type="text" class="form-control" placeholder="Criterio" @onfocusin="Filtrar" @onfocusout="Filtrar" @onclick="Filtrar" @bind="Criterio" />
+        </div>
+
+        <div class="col">
+            <select class="form-control" @onclick="Filtrar" @bind="filtro">
+                <option value="0">Todos</option>
+                <option value="1">Id</option>
+                <option value="2">PagoTotal</option>
+            </select>
+        </div>
+    </div>
 <h3>Consulta de Pagos</h3>
-@if (lista == null)
+@if (Lista == null)
 {
     <p>No hay datos que mostrar</p>
     return;
@@ -22,7 +44,7 @@ else
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in lista)
+            @foreach (var item in Lista)
             {
                 <tr>
                     <td>@item.PagoId</td>
@@ -36,13 +58,86 @@ else
 }
 
 @code {
-    PagosControllers controller = new PagosControllers();
-    List<Pagos> lista = new List<Pagos>();
+    List<Pagos> Lista = new List<Pagos>();
 
     protected override void OnInitialized()
     {
-        lista = controller.GetList(A => true);
+        Lista = pagoscontroller.GetList(A => true);
     }
 
+
+    private string filtro;
+    private string Criterio;
+    private bool fechaFiltro;
+
+    DateTime hastaFecha = DateTime.Now;
+    DateTime desdeFecha = DateTime.Now;
+
+    public List<Pagos> listado { get; set; }
+
+    private void filtradoPorFecha()
+    {
+        try
+        {
+            Lista = Lista.Where(p => p.PagoFecha >= desdeFecha && p.PagoFecha <= hastaFecha).ToList();
+        }
+        catch (Exception)
+        {
+
+            //wey klok
+        }
+
+    }
+
+    private void Filtrar()
+    {
+
+        try
+        {
+            int filtroIndex = Int32.Parse(filtro);
+
+            if (Criterio.Trim().Length > 0)
+            {
+                switch (filtroIndex)
+                {
+                    //Todos
+                    case 0:
+                        listado = pagoscontroller.GetList(p => true);
+                        Lista = listado;
+                        break;
+                    //Id
+                    case 1:
+                        int id = 0;
+                        if (int.TryParse(Criterio, out id))
+                        {
+                            id = Convert.ToInt32(Criterio);
+                            listado = pagoscontroller.GetList(p => p.PagoId == id);
+                            Lista = listado;
+                        }
+                        break;
+                    //PagoTotal
+                    case 2:
+                        decimal pagototal = 0;
+                        if (decimal.TryParse(Criterio, out pagototal))
+                        {
+                            pagototal = Convert.ToDecimal(Criterio);
+                            listado = pagoscontroller.GetList(p => p.PagoTotal == pagototal);
+                            Lista = listado;
+                        }
+                        break;
+                }
+            }
+            else
+            {
+                listado = pagoscontroller.GetList(p => true);
+                Lista = listado;
+            }
+
+        }
+        catch (Exception)
+        {
+            //papichulo
+        }
+    }
 
 }
