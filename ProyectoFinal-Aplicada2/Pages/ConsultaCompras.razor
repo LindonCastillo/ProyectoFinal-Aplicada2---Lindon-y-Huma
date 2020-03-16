@@ -5,18 +5,18 @@
 <div class="form-row">
 
     <div class="col">
-        <label for="desde_date" >Desdes</label>
-        <input id="desde_date" class="form-control" type="datetime-local" @onfocusin="filtradoPorFecha" @onfocusout="filtradoPorFecha" @bind="desdeFecha"/>
+        <label for="desde_date">Desde:</label>
+        <input id="desde_date" class="form-control" type="datetime-local" @bind="desdeFecha" />
     </div>
 
     <div class="col">
-        <label for="hasta_date">Hasta</label>
-        <input id="hasta_date" class="form-control" type="datetime-local" @onfocusin="filtradoPorFecha" @onfocusout="filtradoPorFecha" @bind="hastaFecha"/>
-        <input type="checkbox" @bind="fechaFiltro" />
+        <label for="hasta_date">Hasta:</label>
+        <input id="hasta_date" class="form-control" type="datetime-local" @bind="hastaFecha" />
+        <button class="btn btn-primary" @onclick="filtradoPorFecha">Filtar por Fecha</button>
     </div>
 
     <div class="col">
-        <input type="text"  class="form-control" placeholder="Criterio" @onclick="Filtrar" @bind="Criterio" />
+        <input type="text" class="form-control" placeholder="Criterio" @onfocusin="Filtrar" @onfocusout="Filtrar" @onclick="Filtrar" @bind="Criterio" />
     </div>
 
     <div class="col">
