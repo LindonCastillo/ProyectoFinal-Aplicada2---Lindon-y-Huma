@@ -11,7 +11,7 @@ namespace ProyectoFinal_Aplicada2.Models
         [Key]
         public int Id { get; set; }
         public int PagoId { get; set; }
-        public int CompraId { get; set; }
+        public int CompraId { get; set; } //Afectar el balance de compra
         public string TipoPago { get; set; }
         public decimal Pago { get; set; }
 
