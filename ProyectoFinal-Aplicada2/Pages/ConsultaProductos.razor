@@ -3,24 +3,38 @@
 <h3>Consulta de Productos</h3>
 
 
-<div class="form-inline">
-    <label for="Filtro">Filtro</label>
-    <select @bind="Filtro">
-        <option value="">Filtro</option>
-        <option value="Todos">Todos</option>
-        <option value="Id">Id</option>
-        <option value="Nombre">Nombre</option>
-        <option value="Cantidad">Cantidad</option>
-        <option value="PrecioCompra">Precio Compra</option>
-        <option value="PorCentajeGanancia">Porcentaje negocio</option>
-    </select>
+<div class="form-row">
 
+    <div class="col">
+        <label for="desde_date">Desde:</label>
+        <input id="desde_date" class="form-control" type="datetime-local" @bind="desdeFecha" />
+    </div>
 
+    <div class="col">
+        <label for="hasta_date">Hasta:</label>
+        <input id="hasta_date" class="form-control" type="datetime-local" @bind="hastaFecha" />
+        <button class="btn btn-primary" @onclick="filtradoPorFecha">Filtar por Fecha</button>
+    </div>
+
+    <div class="col">
+        <input type="text" class="form-control" placeholder="Criterio" @onfocusin="Filtrar" @onfocusout="Filtrar" @onclick="Filtrar" @bind="Criterio" />
+    </div>
+
+    <div class="col">
+        <select class="form-control" @onclick="Filtrar" @bind="filtro">
+            <option value="0">Todos</option>
+            <option value="1">Id</option>
+            <option value="2">Nombre</option>
+            <option value="3">Cantidad</option>
+            <option value="4">Precio de compra</option>
+            <option value="5">Porcentaje de ganancia</option>
+            <option value="6">Precio de venta</option>
+        </select>
+    </div>
 </div>
 
 
-
-@if(productos == null)
+@if(Lista == null)
 {
     <p>No hay datos que mostrar</p>
     return;
@@ -40,7 +54,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in productos)
+            @foreach (var item in Lista)
             {
                 <tr>
                     <td>@item.ProductoId</td>
@@ -50,7 +64,7 @@
                     <td>@item.PrecioCompra</td>
                     <td>@item.PorcentajeGanancias</td>
                     <td>@item.PrecioVentas</td>
-                    <td><a class="btn btn-outline-info" href="productos/@item.ProductoId">Ver</a></td>
+                    <td><a class="btn btn-outline-info" href="Productos/@item.ProductoId">Ver</a></td>
                 </tr>
             }
         </tbody>
@@ -62,17 +76,120 @@
 
 
 @code {
-    List<Productos> productos = new List<Productos>();
+    List<Productos> Lista = new List<Productos>();
 
     protected override void OnInitialized()
     {
-        productos = productoscontrollers.GetList(P => true);
+        Lista = productoscontrollers.GetList(P => true);
+    }
+    private string filtro;
+    private string Criterio;
+    private bool fechaFiltro;
+
+    DateTime hastaFecha = DateTime.Now;
+    DateTime desdeFecha = DateTime.Now;
+
+    public List<Productos> listado { get; set; }
+
+    private void filtradoPorFecha()
+    {
+        try
+        {
+            Lista = Lista.Where(p => p.FechaEntrada >= desdeFecha && p.FechaEntrada <= hastaFecha).ToList();
+        }
+        catch (Exception)
+        {
+
+            //wey klok
+        }
+        
     }
 
-    private string Filtro;
-    private string Criterio;
+    private void Filtrar()
+    {
 
+        try
+        {
+            int filtroIndex = Int32.Parse(filtro);
 
+            if (Criterio.Trim().Length > 0)
+            {
+                switch (filtroIndex)
+                {
+                    //Todos
+                    case 0:
+                        listado = productoscontrollers.GetList(p => true);
+                        Lista = listado;
+                        break;
+                    //Int
+                    case 1:
+                        int id = 0;
+                        if (int.TryParse(Criterio, out id))
+                        {
+                            id = Convert.ToInt32(Criterio);
+                            listado = productoscontrollers.GetList(p => p.ProductoId == id);
+                            Lista = listado;
+                        }
+                        break;
+                    //Nombre
+                    case 2:
+                            listado = productoscontrollers.GetList(p => p.Nombre.Contains(Criterio));
+                        break;
+
+                    //Cantidas
+                    case 3:
+                        int cantidad = 0;
+                        if (int.TryParse(Criterio, out cantidad))
+                        {
+                            cantidad = Convert.ToInt32(Criterio);
+                            listado = productoscontrollers.GetList(p => p.Cantidad == cantidad);
+                            Lista = listado;
+                        }
+                        break;
+                    //PrecioCompra
+                    case 4:
+                        decimal compra = 0;
+                        if (decimal.TryParse(Criterio, out compra))
+                        {
+                            compra = Convert.ToDecimal(Criterio);
+                            listado = productoscontrollers.GetList(p => p.PrecioCompra == compra);
+                            Lista = listado;
+                        }
+                        break; 
+                    //PorcentajeGanancias
+                    case 5:
+                        decimal porcentaje = 0;
+                        if (decimal.TryParse(Criterio, out porcentaje))
+                        {
+                            porcentaje = Convert.ToDecimal(Criterio);
+                            listado = productoscontrollers.GetList(p => p.PorcentajeGanancias == porcentaje);
+                            Lista = listado;
+                        }
+                        break; 
+                    //PrecioVentas
+                    case 6:
+                        decimal venta = 0;
+                        if (decimal.TryParse(Criterio, out venta))
+                        {
+                            venta = Convert.ToDecimal(Criterio);
+                            listado = productoscontrollers.GetList(p => p.PrecioVentas == venta);
+                            Lista = listado;
+                        }
+                        break;
+                }
+            }
+            else
+            {
+                listado = productoscontrollers.GetList(p => true);
+                Lista = listado;
+            }
+
+        }
+        catch (Exception)
+        {
+            //papichulo
+        }
+    }
 
 
 }
