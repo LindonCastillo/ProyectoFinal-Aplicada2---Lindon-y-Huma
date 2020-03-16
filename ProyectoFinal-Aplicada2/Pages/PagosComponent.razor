@@ -68,15 +68,23 @@
             <div class="col">
                 <label for="TipoPago">Tipo de pago</label>
                 <InputSelect @bind-Value="TipoPago" class="form-control">
-                    <option value="">Tipo de pago</option>
                     <option value="Efectivo">Efectivo</option>
                     <option value="Cheque">Cheque</option>
                 </InputSelect>
             </div>
 
+           
+        </div>
+
+        <div class="row">
             <div class="col">
                 <label for="Balance">Balance</label>
-                <InputNumber @bind-Value="compras.Balance" class="form-control"></InputNumber>
+                <InputNumber @bind-Value="compras.Balance" disabled class="form-control"></InputNumber>
+            </div>
+
+            <div class="col">
+                <label for="Pago">Pago</label>
+                <InputNumber @bind-Value="Pago" class="form-control"></InputNumber>
             </div>
 
         </div>
@@ -103,7 +111,7 @@
                         <td>@item.CompraId</td>
                         <td>@item.TipoPago</td>
                         <td>@item.Pago</td>
-                        <th><button class="btn btn-outline-danger" @onclick="(()=>EliminarDetalle(item))">Remover</button></th>
+                        <th><button class="btn btn-danger" @onclick="(()=>EliminarDetalle(item))">Remover</button></th>
                     </tr>
                 }
             </tbody>
@@ -111,7 +119,7 @@
 
         <div class="form-group">
             <label for="PagoTotal">Pago Total</label>
-            <InputNumber @bind-Value="compras.Total" disabled class="form-control"></InputNumber>
+            <InputNumber @bind-Value="pagos.PagoTotal" disabled class="form-control"></InputNumber>
         </div>
 
         <button type="button" class="btn btn-secondary" @onclick="Nuevo">Nuevo</button>
@@ -133,6 +141,7 @@
     List<Compras> ListaCompras = new List<Compras>();
 
     private string CompraId;
+    private decimal Pago;
     private string TipoPago;
 
     protected override void OnInitialized()
@@ -165,7 +174,7 @@
         } else if(pagos.PagoId == 0)
         {
             pagoscontroller.Guardar(pagos);
-            toastService.ShowSuccess("Has guardado el producto exitosamente", "Guardado!");
+            toastService.ShowSuccess("Has guardado el pago exitosamente", "Guardado!");
             this.pagos = new Pagos();
         } else
         {
@@ -199,7 +208,13 @@
 
     private void CalcularPagoTotal()
     {
-        pagos.PagoTotal = compras.Total - compras.Balance;
+        decimal total = 0;
+        foreach (var item in pagos.PagosDetalles)
+        {
+            total += item.Pago;
+        }
+
+        pagos.PagoTotal = total;
     }
 
     private void EliminarDetalle(PagosDetalle pagosDetalle)
@@ -223,15 +238,33 @@
     private void Nuevo()
     {
         this.pagos = new Pagos();
-        this.compras = new Compras();
+        Pago = 0;
+        TipoPago = string.Empty;
+        CompraId = string.Empty;
+    }
+
+    private bool Validar()
+    {
+        bool paso = true;
+        if(string.IsNullOrEmpty(TipoPago))
+        {
+            toastService.ShowWarning("Debes elegir un tipo de pago", "Error");
+            paso = false;
+        }
+        if(Pago<1)
+        {
+            toastService.ShowWarning("El pago debe ser mayor que cero","Error");
+            paso = false;
+        }
+
+        return paso;
     }
 
     private void AgregarCompra()
     {
 
-        if(string.IsNullOrEmpty(TipoPago))
+        if(!Validar())
         {
-            toastService.ShowError("Tienes que pagar de alguna manera","Error!");
             return;
         }
 
@@ -242,14 +275,16 @@
         {
             this.pagos.PagosDetalles.Add(new PagosDetalle()
             {
+                Id = 0,
                 PagoId = pagos.PagoId,
                 CompraId = compras.CompraId,
                 TipoPago = TipoPago,
-                Pago = compras.Total
+                Pago = Pago
             });
 
-            CalcularPagoTotal();
+
         }
+        CalcularPagoTotal();
     }
 
     private void RemoverDetalle(PagosDetalle detalle)
@@ -257,11 +292,12 @@
         try
         {
             pagos.PagosDetalles.Remove(detalle);
+            CalcularPagoTotal();
         }
         catch (Exception)
         {
 
-            throw;
+            //Comentario;
         }
     }
 
@@ -295,4 +331,7 @@
         }
         return nombre;
     }
+
+
+
 }

@@ -47,10 +47,12 @@ namespace ProyectoFinal_Aplicada2.Controllers
                 {
                     Compras compras = comprasControllers.Buscar(item.CompraId);
                     compras.Balance -= item.Pago;
+                    if (compras.Balance < 0)
+                    {
+                        compras.Balance = 0;
+                    }
                     comprasControllers.Guardar(compras);
                 }
-
-
 
                db.Pagos.Add(pagos);
                paso = db.SaveChanges() > 0;
@@ -99,6 +101,10 @@ namespace ProyectoFinal_Aplicada2.Controllers
                 {
                     Compras compras = comprasControllers.Buscar(item.CompraId);
                     compras.Balance -= item.Pago;
+                    if(compras.Balance < 0)
+                    {
+                        compras.Balance = 0;
+                    }
                     comprasControllers.Guardar(compras);
                 }
 
@@ -128,6 +134,8 @@ namespace ProyectoFinal_Aplicada2.Controllers
                     {
                         Compras compras = comprasControllers.Buscar(item.CompraId);
                         compras.Balance += item.Pago;
+                        
+                        
                         comprasControllers.Guardar(compras);
                     }
 

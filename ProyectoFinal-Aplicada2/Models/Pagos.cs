@@ -28,7 +28,6 @@ namespace ProyectoFinal_Aplicada2.Models
             PagoId = 0;
             PagoFecha = DateTime.Now;
             PagoTotal = 0;
-
             PagosDetalles = new List<PagosDetalle>();
         }
     }
