@@ -1,9 +1,7 @@
 ﻿@page "/Usuarios"
 @page "/Usuarios/{Id:int}"
 
-@using ProyectoFinal_Aplicada2.Controllers;
-@using ProyectoFinal_Aplicada2.Models;
-@using ProyectoFinal_Aplicada2.Data;
+
 <style>
     * {
         margin: 0;
@@ -32,7 +30,6 @@
     <h3>Usuarios</h3>
     <EditForm Model="@usuarios" OnValidSubmit="Guardar">
         <DataAnnotationsValidator />
-        <label class="text-muted form-text">@Mensaje</label>
         <div class="row">
             <div class="col-md-8">
                 <div class="form-group">
@@ -102,7 +99,6 @@
 @code {
     [Parameter]
     public int Id { get; set; }
-    public string Mensaje { get; set; }
 
     Usuarios usuarios = new Usuarios();
 
@@ -110,7 +106,6 @@
     {
         UsuariosControllers controller = new UsuariosControllers();
         Limpiar();
-        Mensaje = string.Empty;
         if (Id != 0)
         {
             usuarios = controller.Buscar(Id);
@@ -164,30 +159,30 @@
             {
                 if (controller.Guardar(usuarios))
                 {
-                    Mensaje = "Se modifico correctamente";
+                    toastService.ShowSuccess("Se ha modificado el usaurio exitosamente", "Modificado!");
                     Limpiar();
                 }
                 else
                 {
-                    Mensaje = "No se pudo modificar";
+                    toastService.ShowError("No se pudo modificar","Erro!");
                 }
 
             }
             else
             {
-                Mensaje = "No se puede modificar un Usuario que no exista";
+                toastService.ShowError("No se puede modificar un usuario que no existe","Error");
             }
         }
         else
         {
             if (controller.Guardar(usuarios))
             {
-                Mensaje = "Se guardo correctamente";
+                toastService.ShowSuccess("El usuario se ha guardado correctamente","Guardado!");
                 Limpiar();
             }
             else
             {
-                Mensaje = "No se pudo Guardar";
+                toastService.ShowError("El usuario no se ha podigo guardar","Error!");
             }
         }
     }
@@ -202,17 +197,14 @@
             {
                 controller.Eliminar(id);
                 Limpiar();
-                Mensaje = "Se elimino Correctamente";
+                toastService.ShowInfo("El usuario se ha eliminado correctamente","Eliminado!");
             }
             else
             {
-                Mensaje = "No se puede eliminar un Usuario que no Exista";
+                toastService.ShowWarning("No se pudo eliminar el usuario", "Error!");
             }
         }
-        else
-        {
-            Mensaje = "No se puede eliminar asi";
-        }
+
     }
 
     private void Buscar()
@@ -223,11 +215,11 @@
         if (buscado != null)
         {
             usuarios = buscado;
-            Mensaje = "Se encontro el Usuario";
+            toastService.ShowSuccess("Se ha encontrado al usuario exitosamente","Encontrado!");
         }
         else
         {
-            Mensaje = "No existe este Usuario";
+            toastService.ShowWarning("No se ha podido encontrar el usuario","No encontrado!");
         }
     }
 }
