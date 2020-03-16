@@ -59,10 +59,10 @@
                     <option value="">Elija una compra</option>
                     @foreach (var item in ListaCompras)
                     {
-                        <option value="@item.CompraId">@item.CompraId</option>
+                        <option value="@item.CompraId">@item.DescripcionCompra</option>
                     }
                 </InputSelect>
-                <button type="button" class="btn btn-outline-primary">Agregar</button>
+                <button type="button" class="btn btn-outline-primary" @onclick="AgregarCompra" @onchange="CalcularPagoTotal">Agregar</button>
             </div>
 
             <div class="col">
@@ -91,9 +91,10 @@
                     <th>CompraId</th>
                     <th>Tipo de pago</th>
                     <th>Pago</th>
+                    <th></th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="bg-white">
                 @foreach (var item in pagos.PagosDetalles)
                 {
                     <tr>
@@ -102,6 +103,7 @@
                         <td>@item.CompraId</td>
                         <td>@item.TipoPago</td>
                         <td>@item.Pago</td>
+                        <th><button class="btn btn-outline-danger" @onclick="(()=>EliminarDetalle(item))">Remover</button></th>
                     </tr>
                 }
             </tbody>
@@ -109,11 +111,12 @@
 
         <div class="form-group">
             <label for="PagoTotal">Pago Total</label>
-            <InputNumber @bind-Value="pagos.PagoTotal" class="form-control"></InputNumber>
-            <ValidationMessage For="(()=>pagos.PagoTotal)"></ValidationMessage>
+            <InputNumber @bind-Value="compras.Total" disabled class="form-control"></InputNumber>
         </div>
 
-
+        <button type="button" class="btn btn-secondary" @onclick="Nuevo">Nuevo</button>
+        <button type="submit" class="btn btn-success">Guardar</button>
+        <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
     </EditForm>
 </section>
 
@@ -147,13 +150,6 @@
     private void Guardar()
     {
 
-        if(string.IsNullOrEmpty(TipoPago))
-        {
-            toastService.ShowError("Tienes que pagar de alguna manera","Error!");
-            return;
-        }
-
-
         if(!ExisteCompra())
         {
             toastService.ShowWarning("El Id de compra no existe", "No existe Compra!");
@@ -175,7 +171,6 @@
         {
             toastService.ShowError("No se guardar", "Error!");
         }
-
 
     }
 
@@ -202,6 +197,16 @@
         }
     }
 
+    private void CalcularPagoTotal()
+    {
+        pagos.PagoTotal = compras.Total - compras.Balance;
+    }
+
+    private void EliminarDetalle(PagosDetalle pagosDetalle)
+    {
+        pagos.PagosDetalles.Remove(pagosDetalle);
+    }
+
     private void Buscar()
     {
         Pagos busca = pagoscontroller.Buscar(pagos.PagoId);
@@ -215,8 +220,21 @@
         }
     }
 
+    private void Nuevo()
+    {
+        this.pagos = new Pagos();
+        this.compras = new Compras();
+    }
+
     private void AgregarCompra()
     {
+
+        if(string.IsNullOrEmpty(TipoPago))
+        {
+            toastService.ShowError("Tienes que pagar de alguna manera","Error!");
+            return;
+        }
+
         if(pagos.PagosDetalles.Any(C=>C.CompraId == compras.CompraId))
         {
             toastService.ShowWarning("No puedes agregar una compra repetida","Compra Existente!");
@@ -229,6 +247,8 @@
                 TipoPago = TipoPago,
                 Pago = compras.Total
             });
+
+            CalcularPagoTotal();
         }
     }
 
@@ -245,6 +265,7 @@
         }
     }
 
+
     private void BuscarCompra()
     {
         try
@@ -255,7 +276,7 @@
             //Cargo
         }
     }
-       
+
     string nombre;
 
 

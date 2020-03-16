@@ -39,18 +39,16 @@ namespace ProyectoFinal_Aplicada2.Controllers
         {
             bool paso = false;
             Contexto db = new Contexto();
-            decimal balance;
-            Compras compras = new Compras();
             ComprasControllers comprasControllers = new ComprasControllers();
             try
             {
-                pagos.PagosDetalles = new List<PagosDetalle>();
-                PagosDetalle pagosDetalle = new PagosDetalle();
 
-                compras = comprasControllers.Buscar(pagosDetalle.CompraId);
-
-                if(pagos.PagosDetalles.Any(A=>A.CompraId == ))
-                     
+                foreach (var item in pagos.PagosDetalles)
+                {
+                    Compras compras = comprasControllers.Buscar(item.CompraId);
+                    compras.Balance -= item.Pago;
+                    comprasControllers.Guardar(compras);
+                }
 
 
 
@@ -69,9 +67,17 @@ namespace ProyectoFinal_Aplicada2.Controllers
         {
             bool paso = false;
             Contexto db = new Contexto();
+            ComprasControllers comprasControllers = new ComprasControllers();
             try
             {
                 var anterior = Buscar(pagos.PagoId);
+
+                foreach (var item in pagos.PagosDetalles)
+                {
+                    Compras compras = comprasControllers.Buscar(item.CompraId);
+                    compras.Balance += item.Pago;
+                    comprasControllers.Guardar(compras);
+                }
 
                 foreach (var item in pagos.PagosDetalles)
                 {
@@ -89,6 +95,13 @@ namespace ProyectoFinal_Aplicada2.Controllers
                     }
                 }
 
+                foreach (var item in pagos.PagosDetalles)
+                {
+                    Compras compras = comprasControllers.Buscar(item.CompraId);
+                    compras.Balance -= item.Pago;
+                    comprasControllers.Guardar(compras);
+                }
+
                 db.Entry(pagos).State = EntityState.Modified;
                 paso = db.SaveChanges() > 0;
             }
@@ -104,12 +117,20 @@ namespace ProyectoFinal_Aplicada2.Controllers
         {
             bool paso = false;
             Contexto db = new Contexto();
-
+            ComprasControllers comprasControllers = new ComprasControllers();
             try
             {
                 Pagos pagos = db.Pagos.Find(id);
                 if (pagos != null)
                 {
+
+                    foreach (var item in pagos.PagosDetalles)
+                    {
+                        Compras compras = comprasControllers.Buscar(item.CompraId);
+                        compras.Balance += item.Pago;
+                        comprasControllers.Guardar(compras);
+                    }
+
                     db.Entry(pagos).State = EntityState.Deleted;
                     paso = db.SaveChanges() > 0;
                 }
