@@ -64,22 +64,24 @@ else
 }
 
 @code {
-        List<Usuarios> Lista = new List<Usuarios>();
+    List<Usuarios> Lista = new List<Usuarios>();
 
-        protected override void OnInitialized()
-        {
-            Lista = usuariocontroller.GetList(A => true);
-        }
+    UsuariosControllers usuariocontroller = new UsuariosControllers();
+
+    protected override void OnInitialized()
+    {
+        Lista = usuariocontroller.GetList(A => true);
+    }
 
 
-        private string filtro;
-        private string Criterio;
-        private bool fechaFiltro;
+    private string filtro;
+    private string Criterio;
+    private bool fechaFiltro;
 
-        DateTime hastaFecha = DateTime.Now;
-        DateTime desdeFecha = DateTime.Now;
+    DateTime hastaFecha = DateTime.Now;
+    DateTime desdeFecha = DateTime.Now;
 
-        public List<Usuarios> listado { get; set; }
+    public List<Usuarios> listado { get; set; }
 
         private void filtradoPorFecha()
         {
@@ -90,17 +92,17 @@ else
             catch (Exception)
             {
 
-                //wey klok
-            }
-
+            //wey klok
         }
 
-        private void Filtrar()
-        {
+    }
 
-            try
-            {
-                int filtroIndex = Int32.Parse(filtro);
+    private void Filtrar()
+    {
+
+        try
+        {
+            int filtroIndex = Int32.Parse(filtro);
 
                 if (Criterio.Trim().Length > 0)
                 {
