@@ -20,7 +20,7 @@ namespace ProyectoFinal_Aplicada2.Models
         public DateTime PagoFecha { get; set; } 
         public decimal PagoTotal { get; set; }
 
-        [ForeignKey("PagosId")]
+        [ForeignKey("PagoId")]
         public virtual List<PagosDetalle> PagosDetalles { get; set; }
 
         public Pagos()
