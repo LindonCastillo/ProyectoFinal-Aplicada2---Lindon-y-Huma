@@ -85,7 +85,7 @@ else
         {
             try
             {
-                Lista = Lista.Where(p => p.FechaIngreso >= desdeFecha && p.FechaIngreso <= ).ToList();
+                Lista = Lista.Where(p => p.FechaIngreso >= desdeFecha && p.FechaIngreso <= p.FechaIngreso).ToList();
             }
             catch (Exception)
             {
@@ -140,14 +140,14 @@ else
                 }
                 else
                 {
-                
+
                     listado = usuariocontroller.GetList(p => true);
                     Lista = listado;
                 }
+            }        
+            catch (Exception)
+            {
+                //algo
             }
-        }
-        catch (Exception)
-        {
-            //algo
         }
 }
