@@ -59,7 +59,6 @@
             <InputText @bind-Value="compras.DescripcionCompra" class="form-control" placeholder="descripcion aquí"></InputText>
         </div>
 
-
         <div class="row">
             <div class="col">
                 <label for="Producto">Producto</label>
@@ -68,7 +67,7 @@
                     @foreach (var item in listaProductos)
                     {
                         <option value="@item.ProductoId">@item.Nombre</option>
-                    }o
+                    }
                 </InputSelect>
             </div>
 
