@@ -151,6 +151,13 @@
     {
         UsuariosControllers controller = new UsuariosControllers();
 
+        if(usuarios.ConfirmarClave != usuarios.Clave  )
+        {
+            toastService.ShowWarning("La claves no son iguales","No Iguales!");
+            return;
+        }
+
+
         if (usuarios.UsuarioId > 0)
         {
             if (ExisteEnLaBaseDeDatos(usuarios.UsuarioId))
