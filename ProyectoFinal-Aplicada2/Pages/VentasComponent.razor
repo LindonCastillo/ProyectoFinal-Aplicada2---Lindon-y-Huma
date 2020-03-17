@@ -28,7 +28,6 @@
 
 <section class="form-register">
     <h3>Ventas</h3>
-    <h3 class="form-text text-muted">@mensaje</h3>
     <EditForm Model="@ventas" OnValidSubmit="Guardar">
         <DataAnnotationsValidator />
         <div class="row">
@@ -177,18 +176,18 @@
     {
         if(ventas.VentasDetalles == null)
         {
-            mensaje = "La lista esta vacía";
+            toastService.ShowWarning("Tienes que agregar elementos a la lista","Lista Vacía!");
             return;
         }
 
         if(ventascontroller.Guardar(ventas))
         {
-            mensaje = "Guardado correctamente";
+            toastService.ShowSuccess("Has guardado la venta exitosamente","Guardado!");
             this.ventas = new Ventas();
         }
         else
         {
-            mensaje = "No se pudo guardar";
+            toastService.ShowError("No se pudo guardar la venta","Error");
         }
     }
 
@@ -196,11 +195,11 @@
     {
         if(ventascontroller.Eliminar(ventas.VentaId))
         {
-            mensaje = "Eliminado correctamente";
+            toastService.ShowInfo("Has eliminado la venta exitosamente","Eliminado!");
             this.ventas = new Ventas();
         } else
         {
-            mensaje = "No se pudo eliminar";
+            toastService.ShowWarning("No se pudo eliminar la venta","No eliminado");
         }
     }
 
@@ -210,11 +209,11 @@
         if (busca != null)
         {
             this.ventas = busca;
-            mensaje = "Encontrado correctamente";
+            toastService.ShowSuccess("Venta encontrada exitosamente","Encontrado!");
         }
         else
         {
-            mensaje = "No se pudo encontrar";
+            toastService.ShowWarning("No se pudo encontrar la venta","No encontrado");
         }
     }
 
@@ -223,7 +222,7 @@
     {
         if(ventas.VentasDetalles.Any(A => A.ProductoId == productos.ProductoId))
         {
-            mensaje = "Este producto ya esta registrado";
+            toastService.ShowWarning("Este producto ya se ha agregado","Duplicado!");
         }
         else
         {
