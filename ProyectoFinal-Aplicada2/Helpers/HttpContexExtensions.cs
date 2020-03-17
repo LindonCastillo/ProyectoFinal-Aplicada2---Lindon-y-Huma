@@ -8,7 +8,8 @@ namespace ProyectoFinal_Aplicada2.Helpers
 {
     public static class HttpContexExtensions
     {
-        public static async Task InsertarParametrosPaginacionRespuesta<T>(this HttpContext contex, IQueryable<T> queryble, int CantidadResgistrosMostrar)
+        public static async Task InsertarParametrosPaginacionRespuesta<T>(this HttpContext contex, IQueryable<T> queryble, 
+            int CantidadResgistrosMostrar)
         {
             if(contex == null)
             {

@@ -179,7 +179,7 @@ namespace ProyectoFinal_Aplicada2.Controllers
             Contexto db = new Contexto();
             try
             {
-                lista = db.Compras.Where(expression).ToList();
+                lista = db.Compras.Skip(2).Take(2).ToList();
             }
             catch (Exception)
             {
@@ -189,5 +189,6 @@ namespace ProyectoFinal_Aplicada2.Controllers
             return lista;
         }
 
+  
     }
 }
