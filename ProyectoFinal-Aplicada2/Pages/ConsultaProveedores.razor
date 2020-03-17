@@ -1,29 +1,30 @@
 ﻿@page "/ConsultaProveedores"
 
-    <div class="form-row">
-        <div class="col">
-            <input type="text" class="form-control" placeholder="Criterio" @onfocusin="Filtrar" @onfocusout="Filtrar" @onclick="Filtrar" @bind="Criterio" />
-        </div>
-
-        <div class="col">
-            <select class="form-control" @onclick="Filtrar" @bind="filtro">
-                <option value="0">Todos</option>
-                <option value="1">Id</option>
-                <option value="2">Nombre Proveedor</option>
-                <option value="3">Telefono</option>
-                <option value="4">Direcciones</option>
-                <option value="5">RNC</option>
-                <option value="6">TipoNegocio</option>
-                <option value="7">TipoMoneda</option>
-            </select>
-        </div>
+<div class="form-row">
+    <div class="col">
+        <input type="text" class="form-control" placeholder="Criterio" @onfocusin="Filtrar" @onfocusout="Filtrar" @onclick="Filtrar" @bind="Criterio" />
     </div>
 
+    <div class="col">
+        <select class="form-control" @onclick="Filtrar" @bind="filtro">
+            <option value="0">Todos</option>
+            <option value="1">Id</option>
+            <option value="2">Nombre Proveedor</option>
+            <option value="3">Telefono</option>
+            <option value="4">Direcciones</option>
+            <option value="5">RNC</option>
+            <option value="6">TipoNegocio</option>
+            <option value="7">TipoMoneda</option>
+        </select>
+    </div>
+</div>
+
 <h3>Consulta de Proveedores</h3>
-@if(Lista == null)
+@if (Lista == null)
 {
     <p>No hay datos</p>
-} else
+}
+else
 {
     <table class="table">
         <thead>
@@ -59,15 +60,20 @@
 
 
 
-
 @code {
     List<Proveedores> Lista = new List<Proveedores>();
+    Contexto Contexto = new Contexto();
+
 
     protected override void OnInitialized()
     {
-        Lista = proveedorescontrollers.GetList(P => true);
+        Lista = proveedorescontrollers.GetList(p => true);
+   
     }
 
+    private int cantPag=12;
+    private int tomar;
+    private int pag;
 
     private string filtro;
     private string Criterio;
@@ -76,7 +82,7 @@
     DateTime hastaFecha = DateTime.Now;
     DateTime desdeFecha = DateTime.Now;
 
-    
+
     public List<Proveedores> listado { get; set; }
 
     private void Filtrar()
@@ -108,27 +114,27 @@
                         break;
                     //Nombre
                     case 2:
-                            listado = proveedorescontrollers.GetList(p => p.NombreProveedor.Contains(Criterio));
-                        break;   
-                    //Telefono   
+                        listado = proveedorescontrollers.GetList(p => p.NombreProveedor.Contains(Criterio));
+                        break;
+                    //Telefono
                     case 3:
-                            listado = proveedorescontrollers.GetList(p => p.Telefono.Contains(Criterio));
-                        break;   
-                    //Direccion    
+                        listado = proveedorescontrollers.GetList(p => p.Telefono.Contains(Criterio));
+                        break;
+                    //Direccion
                     case 4:
-                            listado = proveedorescontrollers.GetList(p => p.Direcciones.Contains(Criterio));
-                        break;     
-                    //RNC    
+                        listado = proveedorescontrollers.GetList(p => p.Direcciones.Contains(Criterio));
+                        break;
+                    //RNC
                     case 5:
-                            listado = proveedorescontrollers.GetList(p => p.RNC.Contains(Criterio));
-                        break; 
+                        listado = proveedorescontrollers.GetList(p => p.RNC.Contains(Criterio));
+                        break;
                     //TipoNegocio
                     case 6:
-                            listado = proveedorescontrollers.GetList(p => p.TipoNegocio.Contains(Criterio));
+                        listado = proveedorescontrollers.GetList(p => p.TipoNegocio.Contains(Criterio));
                         break;
                     //TipoMoneda
                     case 7:
-                            listado = proveedorescontrollers.GetList(p => p.TipoMoneda.Contains(Criterio));
+                        listado = proveedorescontrollers.GetList(p => p.TipoMoneda.Contains(Criterio));
                         break;
                 }
             }

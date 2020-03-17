@@ -65,15 +65,35 @@ else
     </table>
 }
 
+<nav aria-label="...">
+    <ul class="pagination pagination-lg">
+        @for (int i = 1; i <=pagination.CantidadMostrar; i++)
+        {
+            <li class="page-item"><a class="page-link">@i</a></li>
+        }
+
+
+
+    </ul>
+</nav>
+
+
 @code {
     List<Compras> Lista = new List<Compras>();
+    List<Compras> listacompra = new List<Compras>();
+
+    Paginacion pagination = new Paginacion();
 
     protected override void OnInitialized()
     {
         Lista = comprascontroller.GetList(p => true);
-    
-        this.Lista.Skip(2).Take(1).ToList();
-    
+
+    }
+
+    private void SeleccionarPaginacion()
+    {
+        this.Lista.Count();
+        this.Lista.Skip(2).Take(2).ToList();
 
     }
 
@@ -84,6 +104,10 @@ else
 
     DateTime hastaFecha = DateTime.Now;
     DateTime desdeFecha = DateTime.Now;
+
+
+
+
 
     public List<Compras> listado { get; set; }
 
@@ -98,7 +122,7 @@ else
 
             //wey klok
         }
-        
+
     }
 
     private void Filtrar()

@@ -8,7 +8,7 @@ namespace ProyectoFinal_Aplicada2.Paginacion
     public class Paginacion
     {
         public int Pagina { get; set; } = 1;
-        public int CantidadMostrar { get; set; } = 10;
+        public int CantidadMostrar { get; set; } = 2;
 
     }
 }
