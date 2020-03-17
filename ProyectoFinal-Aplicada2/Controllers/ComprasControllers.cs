@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 using ProyectoFinal_Aplicada2.Data;
 using ProyectoFinal_Aplicada2.Models;
 using System.Threading.Tasks;
+using ProyectoFinal_Aplicada2.Paginando;
 
 namespace ProyectoFinal_Aplicada2.Controllers
 {
@@ -157,7 +158,25 @@ namespace ProyectoFinal_Aplicada2.Controllers
             return compras;
         }
 
-        public Compras SoloCompra(int id)
+
+        public List<Compras> GetList(Expression<Func<Compras,bool>> expression)
+        {
+            List<Compras> lista = new List<Compras>();
+            Contexto db = new Contexto();
+            try
+            {
+                Paginacion paginacion = new Paginacion();         
+                lista = db.Compras.Skip(paginacion.Pagina -1 * paginacion.CantidadMostrar).Take(paginacion.CantidadMostrar).ToList();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            return lista;
+        }
+
+    public Compras SoloCompra(int id)
         {
             Compras compras = new Compras();
             Contexto contexto = new Contexto();
@@ -172,23 +191,5 @@ namespace ProyectoFinal_Aplicada2.Controllers
             }
             return compras;
         }
-
-        public List<Compras> GetList(Expression<Func<Compras,bool>> expression)
-        {
-            List<Compras> lista = new List<Compras>();
-            Contexto db = new Contexto();
-            try
-            {
-                lista = db.Compras.Skip(2).Take(2).ToList();
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-            return lista;
-        }
-
-  
     }
 }

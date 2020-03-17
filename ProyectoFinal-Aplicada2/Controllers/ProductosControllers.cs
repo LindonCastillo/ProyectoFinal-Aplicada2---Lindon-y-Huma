@@ -112,9 +112,10 @@ namespace ProyectoFinal_Aplicada2.Controllers
         {
             Contexto db = new Contexto();
             List<Productos> lista = new List<Productos>();
-
             try
             {
+
+               double conteo =  lista.Count();
                 lista = db.Productos.Where(expression).ToList();
             }
             catch (Exception)

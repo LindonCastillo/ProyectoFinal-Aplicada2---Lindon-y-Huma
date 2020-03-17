@@ -68,6 +68,7 @@
             <div class="col">
                 <label for="TipoPago">Tipo de pago</label>
                 <InputSelect @bind-Value="TipoPago" class="form-control">
+                    <option value="">Tipo pago</option>
                     <option value="Efectivo">Efectivo</option>
                     <option value="Cheque">Cheque</option>
                 </InputSelect>
@@ -183,6 +184,9 @@
 
     }
 
+
+
+
     private bool ExisteCompra()
     {
         bool paso = false;
@@ -254,6 +258,12 @@
         if(Pago<1)
         {
             toastService.ShowWarning("El pago debe ser mayor que cero","Error");
+            paso = false;
+        }
+
+        if(string.IsNullOrEmpty(TipoPago))
+        {
+            toastService.ShowWarning("El tipo de pago es igual a cero","Tipo pago vacío");
             paso = false;
         }
 
