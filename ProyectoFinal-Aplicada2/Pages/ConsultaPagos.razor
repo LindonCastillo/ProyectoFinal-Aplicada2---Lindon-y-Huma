@@ -48,7 +48,7 @@ else
             {
                 <tr>
                     <td>@item.PagoId</td>
-                    <td>@item.PagoFecha</td>
+                    <td>@item.PagoFecha.ToString("dd/MM/yyyy")</td>
                     <td>@item.PagoTotal</td>
                     <td><a class="btn btn-outline-info" href="Pagos/@item.PagoId">Ver</a></td>
                 </tr>

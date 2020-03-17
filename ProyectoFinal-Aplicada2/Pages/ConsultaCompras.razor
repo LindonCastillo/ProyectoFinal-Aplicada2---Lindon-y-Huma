@@ -54,7 +54,7 @@ else
             {
                 <tr>
                     <td>@item.CompraId</td>
-                    <td>@item.FechaCompra</td>
+                    <td>@item.FechaCompra.ToString("dd/MM/yyyy")</td>
                     <td>@item.ProveedorId</td>
                     <td>@item.Itbis</td>
                     <td>@item.Balance</td>
@@ -71,7 +71,12 @@ else
     protected override void OnInitialized()
     {
         Lista = comprascontroller.GetList(p => true);
+    
+        this.Lista.Skip(2).Take(1).ToList();
+    
+
     }
+
 
     private string filtro;
     private string Criterio;

@@ -156,6 +156,7 @@
     List<Productos> listaProductos = new List<Productos>();
     private string ProductoId;
 
+    List<Compras> compraslista = new List<Compras>();
 
     [Parameter]
     public int Id { get; set; }
@@ -175,6 +176,8 @@
     {
         this.compras = new Compras();
     }
+
+   
 
     private void Guardar()
     {
