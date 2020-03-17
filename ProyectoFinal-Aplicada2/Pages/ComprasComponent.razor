@@ -59,34 +59,29 @@
             <InputText @bind-Value="compras.DescripcionCompra" class="form-control" placeholder="descripcion aquí"></InputText>
         </div>
 
-
         <div class="row">
             <div class="col">
                 <label for="Producto">Producto</label>
                 <InputSelect @bind-Value="ProductoId" @onclick="BuscarProducto" @onchange="BuscarProducto" class="form-control">
-                    <option value="">Elija una opción</option>
+                    <option>Elija un Producto</option>
                     @foreach (var item in listaProductos)
                     {
                         <option value="@item.ProductoId">@item.Nombre</option>
-                    }o
+                    }
                 </InputSelect>
-                <button class="btn btn-outline-primary" @onclick="AgregarProducto" type="button">Agregar</button>
             </div>
 
             <div class="col">
                 <label for="Cantidad">Cantidad</label>
-                <InputNumber @bind-Value="productos.Cantidad" class="form-control"></InputNumber>
+                <InputNumber @bind-Value="cantidad" class="form-control"></InputNumber>
             </div>
 
             <div class="col">
                 <label for="PrecioCompra">Precio de compra</label>
                 <InputNumber @bind-Value="productos.PrecioCompra" class="form-control"></InputNumber>
+                <button class="btn btn-info" @onclick="AgregarProducto" type="button">Agregar</button>
             </div>
-
         </div>
-
-
-
         <br />
 
         <table class="table">
@@ -155,6 +150,7 @@
     Productos productos = new Productos();
     List<Productos> listaProductos = new List<Productos>();
     private string ProductoId;
+    private int cantidad;
 
     List<Compras> compraslista = new List<Compras>();
 
@@ -177,7 +173,7 @@
         this.compras = new Compras();
     }
 
-   
+
 
     private void Guardar()
     {
@@ -245,22 +241,42 @@
 
     private void AgregarProducto()
     {
-
-        this.compras.ComprasDetalles.Add(new ComprasDetalle
+        if(productos.PrecioCompra == 0)
         {
-            Id = 0,
-            CompraId = compras.CompraId,
-            ProductoId = productos.ProductoId,
-            Nombre = productos.Nombre,
-            Cantidad = productos.Cantidad,
-            PrecioCompra = productos.PrecioCompra,
-            SubTotal = productos.Cantidad * productos.PrecioCompra
-        });
+            toastService.ShowWarning("Tiene que seleccionar un producto","No Valido!");
+            return;
+        }
+
+        if(cantidad <= 0)
+        {
+            toastService.ShowWarning("Tiene que poner una cantidad del producto seleccionado","No Valido!");
+            return;
+        }
+
+        if(compras.ComprasDetalles.Any(A => A.ProductoId == productos.ProductoId))
+        {
+            toastService.ShowWarning("Este producto ya se ha agregado","Duplicado!");
+        }
+        else
+        {
+            this.compras.ComprasDetalles.Add(new ComprasDetalle
+            {
+                Id = 0,
+                CompraId = compras.CompraId,
+                ProductoId = productos.ProductoId,
+                Nombre = productos.Nombre,
+                Cantidad = cantidad,
+                PrecioCompra = productos.PrecioCompra,
+                SubTotal = cantidad * productos.PrecioCompra
+            });
+        }
+
+        CalcularTotalDeCompra();
     }
 
     private void CalcularTotalDeCompra()
     {
-        compras.Total = productos.PrecioCompra * productos.Cantidad;
+        compras.Total = productos.PrecioCompra * cantidad;
         compras.Balance = compras.Total;
     }
 
@@ -269,6 +285,7 @@
         try
         {
             compras.ComprasDetalles.Remove(detalle);
+            CalcularTotalDeCompra();
         }
         catch (Exception)
         {

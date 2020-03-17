@@ -14,7 +14,7 @@
         background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
         padding: 30px;
         margin: auto;
-        margin-top: 100px;
+        margin-top: 50px;
         border-radius: 4px;
         font-family: 'calibri';
         color: white;
@@ -30,14 +30,16 @@
     <h3>Ventas</h3>
     <EditForm Model="@ventas" OnValidSubmit="Guardar">
         <DataAnnotationsValidator />
+        <label for="Id">VentaId</label>
         <div class="row">
             <div class="col-md-8">
                 <div class="form-group">
-                    <label for="Id">VentaId</label>
-                    <InputNumber id="id" @bind-Value="ventas.VentaId" class="form-control"></InputNumber>
+
+                    <InputNumber @bind-Value="ventas.VentaId" class="form-control"></InputNumber>
                     <ValidationMessage For="(()=>ventas.VentaId)"></ValidationMessage>
                 </div>
             </div>
+
 
             <div class="col-md-4">
 
@@ -52,35 +54,30 @@
             <ValidationMessage For="(()=>ventas.FechaVenta)"></ValidationMessage>
         </div>
 
-        <button class="btn btn-outline-primary" @onclick="AgregarProducto">Agregar</button>
-
         <div class="row">
             <div class="col">
                 <label for="producto_select">Producto</label>
                 <InputSelect id="producto_select" @bind-Value="@seleccionado" @onchange="CargarProducto" @onclick="CargarProducto" class="form-control">
+                    <option>Elija un Producto</option>
                     @foreach (var item in MiLista)
                     {
                         <option value="@item.ProductoId">@item.Nombre</option>
                     }
                 </InputSelect>
             </div>
-            <div class="col">
-                <label for="descripcion">Descripcion</label>
-                <InputText id="descripcion" class="form-control" @bind-Value="nombre" disabled ></InputText>
-            </div>
-        </div>
 
-        <div class="row">
             <div class="col">
                 <label for="cantidad">Cantidad</label>
                 <InputNumber id="cantidad" class="form-control" @bind-Value="cantidad"></InputNumber>
             </div>
+
             <div class="col">
                 <label for="precio">Precio</label>
                 <InputNumber id="precio" class="form-control" @bind-Value="precioVenta" disabled></InputNumber>
-                <button type="button" class="btn btn-outline-info" @onclick="AgregarProducto">Agregar</button>
+                <button type="button" class="btn btn-info" @onclick="AgregarProducto">Agregar</button>
             </div>
         </div>
+        <br />
 
         <table class="table">
             <thead class="thead-dark">
@@ -114,7 +111,11 @@
 
         </table>
 
-       
+        <div class="form-group">
+            <label for="total_v">Total</label>
+            <InputNumber id="total_v" @bind-Value="ventas.Total" disabled class="form-control"></InputNumber>
+            <ValidationMessage For="(()=>ventas.Total)"></ValidationMessage>
+        </div>
 
         <button type="button" class="btn btn-secondary" @onclick="Nuevo">Nuevo</button>
         <button type="submit" class="btn btn-success" @onclick="CalcularTotalDeVenta">Guardar</button>
@@ -148,7 +149,7 @@
             ventas = ventascontroller.Buscar(Id);
         }
         MiLista = productoscontrollers.GetList(A => true);
-        
+
     }
 
     private void CargarProducto()
@@ -220,6 +221,18 @@
 
     private void AgregarProducto()
     {
+        if(precioVenta == 0)
+        {
+            toastService.ShowWarning("Tiene que seleccionar un producto","No Valido!");
+            return;
+        }
+
+        if(cantidad <= 0)
+        {
+            toastService.ShowWarning("Tiene que poner una cantidad del producto seleccionado","No Valido!");
+            return;
+        }
+
         if(ventas.VentasDetalles.Any(A => A.ProductoId == productos.ProductoId))
         {
             toastService.ShowWarning("Este producto ya se ha agregado","Duplicado!");

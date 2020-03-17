@@ -2,18 +2,19 @@
 
 <h3>Consulta de Productos</h3>
 
-
 <div class="form-row">
 
     <div class="col">
-        <label for="desde_date">Desde:</label>
         <input id="desde_date" class="form-control" type="datetime-local" @bind="desdeFecha" />
+        <label for="desde_date">Desde</label>
+    </div>
+    <div class="col">
+        <input id="hasta_date" class="form-control" type="datetime-local" @bind="hastaFecha" />
+        <label for="hasta_date">Hasta</label>
     </div>
 
     <div class="col">
-        <label for="hasta_date">Hasta:</label>
-        <input id="hasta_date" class="form-control" type="datetime-local" @bind="hastaFecha" />
-        <button class="btn btn-primary" @onclick="filtradoPorFecha">Filtar por Fecha</button>
+        <button class="btn btn-primary" id="filtar_buton" @onclick="filtradoPorFecha">Filtar por Fecha</button>
     </div>
 
     <div class="col">
@@ -32,7 +33,7 @@
         </select>
     </div>
 </div>
-
+<br />
 
 @if(Lista == null)
 {
@@ -41,7 +42,7 @@
 } else
 {
     <table class="table">
-        <thead>
+        <thead class="thead-dark">
             <tr>
                 <th>Id</th>
                 <th>Nombre</th>

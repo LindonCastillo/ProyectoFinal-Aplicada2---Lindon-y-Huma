@@ -14,7 +14,7 @@
         background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
         padding: 30px;
         margin: auto;
-        margin-top: 100px;
+        margin-top: 50px;
         border-radius: 4px;
         font-family: 'calibri';
         color: white;
@@ -42,7 +42,7 @@
 
 
             <div class="col-md-4">
-                <button type="button" class="btn btn-success" @onclick="Buscar">Buscar</button>
+                <button type="button" class="btn btn-primary" @onclick="Buscar">Buscar</button>
             </div>
         </div>
 
@@ -68,7 +68,6 @@
         <div class="form-group">
             <label for="TipoNegocio">Tipo de negocio</label>
             <InputSelect @bind-Value="proveedores.TipoNegocio" class="form-control">
-                <option value="">Elija una opción</option>
                 <option value="Compra">Compra</option>
                 <option value="Venta">Venta</option>
                 <option value="Servicios">Servicios</option>
@@ -87,7 +86,6 @@
             <label for="TipoMoneda">Tipo Moneda</label>
 
             <InputSelect @bind-Value="proveedores.TipoMoneda" class="form-control">
-                <option value="">Elija una opción</option>
                 <option value="Peso">Peso</option>
                 <option value="Dolar">Dolar</option>
                 <option value="Euro">Euro</option>
@@ -95,8 +93,8 @@
             </InputSelect>
         </div>
 
-        <button type="button" class="btn btn-primary" @onclick="Nuevo">Nuevo</button>
-        <button type="submit" class="btn btn-primary">Guardar</button>
+        <button type="button" class="btn btn-secondary" @onclick="Nuevo">Nuevo</button>
+        <button type="submit" class="btn btn-success">Guardar</button>
         <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
 
     </EditForm>

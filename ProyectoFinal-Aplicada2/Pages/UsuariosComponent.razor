@@ -14,7 +14,7 @@
         background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
         padding: 30px;
         margin: auto;
-        margin-top: 100px;
+        margin-top: 50px;
         border-radius: 4px;
         font-family: 'calibri';
         color: white;
@@ -30,19 +30,17 @@
     <h3>Usuarios</h3>
     <EditForm Model="@usuarios" OnValidSubmit="Guardar">
         <DataAnnotationsValidator />
+        <label for="Id">UsuarioId</label>
         <div class="row">
             <div class="col-md-8">
                 <div class="form-group">
-                    <label for="Id">UsuarioId</label>
-                    <InputNumber id="id" @bind-Value="usuarios.UsuarioId" class="form-control"></InputNumber>
-                    <ValidationMessage For="(()=>usuarios.UsuarioId)"></ValidationMessage>
+                    <InputNumber @bind-Value="usuarios.UsuarioId" class="form-control"></InputNumber>
+                    <ValidationMessage For="(()=> usuarios.UsuarioId)"></ValidationMessage>
                 </div>
             </div>
 
             <div class="col-md-4">
-
                 <button type="button" class="btn btn-primary" @onclick="Buscar">Buscar</button>
-
             </div>
         </div>
 
@@ -71,8 +69,8 @@
         </div>
 
         <div class="form-group">
-            <label for="NivelUsuario_text" class="form-control">Nivel de Usuario</label>
-            <InputSelect class="form-control" @bind-Value="@usuarios.NivelUsuario">
+            <label for="nivelusuario" >Nivel de Usuario</label>
+            <InputSelect id="nivelusuario" class="form-control" @bind-Value="@usuarios.NivelUsuario">
                 <option value="Administrador">Administrador</option>
                 <option value="Contador">Contador</option>
                 <option value="Cajero">Cajero</option>
@@ -152,6 +150,13 @@
     private void Guardar()
     {
         UsuariosControllers controller = new UsuariosControllers();
+
+        if(usuarios.ConfirmarClave != usuarios.Clave  )
+        {
+            toastService.ShowWarning("La claves no son iguales","No Iguales!");
+            return;
+        }
+
 
         if (usuarios.UsuarioId > 0)
         {

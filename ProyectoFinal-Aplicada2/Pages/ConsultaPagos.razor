@@ -1,16 +1,19 @@
 ﻿@page "/ConsultaPagos"
-    
-<div class="form-row">
+
+    <h3>Consulta de Pagos</h3>
+    <div class="form-row">
 
         <div class="col">
-            <label for="desde_date">Desde:</label>
             <input id="desde_date" class="form-control" type="datetime-local" @bind="desdeFecha" />
+            <label for="desde_date">Desde</label>
+        </div>
+        <div class="col">
+            <input id="hasta_date" class="form-control" type="datetime-local" @bind="hastaFecha" />
+            <label for="hasta_date">Hasta</label>
         </div>
 
         <div class="col">
-            <label for="hasta_date">Hasta:</label>
-            <input id="hasta_date" class="form-control" type="datetime-local" @bind="hastaFecha" />
-            <button class="btn btn-primary" @onclick="filtradoPorFecha">Filtar por Fecha</button>
+            <button class="btn btn-primary" id="filtar_buton" @onclick="filtradoPorFecha">Filtar por Fecha</button>
         </div>
 
         <div class="col">
@@ -25,7 +28,9 @@
             </select>
         </div>
     </div>
-<h3>Consulta de Pagos</h3>
+<br />
+
+
 @if (Lista == null)
 {
     <p>No hay datos que mostrar</p>
@@ -34,7 +39,7 @@
 else
 {
     <table class="table">
-        <thead>
+        <thead class="thead-dark">
             <tr>
                 <th>Id</th>
                 <th>Fecha del Pago</th>
