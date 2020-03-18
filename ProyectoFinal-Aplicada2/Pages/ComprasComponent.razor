@@ -173,8 +173,6 @@
         this.compras = new Compras();
     }
 
-
-
     private void Guardar()
     {
         if(compras.ComprasDetalles == null)
@@ -183,6 +181,11 @@
             return;
         }
 
+        if(compras.Total == 0)
+        {
+            toastService.ShowWarning("La lista está vacía", "Lista nula!");
+            return;
+        }
 
         Proveedores proveedores = new Proveedores();
         if(proveedorescontrollers.Buscar(compras.ProveedorId)==null)
@@ -281,7 +284,7 @@
         decimal total = 0;
         foreach (var item in compras.ComprasDetalles)
         {
-            total += item.SubTotal; 
+            total += item.SubTotal;
         }
         compras.Total = total;
         compras.Balance = compras.Total + (compras.Total * (compras.Itbis/100));
