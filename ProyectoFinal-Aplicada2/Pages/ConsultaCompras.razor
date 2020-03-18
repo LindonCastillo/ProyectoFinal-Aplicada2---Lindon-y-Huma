@@ -78,6 +78,8 @@ else
     </ul>
 </nav>
 
+<button type="button" @onclick="Saltar">Saltar</button>
+
 <h4>@conteo</h4>
 
 @code {
@@ -97,20 +99,16 @@ else
 
     protected override void OnInitialized()
     {
-
-        if(I<=1)
-        {
-            conteo = contexto.Compras.Count();
-            totaldepaginas = Math.Ceiling(conteo/pagination.CantidadMostrar);
-            Lista = comprascontroller.GetList(p => true);
-        } else
-        {
-            Lista = comprascontroller.GetList(p => true);
-        }
-
+        conteo = contexto.Compras.Count();
+        totaldepaginas = Math.Ceiling(conteo/pagination.CantidadMostrar);
+       // Lista = comprascontroller.GetList(p => true);
+        this.Lista = contexto.Compras.Skip(pagination.CantidadMostrar * pagination.Pagina).Take(pagination.CantidadMostrar).ToList();
     }
 
-
+    private void Saltar()
+    {
+        Lista = comprascontroller.GetList(p => true);
+    }
 
     private string filtro;
     private string Criterio;
