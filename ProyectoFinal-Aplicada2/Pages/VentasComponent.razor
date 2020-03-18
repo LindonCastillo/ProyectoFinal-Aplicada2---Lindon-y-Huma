@@ -182,17 +182,23 @@
             return;
         }
 
-        if(ventascontroller.Guardar(ventas))
+        if(ventas.VentaId > 0)
         {
-            toastService.ShowSuccess("Has guardado la venta exitosamente","Guardado!");
+            ventascontroller.Guardar(ventas);
+            toastService.ShowSuccess("Has modificado la venta exitosamente", "Modificado!");
+            Nuevo();
+        } else if(ventas.VentaId == 0)
+        {
+            ventascontroller.Guardar(ventas);
+            toastService.ShowSuccess("Has guardado la venta exitosamente", "Guardado!");
              seleccionado = string.Empty;
              cantidad = 0;
              precioVenta = 0;
-            this.ventas = new Ventas();
-        }
-        else
+             this.ventas = new Ventas();
+            Nuevo();
+        } else
         {
-            toastService.ShowError("No se pudo guardar la venta","Error");
+            toastService.ShowError("No se pudo guardar", "Error!");
         }
     }
 
