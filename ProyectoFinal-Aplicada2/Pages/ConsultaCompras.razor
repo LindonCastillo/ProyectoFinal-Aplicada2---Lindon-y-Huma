@@ -1,5 +1,5 @@
 ﻿@page "/ConsultaCompras"
-@page  "/ConsultaCompras/{I:int}"
+@page "/ConsultaCompras/{I:int}"
 
 <h3>Consulta de Compras</h3>
 
@@ -70,15 +70,19 @@ else
 
 <nav aria-label="...">
     <ul class="pagination pagination-lg">
-        @for (int I =1; I<=totaldepaginas; I++)
+        @for (int i = 1; i <= totaldepaginas; i++)
         {
-            <li class="page-item"><a class="page-link" href="ConsultaCompras/@I">@I</a></li>
+            <li class="page-item"><a class="page-link" @onclick="OnInitialized" href="ConsultaCompras/@i">@i</a></li>
         }
-        
+
     </ul>
 </nav>
 
-<button type="button" @onclick="Saltar">Saltar</button>
+<div>
+    <label>Pagina: @Contador</label>
+    <button class="btn btn-dark" type="button" @onclick="Saltar">Saltar</button>
+</div>
+
 
 <h4>@conteo</h4>
 
@@ -89,25 +93,43 @@ else
     Contexto contexto = new Contexto();
 
     [Parameter]
+    
     public int I { get; set; }
+    private int Contador { get; set; }
+    private int contCiclo { get; set; }
 
-    Paginacion pagination = new Paginacion();
-    private double totaldepaginas =0;
-
+    Paginacion paginacion = new Paginacion();
+    public double totaldepaginas { get; set; }
 
     double conteo = 0;
 
     protected override void OnInitialized()
     {
         conteo = contexto.Compras.Count();
-        totaldepaginas = Math.Ceiling(conteo/pagination.CantidadMostrar);
-       // Lista = comprascontroller.GetList(p => true);
-        this.Lista = contexto.Compras.Skip(pagination.CantidadMostrar * pagination.Pagina).Take(pagination.CantidadMostrar).ToList();
+        totaldepaginas = Math.Ceiling(conteo/paginacion.CantidadMostrar);
+        Lista = comprascontroller.GetList(p => true);
+        this.Lista = contexto.Compras.Take(paginacion.CantidadMostrar).ToList();
+        NumSaltar();
+    }
+
+    private void NumSaltar()
+    {
+        Contador = I - 1;
+        Saltar();
     }
 
     private void Saltar()
     {
-        Lista = comprascontroller.GetList(p => true);
+        Contador += paginacion.Pagina;
+        if(Contador >= totaldepaginas)
+        {
+            Contador = 0;
+        }
+        Lista = contexto.Compras
+            .Skip(Contador * paginacion.CantidadMostrar)
+            .Take(paginacion.CantidadMostrar)
+            .ToList();
+        //Lista = contexto.Compras.Skip(1).Take(1).ToList();
     }
 
     private string filtro;

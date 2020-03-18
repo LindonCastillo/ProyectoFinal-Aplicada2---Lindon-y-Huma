@@ -164,8 +164,9 @@ namespace ProyectoFinal_Aplicada2.Controllers
             Contexto db = new Contexto();
             try
             {
-                Paginacion paginacion = new Paginacion();         
-                lista = db.Compras.Skip(paginacion.Pagina -1 * paginacion.CantidadMostrar).Take(paginacion.CantidadMostrar).ToList();
+                Paginacion paginacion = new Paginacion();
+                lista = db.Compras.Where(expression).ToList();
+                //lista = db.Compras.Skip(paginacion.Pagina -1 * paginacion.CantidadMostrar).Take(paginacion.CantidadMostrar).ToList();
             }
             catch (Exception)
             {
