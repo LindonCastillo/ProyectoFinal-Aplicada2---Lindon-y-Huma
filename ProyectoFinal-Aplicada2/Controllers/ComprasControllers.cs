@@ -72,32 +72,25 @@ namespace ProyectoFinal_Aplicada2.Controllers
 
                 foreach (var item in compras.ComprasDetalles)
                 {
-                    Productos temp = controllers.Buscar(item.ProductoId);
-                    temp.Cantidad -= item.Cantidad;
-                    controllers.Guardar(temp);
-                }
-
-                foreach (var item in compras.ComprasDetalles)
-                {
                     if(item.Id == 0)
                     {
                         db.Entry(item).State = EntityState.Added;
+                        var temp = controllers.Buscar(item.ProductoId);
+                        temp.Cantidad -= item.Cantidad;
+                        controllers.Guardar(temp);
                     }
-                }
+                }                
 
                 foreach (var item in anterior.ComprasDetalles)
                 {
-                    if(!compras.ComprasDetalles.Any(A=>A.Id == A.Id))
+                    if(!compras.ComprasDetalles.Any(A=>A.Id == item.Id))
                     {
                         db.Entry(item).State = EntityState.Deleted;
-                    }
-                }
 
-                foreach (var item in compras.ComprasDetalles)
-                {
-                    Productos temp = controllers.Buscar(item.ProductoId);
-                    temp.Cantidad += item.Cantidad;
-                    controllers.Guardar(temp);
+                        var temp = controllers.Buscar(item.ProductoId);
+                        temp.Cantidad += item.Cantidad;
+                        controllers.Guardar(temp);
+                    }
                 }
 
                 db.Entry(compras).State = EntityState.Modified;
@@ -124,7 +117,7 @@ namespace ProyectoFinal_Aplicada2.Controllers
                 {
                     foreach (var item in compras.ComprasDetalles)
                     {
-                        Productos temp = controllers.Buscar(item.ProductoId);
+                        var temp = controllers.Buscar(item.ProductoId);
                         temp.Cantidad -= item.Cantidad;
                         controllers.Guardar(temp);
                     }
@@ -164,7 +157,7 @@ namespace ProyectoFinal_Aplicada2.Controllers
             Contexto db = new Contexto();
             try
             {
-                lista = db.Compras.Where(expression).ToList();              
+                lista = db.Compras.Where(expression).Include(A => A.ComprasDetalles).ToList();              
             }
             catch (Exception)
             {
