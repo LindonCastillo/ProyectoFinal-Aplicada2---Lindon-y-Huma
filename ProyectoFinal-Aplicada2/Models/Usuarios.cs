@@ -18,12 +18,17 @@ namespace ProyectoFinal_Aplicada2.Models
         public string NombrePersona { get; set; }
         [Required(ErrorMessage = "El Email Usuario no puede estar vacío")]
         public string EmailUsuario { get; set; }
+     
+        [Required(ErrorMessage ="El nombre de usuario no puede estar vacio")]
+        [MinLength(3,ErrorMessage ="Nombre de usuario muy corto")]
+        [MaxLength(30,ErrorMessage ="Nombre de usuario muy largo")]
+        public string NombreUsuario { get; set; }
         [Required(ErrorMessage = "El Clave no puede estar vacío")]
         [MinLength(2, ErrorMessage = "El Clave muy corto")]
         [MaxLength(60, ErrorMessage = "Clave muy largo")]
         public string Clave { get; set; }
-        [Required(ErrorMessage = "El ConfirmarClave no puede estar vacío")]
-        [MinLength(2, ErrorMessage = "El ConfirmarClave muy corto")]
+        [Required(ErrorMessage = "El Confirmar Clave no puede estar vacío")]
+        [MinLength(2, ErrorMessage = "El Confirmar Clave es muy corto")]
         [MaxLength(60, ErrorMessage = "ConfirmarClave muy largo")]
         public string ConfirmarClave { get; set; }
         [Required(ErrorMessage = "El Nivel Usuario no puede estar vacío")]

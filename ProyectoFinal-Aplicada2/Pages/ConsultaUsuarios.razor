@@ -31,6 +31,7 @@
                 <option value="2">Nombre</option>
                 <option value="3">Email</option>
                 <option value="4">Nivel de Usuario</option>
+                <option value="5">Nombre de usuario</option>
             </select>
         </div>
     </div>
@@ -187,6 +188,10 @@ else
                     //NivelUsuario
                     case 4:
                         listado = usuariocontroller.GetList(p => p.NivelUsuario.Contains(Criterio));
+                        Lista = listado;
+                        break;
+                   case 5:
+                        listado = usuariocontroller.GetList(p => p.NombreUsuario.Contains(Criterio));
                         Lista = listado;
                         break;
                 }
