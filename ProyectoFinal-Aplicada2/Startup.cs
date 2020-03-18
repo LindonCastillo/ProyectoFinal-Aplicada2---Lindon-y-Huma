@@ -12,6 +12,9 @@ using Microsoft.Extensions.Hosting;
 using ProyectoFinal_Aplicada2.Data;
 using ProyectoFinal_Aplicada2.Controllers;
 using Blazored.Toast;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
+using System.Net.Http;
 
 namespace ProyectoFinal_Aplicada2
 {
@@ -28,6 +31,15 @@ namespace ProyectoFinal_Aplicada2
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                options.CheckConsentNeeded = context => true;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
+            services.AddAuthentication(
+                CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie();
+
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddScoped<ProductosControllers>();
@@ -36,7 +48,10 @@ namespace ProyectoFinal_Aplicada2
             services.AddScoped<VentasControllers>();
             services.AddScoped<UsuariosControllers>();
             services.AddBlazoredToast();
-
+            services.AddHttpContextAccessor();
+            services.AddScoped<HttpContextAccessor>();
+            services.AddHttpClient();
+            services.AddScoped<HttpClient>();
             services.AddScoped<PagosControllers>();
 
         }
@@ -59,7 +74,10 @@ namespace ProyectoFinal_Aplicada2
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseHttpsRedirection();
+            app.UseStaticFiles();
+            app.UseCookiePolicy();
+            app.UseAuthentication();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapBlazorHub();
