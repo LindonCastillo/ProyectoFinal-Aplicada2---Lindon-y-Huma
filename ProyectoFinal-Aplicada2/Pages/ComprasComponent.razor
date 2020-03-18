@@ -277,7 +277,7 @@
     private void CalcularTotalDeCompra()
     {
         compras.Total = productos.PrecioCompra * cantidad;
-        compras.Balance = compras.Total;
+        compras.Balance = compras.Total + (compras.Total * (compras.Itbis/100));
     }
 
     private void EliminarDetalle(ComprasDetalle detalle)
