@@ -54,7 +54,6 @@ namespace ProyectoFinal_Aplicada2.Controllers
             }
             catch (Exception)
             {
-
                 throw;
             }
             return paso;

@@ -1,5 +1,5 @@
 ﻿@page "/ConsultaCompras"
-@page  "/ConsultaCompras/0"
+@page  "/ConsultaCompras/{I:int}"
 
 <h3>Consulta de Compras</h3>
 
@@ -70,9 +70,9 @@ else
 
 <nav aria-label="...">
     <ul class="pagination pagination-lg">
-        @for (int i =1; i<=totaldepaginas; i++)
+        @for (int I =1; I<=totaldepaginas; I++)
         {
-            <li class="page-item"><a class="page-link" href="Consultacompras/@i">@i madre mia</a></li>
+            <li class="page-item"><a class="page-link" href="ConsultaCompras/@I">@I</a></li>
         }
         
     </ul>
@@ -84,20 +84,34 @@ else
     List<Compras> Lista = new List<Compras>();
     List<Compras> listacompra = new List<Compras>();
 
+    Contexto contexto = new Contexto();
+
+    [Parameter]
+    public int I { get; set; }
+
     Paginacion pagination = new Paginacion();
     private double totaldepaginas =0;
 
+
     double conteo = 0;
+
     protected override void OnInitialized()
-    {    
-        conteo = Lista.Count();
+    {
 
-        totaldepaginas = Math.Ceiling(conteo/pagination.CantidadMostrar);
+        if(I<=1)
+        {
+            conteo = contexto.Compras.Count();
+            totaldepaginas = Math.Ceiling(conteo/pagination.CantidadMostrar);
+            Lista = comprascontroller.GetList(p => true);
+        } else
+        {
+            Lista = comprascontroller.GetList(p => true);
+        }
 
-        Lista = comprascontroller.GetList(p => true);
     }
 
-  
+
+
     private string filtro;
     private string Criterio;
     private bool fechaFiltro;
