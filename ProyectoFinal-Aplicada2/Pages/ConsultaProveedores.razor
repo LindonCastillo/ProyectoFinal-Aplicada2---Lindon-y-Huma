@@ -1,9 +1,16 @@
 ﻿@page "/ConsultaProveedores"
-    <h3>Consulta de Proveedores</h3>
+@page "/ConsultaProveedores/{I:int}"
+
+
+<h3>Consulta de Proveedores</h3>
 
 <div class="form-row">
     <div class="col">
         <input type="text" class="form-control" placeholder="Criterio" @onfocusin="Filtrar" @onfocusout="Filtrar" @onclick="Filtrar" @bind="Criterio" />
+    </div>
+
+    <div class="col">
+        <button class="btn btn-dark" type="button" @onclick="Saltar">Pag. Siguiente</button>
     </div>
 
     <div class="col">
@@ -58,6 +65,17 @@ else
     </table>
 }
 
+<nav aria-label="...">
+    <ul class="pagination pagination-lg">
+        @for (int i = 1; i <= totaldepaginas; i++)
+        {
+            <li class="page-item"><a class="page-link" @onclick="OnInitialized" href="ConsultaProveedores/@i">@i</a></li>
+        }
+
+    </ul>
+</nav>
+
+
 @code {
     List<Proveedores> Lista = new List<Proveedores>();
     Contexto Contexto = new Contexto();
@@ -65,17 +83,46 @@ else
 
     protected override void OnInitialized()
     {
+        conteo = Contexto.Compras.Count();
+        totaldepaginas = Math.Ceiling(conteo/paginacion.CantidadMostrar);
         Lista = proveedorescontrollers.GetList(p => true);
+        this.Lista = Contexto.Proveedores.Take(paginacion.CantidadMostrar).ToList();
+        NumSaltar();
     }
 
 
-    private int cantPag=12;
-    private int tomar;
-    private int pag;
+    [Parameter]
+    public int I { get; set; }
+    private int Contador { get; set; }
+    private int contCiclo { get; set; }
+
+    Paginacion paginacion = new Paginacion();
+    public double totaldepaginas { get; set; }
+
+    double conteo = 0;
 
     private string filtro;
     private string Criterio;
     private bool fechaFiltro;
+
+    private void NumSaltar()
+    {
+        Contador = I - 1;
+        Saltar();
+    }
+
+    private void Saltar()
+    {
+        Contador += paginacion.Pagina;
+        if(Contador >= totaldepaginas)
+        {
+            Contador = 0;
+        }
+        Lista = Contexto.Proveedores
+            .Skip(Contador * paginacion.CantidadMostrar)
+            .Take(paginacion.CantidadMostrar)
+            .ToList();
+    }
 
     DateTime hastaFecha = DateTime.Now;
     DateTime desdeFecha = DateTime.Now;

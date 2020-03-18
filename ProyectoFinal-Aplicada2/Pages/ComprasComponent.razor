@@ -187,7 +187,7 @@
         Proveedores proveedores = new Proveedores();
         if(proveedorescontrollers.Buscar(compras.ProveedorId)==null)
         {
-            toastService.ShowWarning("Parece que el Id el proovedor no existe","No existel proovedor");
+            toastService.ShowWarning("Parece que el Id el proovedor no existe","No existe proovedor");
         }
         else
         {
@@ -197,6 +197,8 @@
                 toastService.ShowSuccess("Se ha modifcado la compra correctamente","Modificado!");
                 this.compras = new Compras();
                 compras.ComprasDetalles = new List<ComprasDetalle>();
+                cantidad = 0;
+                ProductoId = string.Empty;
             }
             else if(compras.CompraId == 0)
             {
@@ -204,6 +206,8 @@
                 toastService.ShowSuccess("Se ha guardado la compra exitosamente","Guardado!");
                 this.compras = new Compras();
                 compras.ComprasDetalles = new List<ComprasDetalle>();
+                ProductoId = string.Empty;
+                cantidad = 0;
             }  else
             {
                 toastService.ShowError("No se ha podido guardar", "Error!");

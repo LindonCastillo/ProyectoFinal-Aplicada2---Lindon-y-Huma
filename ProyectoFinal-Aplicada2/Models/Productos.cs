@@ -22,7 +22,7 @@ namespace ProyectoFinal_Aplicada2.Models
         [MaxLength(50,ErrorMessage ="Nombre muy largo")]
         public string Nombre { get; set; }
         [Required(ErrorMessage ="La cantidad debe ser un numero")]
-        [Range(0,100000000,ErrorMessage ="El La cantidad de productos no puede menor que cero")]
+        [Range(1,100000000,ErrorMessage ="El La cantidad de productos no puede menor que cero")]
         public int Cantidad { get; set; }
         [Required(ErrorMessage ="El precio debe ser un numero")]
         [Range(1, 10000000000000000000,ErrorMessage ="El precio debe ser mayor que cero")]

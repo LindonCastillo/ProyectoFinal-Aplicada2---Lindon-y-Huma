@@ -1,4 +1,5 @@
 ﻿@page "/ConsultaUsuarios"
+@page  "/ConsultaUsuarios/{I:int}"
 
     <h3>Consulta de Usuario</h3>
     <div class="row">
@@ -13,6 +14,10 @@
 
         <div class="col">
             <button class="btn btn-primary" id="filtar_buton" @onclick="filtradoPorFecha">Filtar por Fecha</button>
+        </div>
+
+        <div class="col">
+            <button class="btn btn-dark" type="button" @onclick="Saltar">Pag. Siguiente</button>
         </div>
 
         <div class="col">
@@ -59,26 +64,70 @@ else
                     <td>@item.EmailUsuario</td>
                     <td>@item.NivelUsuario</td>
                     <td>@item.FechaIngreso.ToString("dd/MM/yyyy")</td>
-                    <td><a class="btn btn-outline-info" href="Usuarios/@item.UsuarioId">Ver</a></td>
+                    <td><a class="btn btn-outline-info" href="ConsultaUsuarios/@item.UsuarioId">Ver</a></td>
                 </tr>
             }
         </tbody>
     </table>
 }
 
+<nav aria-label="...">
+    <ul class="pagination pagination-lg">
+        @for (int i = 1; i <= totaldepaginas; i++)
+        {
+            <li class="page-item"><a class="page-link" @onclick="OnInitialized" href="ConsultaUsuarios/@i">@i</a></li>
+        }
+
+    </ul>
+</nav>
+
 @code {
     List<Usuarios> Lista = new List<Usuarios>();
 
+     [Parameter]
+    public int I { get; set; }
+    private int Contador { get; set; }
+    private int contCiclo { get; set; }
 
-    protected override void OnInitialized()
-    {
-        Lista = usuariocontroller.GetList(A => true);
-    }
-
+    Paginacion paginacion = new Paginacion();
+    public double totaldepaginas { get; set; }
+    Contexto Contexto = new Contexto();
+    double conteo = 0;
 
     private string filtro;
     private string Criterio;
     private bool fechaFiltro;
+
+    private void NumSaltar()
+    {
+        Contador = I - 1;
+        Saltar();
+    }
+
+    private void Saltar()
+    {
+        Contador += paginacion.Pagina;
+        if(Contador >= totaldepaginas)
+        {
+            Contador = 0;
+        }
+        Lista = Contexto.Usuarios
+            .Skip(Contador * paginacion.CantidadMostrar)
+            .Take(paginacion.CantidadMostrar)
+            .ToList();
+    }
+
+    protected override void OnInitialized()
+    {
+        conteo = Contexto.Compras.Count();
+        totaldepaginas = Math.Ceiling(conteo/paginacion.CantidadMostrar);
+        Lista = usuariocontroller.GetList(p => true);
+        this.Lista = Contexto.Usuarios.Take(paginacion.CantidadMostrar).ToList();
+        NumSaltar();
+    }
+
+
+   
 
     DateTime hastaFecha = DateTime.Now;
     DateTime desdeFecha = DateTime.Now;

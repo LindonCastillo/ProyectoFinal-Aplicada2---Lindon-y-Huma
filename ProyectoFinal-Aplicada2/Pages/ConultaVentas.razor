@@ -1,7 +1,6 @@
 ﻿@page "/ConsultaVentas"
+@page  "/ConsultaVentas/{I:int}"
 
-@using ProyectoFinal_Aplicada2.Controllers;
-@using ProyectoFinal_Aplicada2.Models;
 
 <h3>Consulta de Ventas</h3>
 
@@ -18,6 +17,10 @@
 
     <div class="col">
         <button class="btn btn-primary" id="filtar_buton" @onclick="filtradoPorFecha">Filtar por Fecha</button>
+    </div>
+
+    <div class="col">
+        <button class="btn btn-dark" type="button" @onclick="Saltar">Pag. Siguiente</button>
     </div>
 
     <div class="col">
@@ -66,13 +69,56 @@ else
     </table>
 }
 
+<nav aria-label="...">
+    <ul class="pagination pagination-lg">
+        @for (int i = 1; i <= totaldepaginas; i++)
+        {
+            <li class="page-item"><a class="page-link" @onclick="OnInitialized" href="ConsultaVentas/@i">@i</a></li>
+        }
+
+    </ul>
+</nav>
+
 @code {
 
     List<Ventas> Lista = new List<Ventas>();
 
+   
+    [Parameter]
+    public int I { get; set; }
+    private int Contador { get; set; }
+    private int contCiclo { get; set; }
+
+    Paginacion paginacion = new Paginacion();
+    public double totaldepaginas { get; set; }
+    Contexto Contexto = new Contexto();
+    double conteo = 0;
+    private void NumSaltar()
+    {
+        Contador = I - 1;
+        Saltar();
+    }
+
+    private void Saltar()
+    {
+        Contador += paginacion.Pagina;
+        if(Contador >= totaldepaginas)
+        {
+            Contador = 0;
+        }
+        Lista = Contexto.Ventas
+            .Skip(Contador * paginacion.CantidadMostrar)
+            .Take(paginacion.CantidadMostrar)
+            .ToList();
+    }
+
     protected override void OnInitialized()
     {
-        Lista = ventascontroller.GetList(A => true);
+        conteo = Contexto.Compras.Count();
+        totaldepaginas = Math.Ceiling(conteo/paginacion.CantidadMostrar);
+        Lista = ventascontroller.GetList(p => true);
+        this.Lista = Contexto.Ventas.Take(paginacion.CantidadMostrar).ToList();
+        NumSaltar();
     }
 
 

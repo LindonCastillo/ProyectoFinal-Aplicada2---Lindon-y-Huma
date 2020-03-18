@@ -1,4 +1,6 @@
 ﻿@page "/ConsultaProductos"
+@page "/ConsultaProductos/{I:int}"
+
 
 <h3>Consulta de Productos</h3>
 
@@ -15,6 +17,10 @@
 
     <div class="col">
         <button class="btn btn-primary" id="filtar_buton" @onclick="filtradoPorFecha">Filtar por Fecha</button>
+    </div>
+
+    <div class="col">
+        <button class="btn btn-dark" type="button" @onclick="Saltar">Pag. Siguiente</button>
     </div>
 
     <div class="col">
@@ -35,11 +41,12 @@
 </div>
 <br />
 
-@if(Lista == null)
+@if (Lista == null)
 {
     <p>No hay datos que mostrar</p>
     return;
-} else
+}
+else
 {
     <table class="table">
         <thead class="thead-dark">
@@ -72,17 +79,63 @@
     </table>
 }
 
+<nav aria-label="...">
+    <ul class="pagination pagination-lg">
+        @for (int i = 1; i <= totaldepaginas; i++)
+        {
+            <li class="page-item"><a class="page-link" @onclick="OnInitialized" href="ConsultaProductos/@i">@i</a></li>
+        }
 
+    </ul>
+</nav>
 
 
 
 @code {
     List<Productos> Lista = new List<Productos>();
 
+
+
+    [Parameter]
+    public int I { get; set; }
+
+    double conteo = 0;
+    double totaldepaginas = 0;
+    Contexto contexto = new Contexto();
+    Paginacion paginacion = new Paginacion();
+    public int Contador { get; set; }
+
     protected override void OnInitialized()
     {
-        Lista = productoscontrollers.GetList(P => true);
+        conteo = contexto.Productos.Count();
+        totaldepaginas = Math.Ceiling(conteo/paginacion.CantidadMostrar);
+        Lista = productoscontrollers.GetList(A => true);
+        this.Lista = contexto.Productos.Take(paginacion.CantidadMostrar).ToList();
+        NumSaltar();
     }
+
+    private void NumSaltar()
+    {
+        Contador = I - 1;
+        Saltar();
+    }
+
+     private void Saltar()
+    {
+        Contador += paginacion.Pagina;
+        if(Contador >= totaldepaginas)
+        {
+            Contador = 0;
+        }
+
+        Lista = contexto.Productos
+            .Skip(Contador * paginacion.CantidadMostrar)
+            .Take(paginacion.CantidadMostrar)
+            .ToList();
+    }
+
+
+
     private string filtro;
     private string Criterio;
     private bool fechaFiltro;
@@ -103,7 +156,7 @@
 
             //wey klok
         }
-        
+
     }
 
     private void Filtrar()
@@ -134,7 +187,7 @@
                         break;
                     //Nombre
                     case 2:
-                            listado = productoscontrollers.GetList(p => p.Nombre.Contains(Criterio));
+                        listado = productoscontrollers.GetList(p => p.Nombre.Contains(Criterio));
                         break;
 
                     //Cantidas
@@ -156,7 +209,7 @@
                             listado = productoscontrollers.GetList(p => p.PrecioCompra == compra);
                             Lista = listado;
                         }
-                        break; 
+                        break;
                     //PorcentajeGanancias
                     case 5:
                         decimal porcentaje = 0;
@@ -166,7 +219,7 @@
                             listado = productoscontrollers.GetList(p => p.PorcentajeGanancias == porcentaje);
                             Lista = listado;
                         }
-                        break; 
+                        break;
                     //PrecioVentas
                     case 6:
                         decimal venta = 0;

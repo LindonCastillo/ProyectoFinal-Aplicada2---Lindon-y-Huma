@@ -1,4 +1,5 @@
 ﻿@page "/ConsultaPagos"
+@page  "/ConsultaPagos/{I:int}"
 
     <h3>Consulta de Pagos</h3>
     <div class="form-row">
@@ -16,6 +17,9 @@
             <button class="btn btn-primary" id="filtar_buton" @onclick="filtradoPorFecha">Filtar por Fecha</button>
         </div>
 
+        <div class="col">
+            <button class="btn btn-dark" type="button" @onclick="Saltar">Pag. Siguiente</button>
+        </div>
         <div class="col">
             <input type="text" class="form-control" placeholder="Criterio" @onfocusin="Filtrar" @onfocusout="Filtrar" @onclick="Filtrar" @bind="Criterio" />
         </div>
@@ -62,13 +66,58 @@ else
     </table>
 }
 
+<nav aria-label="...">
+    <ul class="pagination pagination-lg">
+        @for (int i = 1; i <= totaldepaginas; i++)
+        {
+            <li class="page-item"><a class="page-link" @onclick="OnInitialized" href="ConsultaPagos/@i">@i</a></li>
+        }
+
+    </ul>
+</nav>
+
 @code {
     List<Pagos> Lista = new List<Pagos>();
+    double conteo = 0;
+    double totaldepaginas = 0;
+    Contexto contexto = new Contexto();
+    Paginacion paginacion = new Paginacion();
+    public int Contador { get; set; }
+
+    [Parameter]
+    public int I { get; set; }
 
     protected override void OnInitialized()
     {
+     
+        conteo = contexto.Pagos.Count();
+        totaldepaginas = Math.Ceiling(conteo/paginacion.CantidadMostrar);
         Lista = pagoscontroller.GetList(A => true);
+        this.Lista = contexto.Pagos.Take(paginacion.CantidadMostrar).ToList();
+        NumSaltar();
     }
+
+
+     private void NumSaltar()
+    {
+        Contador = I - 1;
+        Saltar();
+    }
+
+     private void Saltar()
+    {
+        Contador += paginacion.Pagina;
+        if(Contador >= totaldepaginas)
+        {
+            Contador = 0;
+        }
+
+        Lista = contexto.Pagos
+            .Skip(Contador * paginacion.CantidadMostrar)
+            .Take(paginacion.CantidadMostrar)
+            .ToList();
+    }
+
 
 
     private string filtro;
