@@ -73,41 +73,31 @@ namespace ProyectoFinal_Aplicada2.Controllers
             try
             {
                 var anterior = Buscar(pagos.PagoId);
-
-                foreach (var item in pagos.PagosDetalles)
-                {
-                    Compras compras = comprasControllers.Buscar(item.CompraId);
-                    compras.Balance += item.Pago;
-                    comprasControllers.Guardar(compras);
-                }
-
                 foreach (var item in pagos.PagosDetalles)
                 {
                     if (item.Id == 0)
                     {
                         db.Entry(item).State = EntityState.Added;
+                        Compras compras = comprasControllers.Buscar(item.CompraId);
+                        compras.Balance -= item.Pago;
+                        comprasControllers.Guardar(compras);
                     }
                 }
 
                 foreach (var item in anterior.PagosDetalles)
                 {
-                    if (!pagos.PagosDetalles.Any(A => A.Id == A.Id))
+                    if (!pagos.PagosDetalles.Any(A => A.Id == item.Id))
                     {
                         db.Entry(item).State = EntityState.Deleted;
+                        Compras compras = comprasControllers.Buscar(item.CompraId);
+                        compras.Balance -= item.Pago;
+                        if (compras.Balance < 0)
+                        {
+                            compras.Balance = 0;
+                        }
+                        comprasControllers.Guardar(compras);
                     }
                 }
-
-                foreach (var item in pagos.PagosDetalles)
-                {
-                    Compras compras = comprasControllers.Buscar(item.CompraId);
-                    compras.Balance -= item.Pago;
-                    if(compras.Balance < 0)
-                    {
-                        compras.Balance = 0;
-                    }
-                    comprasControllers.Guardar(compras);
-                }
-
                 db.Entry(pagos).State = EntityState.Modified;
                 paso = db.SaveChanges() > 0;
             }
@@ -133,13 +123,11 @@ namespace ProyectoFinal_Aplicada2.Controllers
                     foreach (var item in pagos.PagosDetalles)
                     {
                         Compras compras = comprasControllers.Buscar(item.CompraId);
-                        compras.Balance += item.Pago;
-                        
-                        
+                        compras.Balance += item.Pago;     
                         comprasControllers.Guardar(compras);
                     }
 
-                    db.Entry(pagos).State = EntityState.Deleted;
+                    db.Remove(pagos);
                     paso = db.SaveChanges() > 0;
                 }
             }
