@@ -31,6 +31,7 @@
             <option value="2">ProveedorId</option>
             <option value="3">Itbis</option>
             <option value="4">Balance</option>
+            <option value="5">Descripción</option>
         </select>
     </div>
 </div>
@@ -50,6 +51,7 @@ else
                 <th>Fecha de compra</th>
                 <th>ProveedorId</th>
                 <th>Itbis</th>
+                <th>Descripción</th>
                 <th>Balance</th>
                 <th></th>
             </tr>
@@ -62,6 +64,7 @@ else
                     <td>@item.FechaCompra.ToString("dd/MM/yyyy")</td>
                     <td>@item.ProveedorId</td>
                     <td>@item.Itbis</td>
+                    <td>@item.DescripcionCompra</td>
                     <td>@item.Balance</td>
                     <td><a class="btn btn-outline-info" href="Compras/@item.CompraId">Ver</a></td>
                 </tr>
@@ -204,7 +207,14 @@ else
                             Lista = listado;
                         }
                         break;
-                }
+                    case 5:         
+                    {
+                       
+                        listado = comprascontroller.GetList(p => p.DescripcionCompra.Contains(Criterio));;
+                        Lista = listado;
+                    }
+                    break;
+                    }
             }
             else
             {
