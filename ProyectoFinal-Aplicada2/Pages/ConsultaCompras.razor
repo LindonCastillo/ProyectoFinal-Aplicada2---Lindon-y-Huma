@@ -17,7 +17,9 @@
     <div class="col">
         <button class="btn btn-primary" id="filtar_buton" @onclick="filtradoPorFecha">Filtar por Fecha</button>
     </div>
-
+    <div class="col">
+        <button class="btn btn-dark" type="button" @onclick="Saltar">Pag. Siguiente</button>
+    </div>
     <div class="col">
         <input type="text" class="form-control" placeholder="Criterio" @onfocusin="Filtrar" @onfocusout="Filtrar" @onclick="Filtrar" @bind="Criterio" />
     </div>
@@ -47,7 +49,7 @@ else
                 <th>Id</th>
                 <th>Fecha de compra</th>
                 <th>ProveedorId</th>
-                <th>Itebis</th>
+                <th>Itbis</th>
                 <th>Balance</th>
                 <th></th>
             </tr>
@@ -78,14 +80,6 @@ else
     </ul>
 </nav>
 
-<div>
-    <label>Pagina: @Contador</label>
-    <button class="btn btn-dark" type="button" @onclick="Saltar">Saltar</button>
-</div>
-
-
-<h4>@conteo</h4>
-
 @code {
     List<Compras> Lista = new List<Compras>();
     List<Compras> listacompra = new List<Compras>();
@@ -93,7 +87,6 @@ else
     Contexto contexto = new Contexto();
 
     [Parameter]
-    
     public int I { get; set; }
     private int Contador { get; set; }
     private int contCiclo { get; set; }
@@ -129,7 +122,6 @@ else
             .Skip(Contador * paginacion.CantidadMostrar)
             .Take(paginacion.CantidadMostrar)
             .ToList();
-        //Lista = contexto.Compras.Skip(1).Take(1).ToList();
     }
 
     private string filtro;
