@@ -187,7 +187,7 @@
         Proveedores proveedores = new Proveedores();
         if(proveedorescontrollers.Buscar(compras.ProveedorId)==null)
         {
-            toastService.ShowWarning("Parece que el Id el proovedor no existe","No existe proovedor");
+            toastService.ShowWarning("Parece que el proovedor no existe","No existe proovedor");
         }
         else
         {
@@ -195,17 +195,15 @@
             {
                 comprascontroller.Guardar(compras);
                 toastService.ShowSuccess("Se ha modifcado la compra correctamente","Modificado!");
-                this.compras = new Compras();
-                compras.ComprasDetalles = new List<ComprasDetalle>();
                 cantidad = 0;
                 ProductoId = string.Empty;
+                this.compras = new Compras();
             }
             else if(compras.CompraId == 0)
             {
                 comprascontroller.Guardar(compras);
                 toastService.ShowSuccess("Se ha guardado la compra exitosamente","Guardado!");
                 this.compras = new Compras();
-                compras.ComprasDetalles = new List<ComprasDetalle>();
                 ProductoId = string.Empty;
                 cantidad = 0;
             }  else
@@ -238,7 +236,7 @@
         }
         else
         {
-            toastService.ShowWarning("Se se pudo econtrar la compra", "No encontrado!");
+            toastService.ShowWarning("No se pudo econtrar la compra", "No encontrado!");
         }
     }
 
@@ -280,7 +278,12 @@
 
     private void CalcularTotalDeCompra()
     {
-        compras.Total = productos.PrecioCompra * cantidad;
+        decimal total = 0;
+        foreach (var item in compras.ComprasDetalles)
+        {
+            total += item.SubTotal; 
+        }
+        compras.Total = total;
         compras.Balance = compras.Total + (compras.Total * (compras.Itbis/100));
     }
 
