@@ -83,6 +83,7 @@ namespace ProyectoFinal_Aplicada2.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     NombrePersona = table.Column<string>(maxLength: 50, nullable: false),
                     EmailUsuario = table.Column<string>(nullable: false),
+                    NombreUsuario = table.Column<string>(maxLength: 30, nullable: false),
                     Clave = table.Column<string>(maxLength: 60, nullable: false),
                     ConfirmarClave = table.Column<string>(maxLength: 60, nullable: false),
                     NivelUsuario = table.Column<string>(nullable: false),
@@ -140,18 +141,17 @@ namespace ProyectoFinal_Aplicada2.Migrations
                     PagoId = table.Column<int>(nullable: false),
                     CompraId = table.Column<int>(nullable: false),
                     TipoPago = table.Column<string>(nullable: true),
-                    Pago = table.Column<decimal>(nullable: false),
-                    PagosId = table.Column<int>(nullable: true)
+                    Pago = table.Column<decimal>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PagosDetalle", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PagosDetalle_Pagos_PagosId",
-                        column: x => x.PagosId,
+                        name: "FK_PagosDetalle_Pagos_PagoId",
+                        column: x => x.PagoId,
                         principalTable: "Pagos",
                         principalColumn: "PagoId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -184,9 +184,9 @@ namespace ProyectoFinal_Aplicada2.Migrations
                 column: "CompraId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PagosDetalle_PagosId",
+                name: "IX_PagosDetalle_PagoId",
                 table: "PagosDetalle",
-                column: "PagosId");
+                column: "PagoId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_VentasDetalle_VentaId",

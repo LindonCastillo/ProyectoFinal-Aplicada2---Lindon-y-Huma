@@ -11,7 +11,7 @@ namespace ProyectoFinal_Aplicada2.Data
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            base.OnConfiguring(optionsBuilder.UseSqlite("Data Source = Database/ProyectoFinal"));
+            base.OnConfiguring(optionsBuilder.UseSqlite("Data Source = Database/ProyectoFinalLindonYHuma"));
         }
 
         public DbSet<Productos> Productos { get; set; }

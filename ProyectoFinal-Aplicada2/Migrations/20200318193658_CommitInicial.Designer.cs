@@ -9,8 +9,8 @@ using ProyectoFinal_Aplicada2.Data;
 namespace ProyectoFinal_Aplicada2.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20200318185935_AgregandoElNombreDeUsuario")]
-    partial class AgregandoElNombreDeUsuario
+    [Migration("20200318193658_CommitInicial")]
+    partial class CommitInicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
