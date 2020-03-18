@@ -184,9 +184,6 @@
 
     }
 
-
-
-
     private bool ExisteCompra()
     {
         bool paso = false;
@@ -240,7 +237,7 @@
         Pago = 0;
         TipoPago = string.Empty;
         CompraId = string.Empty;
-        
+        compras.Balance = 0;
     }
 
     private bool Validar()
@@ -287,7 +284,6 @@
                 TipoPago = TipoPago,
                 Pago = Pago
             });
-
 
         }
         CalcularPagoTotal();
