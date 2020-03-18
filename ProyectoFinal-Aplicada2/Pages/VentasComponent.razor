@@ -73,7 +73,7 @@
 
             <div class="col">
                 <label for="precio">Precio</label>
-                <InputNumber id="precio" class="form-control" @bind-Value="precioVenta" ></InputNumber>
+                <InputNumber id="precio" class="form-control" @bind-Value="precioVenta" ReadOnly="True"></InputNumber>
                 <button type="button" class="btn btn-info" @onclick="AgregarProducto">Agregar</button>
             </div>
         </div>
@@ -113,8 +113,8 @@
 
         <div class="form-group">
             <label for="total_v">Total</label>
-            <InputNumber id="total_v" @bind-Value="ventas.Total" disabled class="form-control"></InputNumber>
-            <ValidationMessage For="(()=>ventas.Total)"></ValidationMessage>
+            <InputNumber id="total_v" @bind-Value="ventas.Total" ReadOnly="True" class="form-control"></InputNumber>
+            <ValidationMessage For="(()=>ventas.Total)"></ValidationMessage> 
         </div>
 
         <button type="button" class="btn btn-secondary" @onclick="Nuevo">Nuevo</button>
