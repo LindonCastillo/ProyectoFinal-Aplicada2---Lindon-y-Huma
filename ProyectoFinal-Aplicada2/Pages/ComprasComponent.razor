@@ -131,12 +131,12 @@
 
         <div class="form-group">
             <label for="Total">Total</label>
-            <InputNumber @bind-Value="compras.Total" disabled class="form-control"></InputNumber>
+            <InputNumber @bind-Value="compras.Total" ReadOnly="true" class="form-control"></InputNumber>
         </div>
 
         <div class="form-group">
             <label for="Balance">Balance</label>
-            <InputNumber @bind-Value="compras.Balance" disabled class="form-control"></InputNumber>
+            <InputNumber @bind-Value="compras.Balance" ReadOnly="true" class="form-control"></InputNumber>
         </div>
 
         <button type="button" class="btn btn-secondary" @onclick="Nuevo">Nuevo</button>
