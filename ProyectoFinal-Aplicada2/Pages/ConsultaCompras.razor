@@ -101,11 +101,19 @@ else
 
     protected override void OnInitialized()
     {
-        conteo = contexto.Compras.Count();
-        totaldepaginas = Math.Ceiling(conteo/paginacion.CantidadMostrar);
-        Lista = comprascontroller.GetList(p => true);
-        this.Lista = contexto.Compras.Take(paginacion.CantidadMostrar).ToList();
-        NumSaltar();
+        try
+        {
+            conteo = contexto.Compras.Count();
+            totaldepaginas = Math.Ceiling(conteo/paginacion.CantidadMostrar);
+            Lista = comprascontroller.GetList(p => true);
+            this.Lista = contexto.Compras.Take(paginacion.CantidadMostrar).ToList();
+            NumSaltar();
+        }
+        catch (Exception)
+        {
+
+            //
+        }
     }
 
     private void NumSaltar()
@@ -207,14 +215,14 @@ else
                             Lista = listado;
                         }
                         break;
-                    case 5:         
-                    {
-                       
-                        listado = comprascontroller.GetList(p => p.DescripcionCompra.Contains(Criterio));;
-                        Lista = listado;
-                    }
-                    break;
-                    }
+                    case 5:
+                        {
+
+                            listado = comprascontroller.GetList(p => p.DescripcionCompra.Contains(Criterio));;
+                            Lista = listado;
+                        }
+                        break;
+                }
             }
             else
             {

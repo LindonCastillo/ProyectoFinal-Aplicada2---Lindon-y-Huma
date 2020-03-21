@@ -27,7 +27,6 @@ namespace ProyectoFinal_Aplicada2.Models
         [Required(ErrorMessage ="La descripción de compra no puede estar vacía")]
         [MinLength(4,ErrorMessage ="Descripción muy corta")]
         [MaxLength(30, ErrorMessage = "Descripción muy larga")]
-
         public string DescripcionCompra { get; set; }
 
         public decimal Total { get; set; }
