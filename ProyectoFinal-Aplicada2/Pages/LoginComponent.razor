@@ -1,52 +1,67 @@
 ﻿@page "/login"
 
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .form-register {
+            width: 800px;
+            background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
+            padding: 30px;
+            margin: auto;
+            margin-top: 50px;
+            border-radius: 4px;
+            font-family: 'calibri';
+            color: white;
+            box-shadow: 7px 13px 37px #000;
+        }
+
+        .h3 {
+            color: white;
+        }
+    </style>
+
 
 <h3>Login</h3>
+<section class="form-register">
+    <EditForm Model="Usuarios" OnValidSubmit="EvaluarExistenciausuario">
 
-<EditForm Model="Usuarios" OnValidSubmit="EvaluarExistenciausuario">
+        <div class="form-group">
+            <label for="NombreUsuario">Nombre de usuario</label>
+            <InputText @bind-Value="nombreusaurio" class="form-control" placeholder="Nombre aquí"></InputText>
+        </div>
 
-    <div class="form-group">
-        <label for="NombreUsuario">Nombre de usuario</label>
-        <InputText @bind-Value="nombreusaurio" class="form-control" placeholder="Nombre aquí"></InputText>
-    </div>
+        <div class="form-group">
+            <label for="ClaveUsuario">Clave del usuario</label>
+            <InputText @bind-Value="clave" class="form-control" placeholder="Su clave de usuario"></InputText>
+        </div>
 
-    <div class="form-control">
-        <label for="ClaveUsuario">Clave del usuario</label>
-        <InputText @bind-Value="clave" class="form-control" placeholder="Su clave de usuario"></InputText>
-    </div>
+        <button type="submit" class="btn btn-primary">Iniciar sesión</button>
+        <button type="button" @onclick="Nuevo" class="btn btn-info">Limpiar</button>
+        
+    </EditForm>
 
-    <button type="submit" class="btn btn-primary">Registrarse</button>
-    <button type="button" @onclick="Nuevo" class="btn btn-info">Limpiar</button>
-
-</EditForm>
-
-//No modifica la compra 
-//No elimina el pago 
-//Detalle de venta no dice que se modifica
- //En todas las consultas, hay que darle a la funcion que pagina y que el contador sea cero
+</section>
 
 
 @code {
 
     Usuarios Usuarios = new Usuarios();
-    Contexto contexto = new Contexto();
     private string nombreusaurio;
+
+    Contexto Contexto = new Contexto();
     private string clave;
     private void EvaluarExistenciausuario()
     {
-        if(contexto.Usuarios.Any(A=>A.NombreUsuario != nombreusaurio))
+        if(Contexto.Usuarios.Any(A=>A.NombreUsuario == nombreusaurio  && Contexto.Usuarios.Any(A=>A.Clave == clave))
         {
-            toastService.ShowError("No existe este nombre de usuario","Error");
+           .ShowError("No existe este nombre de usuario","Error");
             return;
         }
 
-        if(contexto.Usuarios.Any(A=>A.Clave != clave))
-        {
-            toastService.ShowError("No existe esta clave","Error");
-        } else
-        {
-            toastService.ShowSuccess("Te has logeado correctamente","Logeado!");
-        }
     }
 
     private void Nuevo()
