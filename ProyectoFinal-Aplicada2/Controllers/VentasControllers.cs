@@ -70,9 +70,9 @@ namespace ProyectoFinal_Aplicada2.Controllers
             {
                 Ventas anterior = Buscar(ventas.VentaId);
 
-                foreach (var item in ventas.VentasDetalles)
+                foreach (var item in anterior.VentasDetalles)
                 {
-                    Productos temp = controllers.Buscar(item.ProductoId);
+                    var temp = controllers.Buscar(item.ProductoId);
                     temp.Cantidad += item.Cantidad;
                     controllers.Guardar(temp);
                 }
@@ -87,21 +87,22 @@ namespace ProyectoFinal_Aplicada2.Controllers
 
                 foreach (var item in anterior.VentasDetalles)
                 {
-                    if (!ventas.VentasDetalles.Any(A => A.Id == A.Id))
+                    if (!ventas.VentasDetalles.Any(A => A.Id == item.Id))
                     {
                         db.Entry(item).State = EntityState.Deleted;
                     }
                 }
 
+                db.Entry(ventas).State = EntityState.Modified;
+                paso = db.SaveChanges() > 0;
+
+                //Modificar los productos cuando se modifique la venta;
                 foreach (var item in ventas.VentasDetalles)
                 {
-                    Productos temp = controllers.Buscar(item.ProductoId);
+                    var temp = controllers.Buscar(item.ProductoId);
                     temp.Cantidad -= item.Cantidad;
                     controllers.Guardar(temp);
                 }
-
-                db.Entry(ventas).State = EntityState.Modified;
-                paso = db.SaveChanges() > 0;
             }
             catch (Exception)
             {
@@ -119,13 +120,13 @@ namespace ProyectoFinal_Aplicada2.Controllers
 
             try
             {
-                Ventas ventas = db.Ventas.Find(id);
+                Ventas ventas = Buscar(id);
                 if (ventas != null)
                 {
 
                     foreach (var item in ventas.VentasDetalles)
                     {
-                        Productos temp = controllers.Buscar(item.ProductoId);
+                        var temp = controllers.Buscar(item.ProductoId);
                         temp.Cantidad += item.Cantidad;
                         controllers.Guardar(temp);
                     }
