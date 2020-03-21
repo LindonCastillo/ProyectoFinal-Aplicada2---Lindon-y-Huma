@@ -70,28 +70,40 @@ namespace ProyectoFinal_Aplicada2.Controllers
             {
                 Compras anterior = Buscar(compras.CompraId);
 
+                foreach (var item in anterior.ComprasDetalles)
+                {
+                    var temp = controllers.Buscar(item.ProductoId);
+                    temp.Cantidad -= item.Cantidad;
+                    controllers.Guardar(temp);
+                }
+
                 foreach (var item in compras.ComprasDetalles)
                 {
-                    if(item.Id == 0)
+
+                    if (item.Id == 0)
                     {
                         db.Entry(item).State = EntityState.Added;
                     }
-                }                
+                }
 
                 foreach (var item in anterior.ComprasDetalles)
                 {
                     if(!compras.ComprasDetalles.Any(A=>A.Id == item.Id))
                     {
                         db.Entry(item).State = EntityState.Deleted;
-
-                        var temp = controllers.Buscar(item.ProductoId);
-                        temp.Cantidad += item.Cantidad;
-                        controllers.Guardar(temp);
                     }
                 }
 
                 db.Entry(compras).State = EntityState.Modified;
                 paso = db.SaveChanges() > 0;
+
+                //Modificar los productos cuando se modifique la compra;
+                foreach (var item in compras.ComprasDetalles)
+                {
+                    var temp = controllers.Buscar(item.ProductoId);
+                    temp.Cantidad += item.Cantidad;
+                    controllers.Guardar(temp);
+                }
             }
             catch (Exception)
             {
@@ -109,8 +121,9 @@ namespace ProyectoFinal_Aplicada2.Controllers
 
             try
             {
-                Compras compras = db.Compras.Find(id);
-                if(compras!=null)
+                Compras compras = Buscar(id);
+
+                if(compras != null)
                 {
                     foreach (var item in compras.ComprasDetalles)
                     {
@@ -119,7 +132,7 @@ namespace ProyectoFinal_Aplicada2.Controllers
                         controllers.Guardar(temp);
                     }
 
-                    db.Compras.Remove(compras);
+                    db.Entry(compras).State = EntityState.Deleted;
                     paso = db.SaveChanges() > 0;
                 }
             }

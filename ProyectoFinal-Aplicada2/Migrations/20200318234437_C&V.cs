@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ProyectoFinal_Aplicada2.Migrations
 {
-    public partial class CommitInicial : Migration
+    public partial class CV : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

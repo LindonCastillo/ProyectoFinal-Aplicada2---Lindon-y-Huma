@@ -57,6 +57,7 @@
         <div class="form-group">
             <label for="Descripcion">Descripcion</label>
             <InputText @bind-Value="compras.DescripcionCompra" class="form-control" placeholder="descripcion aquí"></InputText>
+            <ValidationMessage For="(()=>compras.DescripcionCompra)"></ValidationMessage>
         </div>
 
         <div class="row">
