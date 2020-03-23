@@ -58,7 +58,7 @@
             <div class="col">
                 <label for="producto_select">Producto</label>
                 <InputSelect id="producto_select" @bind-Value="@seleccionado" @onchange="CargarProducto" @onclick="CargarProducto" class="form-control">
-                    <option>Elija un Producto</option>
+                    <option value="">Elija un Producto</option>
                     @foreach (var item in MiLista)
                     {
                         <option value="@item.ProductoId">@item.Nombre</option>
@@ -263,10 +263,14 @@
                 PrecioVenta = productos.PrecioVentas,
                 SubTotal = productos.PrecioVentas * cantidad
             });
-            CalcularTotalDeVenta();
+            cantidad = 0;
+            precioVenta = 0;
+            seleccionado = string.Empty;
+            productos = new Productos();
+
         }
 
-
+        CalcularTotalDeVenta();
     }
 
     private void CalcularTotalDeVenta()
