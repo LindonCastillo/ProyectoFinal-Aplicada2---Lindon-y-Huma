@@ -172,8 +172,10 @@ else
                 {
                     //Todos
                     case 0:
-                        listado = productoscontrollers.GetList(p => true);
-                        Lista = listado;
+                        conteo = contexto.Productos.Count();
+                        totaldepaginas = Math.Ceiling(conteo/paginacion.CantidadMostrar);
+                        Lista = productoscontrollers.GetList(A => true);
+                        this.Lista = contexto.Productos.Take(paginacion.CantidadMostrar).ToList();
                         break;
                     //Int
                     case 1:

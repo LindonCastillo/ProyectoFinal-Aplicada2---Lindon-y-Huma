@@ -156,8 +156,10 @@ else
                 {
                     //Todos
                     case 0:
-                        listado = pagoscontroller.GetList(p => true);
-                        Lista = listado;
+                        conteo = contexto.Pagos.Count();
+                        totaldepaginas = Math.Ceiling(conteo/paginacion.CantidadMostrar);
+                        Lista = pagoscontroller.GetList(A => true);
+                        this.Lista = contexto.Pagos.Take(paginacion.CantidadMostrar).ToList();
                         break;
                     //Id
                     case 1:
