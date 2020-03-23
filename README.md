@@ -27,8 +27,8 @@
 	Google Chrome
 
 ## Autores ✒️
-Ezequiel Huma Brito Gonzales de la Cruz Nuñez
-Lindon Emil Castillo Burgos 
+Ezequiel Huma Brito Gonzales de la Cruz Nuñez.
+Lindon Emil Castillo Burgos. 
 
 
 ## Licencia 📄
