@@ -68,7 +68,7 @@ namespace ProyectoFinal_Aplicada2.Controllers
 
             try
             {
-                Compras anterior = Buscar(compras.CompraId);
+                var anterior = Buscar(compras.CompraId);
 
                 foreach (var item in anterior.ComprasDetalles)
                 {
@@ -121,7 +121,7 @@ namespace ProyectoFinal_Aplicada2.Controllers
 
             try
             {
-                Compras compras = Buscar(id);
+                var compras = Buscar(id);
 
                 if(compras != null)
                 {

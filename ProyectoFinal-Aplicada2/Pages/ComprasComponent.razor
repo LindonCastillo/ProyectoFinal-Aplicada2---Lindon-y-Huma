@@ -64,7 +64,7 @@
             <div class="col">
                 <label for="Producto">Producto</label>
                 <InputSelect @bind-Value="ProductoId" @onclick="BuscarProducto" @onchange="BuscarProducto" class="form-control">
-                    <option>Elija un Producto</option>
+                    <option value="">Elija un Producto</option>
                     @foreach (var item in listaProductos)
                     {
                         <option value="@item.ProductoId">@item.Nombre</option>
@@ -125,7 +125,7 @@
 
 
         <div class="form-group">
-            <label for="ITEBIS">ITEBIS</label>
+            <label for="Itbis">Itbis</label>
             <InputNumber @bind-Value="compras.Itbis" class="form-control"></InputNumber>
             <ValidationMessage For="(()=>compras.Itbis)" @onchange="CalcularTotalDeCompra" @onfocusin="CalcularTotalDeCompra" @onfocusout="CalcularTotalDeCompra"></ValidationMessage>
         </div>
@@ -278,6 +278,9 @@
                 PrecioCompra = productos.PrecioCompra,
                 SubTotal = cantidad * productos.PrecioCompra
             });
+            ProductoId = string.Empty;
+            cantidad = 0;
+            productos = new Productos();
         }
 
         CalcularTotalDeCompra();
