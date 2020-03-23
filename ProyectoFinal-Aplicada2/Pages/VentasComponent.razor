@@ -1,6 +1,19 @@
 ﻿@page "/Ventas"
 @page "/Ventas/{Id:int}"
 
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<CascadingAuthenticationState>
+    <AuthorizeView>
+
+
+        <NotAuthorized>
+            <p class="display-4 text-center">Usted no esta autorizado para acceder a esta pagina</p>
+        </NotAuthorized>
+
+    </AuthorizeView>
+</CascadingAuthenticationState>
+>
 
 <style>
     * {
@@ -26,108 +39,115 @@
     }
 </style>
 
-<section class="form-register">
-    <h3>Ventas</h3>
-    <EditForm Model="@ventas" OnValidSubmit="Guardar">
-        <DataAnnotationsValidator />
-        <label for="Id">VentaId</label>
-        <div class="row">
-            <div class="col-md-8">
-                <div class="form-group">
+@if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
+{
 
-                    <InputNumber @bind-Value="ventas.VentaId" class="form-control"></InputNumber>
-                    <ValidationMessage For="(()=>ventas.VentaId)"></ValidationMessage>
+
+
+    <section class="form-register">
+        <h3>Ventas</h3>
+        <EditForm Model="@ventas" OnValidSubmit="Guardar">
+            <DataAnnotationsValidator />
+            <label for="Id">VentaId</label>
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="form-group">
+
+                        <InputNumber @bind-Value="ventas.VentaId" class="form-control"></InputNumber>
+                        <ValidationMessage For="(() => ventas.VentaId)"></ValidationMessage>
+                    </div>
+                </div>
+
+
+                <div class="col-md-4">
+
+                    <button type="button" class="btn btn-primary" @onclick="Buscar">Buscar</button>
+
                 </div>
             </div>
 
-
-            <div class="col-md-4">
-
-                <button type="button" class="btn btn-primary" @onclick="Buscar">Buscar</button>
-
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label for="Fechaventa">Fecha de Venta</label>
-            <InputDate id="Fechaventa" @bind-Value="ventas.FechaVenta" class="form-control"></InputDate>
-            <ValidationMessage For="(()=>ventas.FechaVenta)"></ValidationMessage>
-        </div>
-
-        <div class="row">
-            <div class="col">
-                <label for="producto_select">Producto</label>
-                <InputSelect id="producto_select" @bind-Value="@seleccionado" @onchange="CargarProducto" @onclick="CargarProducto" class="form-control">
-                    <option value="">Elija un Producto</option>
-                    @foreach (var item in MiLista)
-                    {
-                        <option value="@item.ProductoId">@item.Nombre</option>
-                    }
-                </InputSelect>
+            <div class="form-group">
+                <label for="Fechaventa">Fecha de Venta</label>
+                <InputDate id="Fechaventa" @bind-Value="ventas.FechaVenta" class="form-control"></InputDate>
+                <ValidationMessage For="(() => ventas.FechaVenta)"></ValidationMessage>
             </div>
 
-            <div class="col">
-                <label for="cantidad">Cantidad</label>
-                <InputNumber id="cantidad" class="form-control" @bind-Value="cantidad"></InputNumber>
-            </div>
+            <div class="row">
+                <div class="col">
+                    <label for="producto_select">Producto</label>
+                    <InputSelect id="producto_select" @bind-Value="@seleccionado" @onchange="CargarProducto" @onclick="CargarProducto" class="form-control">
+                        <option value="">Elija un Producto</option>
+                        @foreach (var item in MiLista)
+                        {
+                            <option value="@item.ProductoId">@item.Nombre</option>
+                        }
+                        /**/
+                    </InputSelect>
+                </div>
 
-            <div class="col">
-                <label for="precio">Precio</label>
-                <InputNumber id="precio" class="form-control" @bind-Value="precioVenta" ReadOnly="True"></InputNumber>
-                <button type="button" class="btn btn-info" @onclick="AgregarProducto">Agregar</button>
-            </div>
-        </div>
-        <br />
+                <div class="col">
+                    <label for="cantidad">Cantidad</label>
+                    <InputNumber id="cantidad" class="form-control" @bind-Value="cantidad"></InputNumber>
+                </div>
 
-        <table class="table">
-            <thead class="thead-dark">
-                <tr>
-                    <th>Id</th>
-                    <th>VentaId</th>
-                    <th>ProductoId</th>
-                    <th>Nombre</th>
-                    <th>Cantidad</th>
-                    <th>PrecioVentas</th>
-                    <th>SubTotal</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody class="bg-white">
-                @foreach (var item in ventas.VentasDetalles)
-                {
+                <div class="col">
+                    <label for="precio">Precio</label>
+                    <InputNumber id="precio" class="form-control" @bind-Value="precioVenta" ReadOnly="True"></InputNumber>
+                    <button type="button" class="btn btn-info" @onclick="AgregarProducto">Agregar</button>
+                </div>
+            </div>
+            <br />
+
+            <table class="table">
+                <thead class="thead-dark">
                     <tr>
-                        <td>@item.Id</td>
-                        <td>@item.VentaId</td>
-                        <td>@item.ProductoId</td>
-                        <td>@item.Nombre</td>
-                        <td>@item.Cantidad</td>
-                        <td>@item.PrecioVenta</td>
-                        <td>@item.SubTotal</td>
-                        <td><button type="button" class="btn btn-outline-danger" @onclick="(() => EliminarDetalle(item))">Remover</button></td>
+                        <th>Id</th>
+                        <th>VentaId</th>
+                        <th>ProductoId</th>
+                        <th>Nombre</th>
+                        <th>Cantidad</th>
+                        <th>PrecioVentas</th>
+                        <th>SubTotal</th>
+                        <th></th>
                     </tr>
-                }
+                </thead>
+                <tbody class="bg-white">
+                    @foreach (var item in ventas.VentasDetalles)
+                    {
+                        <tr>
+                            <td>@item.Id</td>
+                            <td>@item.VentaId</td>
+                            <td>@item.ProductoId</td>
+                            <td>@item.Nombre</td>
+                            <td>@item.Cantidad</td>
+                            <td>@item.PrecioVenta</td>
+                            <td>@item.SubTotal</td>
+                            <td><button type="button" class="btn btn-outline-danger" @onclick="(() => EliminarDetalle(item))">Remover</button></td>
+                        </tr>
+                    }
 
-            </tbody>
+                </tbody>
 
-        </table>
+            </table>
 
-        <div class="form-group">
-            <label for="total_v">Total</label>
-            <InputNumber id="total_v" @bind-Value="ventas.Total" ReadOnly="True" class="form-control"></InputNumber>
-            <ValidationMessage For="(()=>ventas.Total)"></ValidationMessage> 
-        </div>
+            <div class="form-group">
+                <label for="total_v">Total</label>
+                <InputNumber id="total_v" @bind-Value="ventas.Total" ReadOnly="True" class="form-control"></InputNumber>
+                <ValidationMessage For="(() => ventas.Total)"></ValidationMessage>
+            </div>
 
-        <button type="button" class="btn btn-secondary" @onclick="Nuevo">Nuevo</button>
-        <button type="submit" class="btn btn-success" @onclick="CalcularTotalDeVenta">Guardar</button>
-        <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
-    </EditForm>
-</section>
+            <button type="button" class="btn btn-secondary" @onclick="Nuevo">Nuevo</button>
+            <button type="submit" class="btn btn-success" @onclick="CalcularTotalDeVenta">Guardar</button>
+            <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
+        </EditForm>
+    </section>
 
-@code {
+}
+    @code {
 
 
 
-    [Parameter]
+[Parameter]
     public int Id { get; set; }
     private string seleccionado { get; set; }
     private int cantidad { get; set; }
@@ -176,28 +196,30 @@
 
     private void Guardar()
     {
-        if(ventas.VentasDetalles.Count == 0)
+        if (ventas.VentasDetalles.Count == 0)
         {
-            toastService.ShowWarning("Tienes que agregar elementos a la lista","Lista Vacía!");
+            toastService.ShowWarning("Tienes que agregar elementos a la lista", "Lista Vacía!");
             return;
         }
 
 
-        if(ventas.VentaId > 0)
+        if (ventas.VentaId > 0)
         {
             ventascontroller.Guardar(ventas);
             toastService.ShowSuccess("Has modificado la venta exitosamente", "Modificado!");
             Nuevo();
-        } else if(ventas.VentaId == 0)
+        }
+        else if (ventas.VentaId == 0)
         {
             ventascontroller.Guardar(ventas);
             toastService.ShowSuccess("Has guardado la venta exitosamente", "Guardado!");
-             seleccionado = string.Empty;
-             cantidad = 0;
-             precioVenta = 0;
-             this.ventas = new Ventas();
+            seleccionado = string.Empty;
+            cantidad = 0;
+            precioVenta = 0;
+            this.ventas = new Ventas();
             Nuevo();
-        } else
+        }
+        else
         {
             toastService.ShowError("No se pudo guardar", "Error!");
         }
@@ -205,16 +227,17 @@
 
     private void Eliminar()
     {
-        if(ventascontroller.Eliminar(ventas.VentaId))
+        if (ventascontroller.Eliminar(ventas.VentaId))
         {
-            toastService.ShowInfo("Has eliminado la venta exitosamente","Eliminado!");
+            toastService.ShowInfo("Has eliminado la venta exitosamente", "Eliminado!");
             this.ventas = new Ventas();
-             seleccionado = string.Empty;
-             cantidad = 0;
-             precioVenta = 0;
-        } else
+            seleccionado = string.Empty;
+            cantidad = 0;
+            precioVenta = 0;
+        }
+        else
         {
-            toastService.ShowWarning("No se pudo eliminar la venta","No eliminado");
+            toastService.ShowWarning("No se pudo eliminar la venta", "No eliminado");
         }
     }
 
@@ -224,32 +247,32 @@
         if (busca != null)
         {
             this.ventas = busca;
-            toastService.ShowSuccess("Venta encontrada exitosamente","Encontrado!");
+            toastService.ShowSuccess("Venta encontrada exitosamente", "Encontrado!");
         }
         else
         {
-            toastService.ShowWarning("No se pudo encontrar la venta","No encontrado");
+            toastService.ShowWarning("No se pudo encontrar la venta", "No encontrado");
         }
     }
 
 
     private void AgregarProducto()
     {
-        if(precioVenta == 0)
+        if (precioVenta == 0)
         {
-            toastService.ShowWarning("Tiene que seleccionar un producto","No Valido!");
+            toastService.ShowWarning("Tiene que seleccionar un producto", "No Valido!");
             return;
         }
 
-        if(cantidad <= 0)
+        if (cantidad <= 0)
         {
-            toastService.ShowWarning("Tiene que poner una cantidad del producto seleccionado","No Valido!");
+            toastService.ShowWarning("Tiene que poner una cantidad del producto seleccionado", "No Valido!");
             return;
         }
 
-        if(ventas.VentasDetalles.Any(A => A.ProductoId == productos.ProductoId))
+        if (ventas.VentasDetalles.Any(A => A.ProductoId == productos.ProductoId))
         {
-            toastService.ShowWarning("Este producto ya se ha agregado","Duplicado!");
+            toastService.ShowWarning("Este producto ya se ha agregado", "Duplicado!");
         }
         else
         {
@@ -296,4 +319,4 @@
             //
         }
     }
-}
+    }
