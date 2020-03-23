@@ -158,6 +158,17 @@
 
     private void Guardar()
     {
+        if(pagos.PagosDetalles == null)
+        {
+            toastService.ShowWarning("La lista está vacía", "Lista nula!");
+            return;
+        }
+
+        if(pagos.PagoTotal == 0)
+        {
+            toastService.ShowWarning("La lista está vacía", "Lista nula!");
+            return;
+        }
 
         if(!ExisteCompra())
         {
