@@ -76,7 +76,7 @@ namespace ProyectoFinal_Aplicada2.Controllers
 
                 foreach (var item in anterior.PagosDetalles)
                 {
-                    Compras compras = comprasControllers.Buscar(item.CompraId);
+                    var compras = comprasControllers.Buscar(item.CompraId);
                     compras.Balance += item.Pago;
                     comprasControllers.Guardar(compras);
                 }
@@ -102,7 +102,7 @@ namespace ProyectoFinal_Aplicada2.Controllers
 
                 foreach (var item in pagos.PagosDetalles)
                 {
-                    Compras compras = comprasControllers.Buscar(item.CompraId);
+                    var compras = comprasControllers.Buscar(item.CompraId);
                     compras.Balance -= item.Pago;
                     if (compras.Balance < 0)
                     {
