@@ -93,7 +93,7 @@
                     <th>ProductoId</th>
                     <th>Nombre</th>
                     <th>Cantidad</th>
-                    <th>PrecioCompra</th>
+                    <th>Precio de Compra</th>
                     <th>SubTotal</th>
                     <th></th>
                 </tr>
@@ -127,7 +127,7 @@
         <div class="form-group">
             <label for="ITEBIS">ITEBIS</label>
             <InputNumber @bind-Value="compras.Itbis" class="form-control"></InputNumber>
-            <ValidationMessage For="(()=>compras.Itbis)"></ValidationMessage>
+            <ValidationMessage For="(()=>compras.Itbis)" @onchange="CalcularTotalDeCompra" @onfocusin="CalcularTotalDeCompra" @onfocusout="CalcularTotalDeCompra"></ValidationMessage>
         </div>
 
         <div class="form-group">
@@ -172,6 +172,9 @@
     private void Nuevo()
     {
         this.compras = new Compras();
+        ProductoId = string.Empty;
+        cantidad = 0;
+        productos.PrecioCompra = 0;
     }
 
     private void Guardar()

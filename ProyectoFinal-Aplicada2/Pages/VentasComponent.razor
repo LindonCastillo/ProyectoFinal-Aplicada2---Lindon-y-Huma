@@ -176,11 +176,12 @@
 
     private void Guardar()
     {
-        if(ventas.VentasDetalles == null)
+        if(ventas.VentasDetalles.Count == 0)
         {
             toastService.ShowWarning("Tienes que agregar elementos a la lista","Lista Vacía!");
             return;
         }
+
 
         if(ventas.VentaId > 0)
         {

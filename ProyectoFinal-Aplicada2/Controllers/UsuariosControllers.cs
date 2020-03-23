@@ -126,6 +126,30 @@ namespace ProyectoFinal_Aplicada2.Controllers
             return lista;
         }
 
+        public bool VerificarExistenciaYClaveDelUsuario(string NombreUsuario, string clave)
+        {
+            bool paso = false;
+            Contexto contexto = new Contexto();
+
+            try
+            {
+                if(contexto.Usuarios.Any(A=>A.NombreUsuario == NombreUsuario))
+                {
+                    if(contexto.Usuarios.Any(A=>A.Clave == clave))
+                    {
+                        paso = true;
+                    }
+                    
+                }
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return paso;
+        }
+
     }
 
 }

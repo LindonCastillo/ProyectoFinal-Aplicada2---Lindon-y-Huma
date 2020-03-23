@@ -192,5 +192,24 @@ namespace ProyectoFinal_Aplicada2.Controllers
             }
             return compras;
         }
+
+        public string ObtenerNombreProveedor(int id)
+        {
+            string nombre;
+            Contexto contexto = new Contexto();
+            try
+            {
+                Proveedores proveedores = contexto.Proveedores.Find(id);
+                nombre = proveedores.NombreProveedor;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return nombre;
+        }
+
+
+
     }
 }

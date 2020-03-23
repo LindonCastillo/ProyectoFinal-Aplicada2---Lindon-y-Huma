@@ -1,7 +1,73 @@
-﻿<h3>Login</h3>
+﻿@page "/login"
+
+<h3>Login</h3>
+
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    .form-register {
+        width: 500px;
+        background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
+        padding: 30px;
+        margin: auto;
+        margin-top: 100px;
+        border-radius: 4px;
+        font-family: 'calibri';
+        color: white;
+        box-shadow: 7px 13px 37px #000;
+    }
+
+    .h3 {
+        color: white;
+    }
+</style>
+
+<section class="form-register">
+
+   
+
+        <AuthorizeView>
+            <label for="NombreUsuario">Ingrese su nombre de usuario</label>
+            <input type="text" @bind="usurio" class="form-control" placeholder="Ingrese el nombre de usuario" />
+            <label for="ClaveUsuario">Ingrese la clave</label>
+            <input type="text" @bind="clave" class="form-control" placeholder="Ingrese la clave" />
+            <button type="button" class="btn btn-success" @onclick="ConfirmarExistenciaUsuario">Iniciar sesión</button>
+            <button type="button" class="btn btn-info">Limpiar</button>
+
+        </AuthorizeView>
+
+    
+   
+   
+</section>
+
+
+
+
 
 @code {
+
     string usurio;
     string clave;
+
+
+    private void ConfirmarExistenciaUsuario()
+    {
+        if(usuariocontroller.VerificarExistenciaYClaveDelUsuario(usurio,clave))
+        {
+            toastService.ShowSuccess("Te has logeado correctamente","Logeado!");
+        } else
+        {
+            toastService.ShowError("No existe la clave o el nombre de usuario","Error");
+        }
+    }
+
+
+
 
 }

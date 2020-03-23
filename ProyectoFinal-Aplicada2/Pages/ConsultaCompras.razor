@@ -49,7 +49,7 @@ else
             <tr>
                 <th>Id</th>
                 <th>Fecha de compra</th>
-                <th>ProveedorId</th>
+                <th>Proveedor</th>
                 <th>Itbis</th>
                 <th>Descripción</th>
                 <th>Balance</th>
@@ -62,7 +62,7 @@ else
                 <tr>
                     <td>@item.CompraId</td>
                     <td>@item.FechaCompra.ToString("dd/MM/yyyy")</td>
-                    <td>@item.ProveedorId</td>
+                    <td>@comprascontroller.ObtenerNombreProveedor(item.ProveedorId)</td>
                     <td>@item.Itbis</td>
                     <td>@item.DescripcionCompra</td>
                     <td>@item.Balance</td>
@@ -88,6 +88,8 @@ else
     List<Compras> listacompra = new List<Compras>();
 
     Contexto contexto = new Contexto();
+
+    Proveedores proveedor = new Proveedores();
 
     [Parameter]
     public int I { get; set; }
