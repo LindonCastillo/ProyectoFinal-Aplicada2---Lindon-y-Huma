@@ -84,7 +84,7 @@
             <div class="col">
                 <label for="Pago">Pago</label>
                 <InputNumber @bind-Value="Pago" class="form-control"></InputNumber>
-                <button type="button" class="btn btn-info" @onclick="AgregarCompra" @onchange="CalcularPagoTotal">Agregar</button>
+                <button type="button" class="btn btn-info" @onclick="AgregarCompra">Agregar</button>
             </div>
 
         </div>
@@ -111,7 +111,7 @@
                         <td>@item.CompraId</td>
                         <td>@item.TipoPago</td>
                         <td>@item.Pago</td>
-                        <th><button class="btn btn-danger" @onclick="(()=>RemoverDetalle(item))">Remover</button></th>
+                        <th><button class="btn btn-outline-danger" type="button" @onclick="(()=>EliminarDetalle(item))">Remover</button></th>
                     </tr>
                 }
             </tbody>
@@ -288,7 +288,7 @@
         CalcularPagoTotal();
     }
 
-    private void RemoverDetalle(PagosDetalle detalle)
+    private void EliminarDetalle(PagosDetalle detalle)
     {
         try
         {

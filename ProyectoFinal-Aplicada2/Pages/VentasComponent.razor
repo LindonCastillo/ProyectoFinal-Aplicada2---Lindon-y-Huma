@@ -284,6 +284,7 @@
         try
         {
             ventas.VentasDetalles.Remove(detalle);
+            CalcularTotalDeVenta();
         }
         catch (Exception)
         {
