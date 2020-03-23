@@ -2,14 +2,21 @@
 
 ## Comenzando 🚀
 
-##Registros:
+## Registros:
 
-###Usuarios
-###Productos
-###Proveedores
-###Compras
-###Ventas
-###Pagos
+### Usuarios
+
+### Productos
+
+### Proveedores
+
+### Compras
+
+### Ventas
+
+### Pagos
+
+## Consultas:
 
 
 ## Construido con 🛠️
