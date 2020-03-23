@@ -143,8 +143,10 @@ else
                 {
                     //Todos
                     case 0:
-                        listado = proveedorescontrollers.GetList(p => true);
-                        Lista = listado;
+                        conteo = Contexto.Compras.Count();
+                        totaldepaginas = Math.Ceiling(conteo/paginacion.CantidadMostrar);
+                        Lista = proveedorescontrollers.GetList(p => true);
+                        this.Lista = Contexto.Proveedores.Take(paginacion.CantidadMostrar).ToList();
                         break;
 
                     //Id

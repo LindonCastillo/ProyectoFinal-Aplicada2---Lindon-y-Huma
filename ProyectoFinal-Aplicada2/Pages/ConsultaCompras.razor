@@ -174,8 +174,10 @@ else
                 {
                     //Todos
                     case 0:
-                        listado = comprascontroller.GetList(p => true);
-                        Lista = listado;
+                        conteo = contexto.Compras.Count();
+                        totaldepaginas = Math.Ceiling(conteo/paginacion.CantidadMostrar);
+                        Lista = comprascontroller.GetList(p => true);
+                        this.Lista = contexto.Compras.Take(paginacion.CantidadMostrar).ToList();
                         break;
                     //Int
                     case 1:
