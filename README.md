@@ -51,7 +51,7 @@
 	Google Chrome
 
 ## Autores ✒️
- Ezequiel Huma Brito Gonzales de la Cruz Nuñez
+ Ezequiel Huma Brito 
 
  Lindon Emil Castillo Burgos
 
