@@ -1,6 +1,14 @@
 # ProyectoFinal-Aplicada2--Lindon-y-Huma
+### SISTEMA COMPRA Y VENTA
+![LOGito](https://user-images.githubusercontent.com/50345256/77563866-387caa80-6e98-11ea-9c39-e4353b8b4583.png)
+
 
 ## Comenzando 🚀
+![Captura - Menu de Registros](https://user-images.githubusercontent.com/50345256/77560086-572c7280-6e93-11ea-82d0-4f6bc7035c66.PNG)
+
+En caso de intentar entrar a un registro sin estar loguedo o sin los permiso previos saltara este mensaje:
+![Captura - Aleta de Control de Usuarios](https://user-images.githubusercontent.com/50345256/77560520-f8b3c400-6e93-11ea-8571-42bb59b50721.PNG)
+
 
 ## Registros:
 
@@ -50,7 +58,7 @@
 	Google Chrome
 
 ## Autores ✒️
- Ezequiel Huma Brito Gonzales de la Cruz Nuñez
+ Ezequiel Huma Brito 
 
  Lindon Emil Castillo Burgos
 

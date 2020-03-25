@@ -5,6 +5,113 @@
 
 
 
+    .h3 {
+        color: white;
+    }
+</style>
+
+@if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
+{
+    <section class="form-register">
+        <h3>Ventas</h3>
+        <EditForm Model="@ventas" OnValidSubmit="Guardar">
+            <DataAnnotationsValidator />
+            <label for="Id">VentaId</label>
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="form-group">
+
+                        <InputNumber @bind-Value="ventas.VentaId" class="form-control"></InputNumber>
+                        <ValidationMessage For="(() => ventas.VentaId)"></ValidationMessage>
+                    </div>
+                </div>
+
+
+                <div class="col-md-4">
+
+                    <button type="button" class="btn btn-primary" @onclick="Buscar">Buscar</button>
+
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="Fechaventa">Fecha de Venta</label>
+                <InputDate id="Fechaventa" @bind-Value="ventas.FechaVenta" class="form-control"></InputDate>
+                <ValidationMessage For="(() => ventas.FechaVenta)"></ValidationMessage>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <label for="producto_select">Producto</label>
+                    <InputSelect id="producto_select" @bind-Value="@seleccionado" @onchange="CargarProducto" @onclick="CargarProducto" class="form-control">
+                        <option value="">Elija un Producto</option>
+                        @foreach (var item in MiLista)
+                        {
+                            <option value="@item.ProductoId">@item.Nombre</option>
+                        }
+                        /**/
+                    </InputSelect>
+                </div>
+
+                <div class="col">
+                    <label for="cantidad">Cantidad</label>
+                    <InputNumber id="cantidad" class="form-control" @bind-Value="cantidad"></InputNumber>
+                </div>
+
+                <div class="col">
+                    <label for="precio">Precio</label>
+                    <InputNumber id="precio" class="form-control" @bind-Value="precioVenta" ReadOnly="True"></InputNumber>
+                    <button type="button" class="btn btn-info" @onclick="AgregarProducto">Agregar</button>
+                </div>
+            </div>
+            <br />
+
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Id</th>
+                        <th>VentaId</th>
+                        <th>ProductoId</th>
+                        <th>Nombre</th>
+                        <th>Cantidad</th>
+                        <th>PrecioVentas</th>
+                        <th>SubTotal</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white">
+                    @foreach (var item in ventas.VentasDetalles)
+                    {
+                        <tr>
+                            <td>@item.Id</td>
+                            <td>@item.VentaId</td>
+                            <td>@item.ProductoId</td>
+                            <td>@item.Nombre</td>
+                            <td>@item.Cantidad</td>
+                            <td>@item.PrecioVenta</td>
+                            <td>@item.SubTotal</td>
+                            <td><button type="button" class="btn btn-outline-danger" @onclick="(() => EliminarDetalle(item))">Remover</button></td>
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+            <div class="form-group">
+                <label for="total_v">Total</label>
+                <InputNumber id="total_v" @bind-Value="ventas.Total" ReadOnly="True" class="form-control"></InputNumber>
+                <ValidationMessage For="(() => ventas.Total)"></ValidationMessage>
+            </div>
+
+            <button type="button" class="btn btn-secondary" @onclick="Nuevo">Nuevo</button>
+            <button type="submit" class="btn btn-success" @onclick="CalcularTotalDeVenta">Guardar</button>
+            <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
+        </EditForm>
+    </section>
+}
+
+
     @code {
 
 

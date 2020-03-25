@@ -1,6 +1,144 @@
 ﻿@page "/Compras"
 @page "/Compras/{Id:int}"
 
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<CascadingAuthenticationState>
+    <AuthorizeView>
+        <NotAuthorized>
+            <div class="card text-center">
+                <div class="card-header">
+                    No Autorizado
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Atención</h5>
+                    <p class="card-text">Usted no está autorizado para acceder a esta pagina.</p>
+                    <a href="MenuRegistros" class="btn btn-primary">Ir al Menú</a>
+                </div>
+                <div class="card-footer text-muted">
+                </div>
+            </div>
+        </NotAuthorized>
+    </AuthorizeView>
+</CascadingAuthenticationState>
+
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    .form-register {
+        width: 800px;
+        background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
+        padding: 30px;
+        margin: auto;
+        margin-top: 100px;
+        border-radius: 4px;
+        font-family: 'calibri';
+        color: white;
+        box-shadow: 7px 13px 37px #000;
+    }
+
+    .h3 {
+        color: white;
+    }
+</style>
+
+
+
+
+@if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
+{
+    <section class="form-register">
+        <h3>Compras</h3>
+        <EditForm Model="@compras" OnValidSubmit="Guardar">
+            <DataAnnotationsValidator />
+            <label for="Id">CompraId</label>
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="form-group">
+
+                        <InputNumber @bind-Value="compras.CompraId" class="form-control"></InputNumber>
+                        <ValidationMessage For="(()=>compras.CompraId)"></ValidationMessage>
+                    </div>
+                </div>
+
+
+                <div class="col-md-4">
+
+                    <button type="button" class="btn btn-primary" @onclick="Buscar">Buscar</button>
+
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="FechaCompra">Fecha de compra</label>
+                <InputDate @bind-Value="compras.FechaCompra" class="form-control"></InputDate>
+                <ValidationMessage For="(()=>compras.FechaCompra)"></ValidationMessage>
+            </div>
+
+            <div class="form-group">
+                <label for="Descripcion">Descripcion</label>
+                <InputText @bind-Value="compras.DescripcionCompra" class="form-control" placeholder="descripcion aquí"></InputText>
+                <ValidationMessage For="(()=>compras.DescripcionCompra)"></ValidationMessage>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <label for="Producto">Producto</label>
+                    <InputSelect @bind-Value="ProductoId" @onclick="BuscarProducto" @onchange="BuscarProducto" class="form-control">
+                        <option value="">Elija un Producto</option>
+                        @foreach (var item in listaProductos)
+                            {
+                            <option value="@item.ProductoId">@item.Nombre</option>
+                            }
+                        /**/
+                    </InputSelect>
+                </div>
+
+                <div class="col">
+                    <label for="Cantidad">Cantidad</label>
+                    <InputNumber @bind-Value="cantidad" class="form-control"></InputNumber>
+                </div>
+
+                <div class="col">
+                    <label for="PrecioCompra">Precio de compra</label>
+                    <InputNumber @bind-Value="productos.PrecioCompra" class="form-control"></InputNumber>
+                    <button class="btn btn-info" @onclick="AgregarProducto" type="button">Agregar</button>
+                </div>
+            </div>
+            <br />
+
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Id</th>
+                        <th>CompraId</th>
+                        <th>ProductoId</th>
+                        <th>Nombre</th>
+                        <th>Cantidad</th>
+                        <th>Precio de Compra</th>
+                        <th>SubTotal</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white">
+                    @foreach (var item in compras.ComprasDetalles)
+                    {
+                        <tr>
+                            <td>@item.Id</td>
+                            <td>@item.CompraId</td>
+                            <td>@item.ProductoId</td>
+                            <td>@item.Nombre</td>
+                            <td>@item.Cantidad</td>
+                            <td>@item.PrecioCompra</td>
+                            <td>@item.SubTotal</td>
+                            <td><button class="btn btn-outline-danger" @onclick="(() => EliminarDetalle(item))" type="button">Remover</button></td>
+                        </tr>
+                    }
 
 
 
@@ -11,7 +149,190 @@
 
 @code {
 
-        
+        Compras compras = new Compras();
+        Productos productos = new Productos();
+        List<Productos> listaProductos = new List<Productos>();
+    private string ProductoId;
+    private int cantidad;
+    string SeleccionarProovedor;
+
+    Proveedores proveedores = new Proveedores();
+
+    List<Compras> compraslista = new List<Compras>();
+
+    public List<Proveedores> ProveedorLista { get; set; }
+
+
+    [Parameter]
+    public int Id { get; set; }
+
+    protected override void OnInitialized()
+    {
+        if (Id > 0)
+        {
+            compras = comprascontroller.Buscar(Id);
+        }
+
+        listaProductos = productoscontrollers.GetList(p => true);
+        ProveedorLista = proveedorescontrollers.GetList(p=>true);
+        productos = new Productos();
+    }
+
+    private void Nuevo()
+    {
+        this.compras = new Compras();
+        ProductoId = string.Empty;
+        cantidad = 0;
+        productos.PrecioCompra = 0;
+    }
+
+    private void Guardar()
+    {
+        if (compras.ComprasDetalles == null)
+        {
+            toastService.ShowWarning("La lista está vacía", "Lista nula!");
+            return;
+        }
+
+        if (compras.Total == 0)
+        {
+            toastService.ShowWarning("La lista está vacía", "Lista nula!");
+            return;
+        }
+
+        Proveedores proveedores = new Proveedores();
+        if(proveedorescontrollers.Existe(compras.NombreProveedor))
+        {
+            toastService.ShowWarning("Parece que el proovedor no existe", "No existe proovedor");
+        }
+        else
+        {
+            if (compras.CompraId > 0)
+            {
+                comprascontroller.Guardar(compras);
+                toastService.ShowSuccess("Se ha modifcado la compra correctamente", "Modificado!");
+                cantidad = 0;
+                ProductoId = string.Empty;
+                this.compras = new Compras();
+            }
+            else if (compras.CompraId == 0)
+            {
+                comprascontroller.Guardar(compras);
+                toastService.ShowSuccess("Se ha guardado la compra exitosamente", "Guardado!");
+                this.compras = new Compras();
+                ProductoId = string.Empty;
+                cantidad = 0;
+            }
+            else
+            {
+                toastService.ShowError("No se ha podido guardar", "Error!");
+            }
+        }
+    }
+
+    private void Eliminar()
+    {
+        if (comprascontroller.Eliminar(compras.CompraId))
+        {
+            toastService.ShowInfo("Has eliminado correctamente", "Eliminado!");
+            this.compras = new Compras();
+        }
+        else
+        {
+            toastService.ShowWarning("No se pudo eliminar la compra", "No eliminado");
+        }
+    }
+
+    private void Buscar()
+    {
+        Compras busca = comprascontroller.Buscar(compras.CompraId);
+        if (busca != null)
+        {
+            this.compras = busca;
+            toastService.ShowSuccess("Se ha encontado la compra exitosamente", "Encontrado!");
+        }
+        else
+        {
+            toastService.ShowWarning("No se pudo econtrar la compra", "No encontrado!");
+        }
+    }
+
+
+    private void AgregarProducto()
+    {
+        if (productos.PrecioCompra == 0)
+        {
+            toastService.ShowWarning("Tiene que seleccionar un producto", "No Valido!");
+            return;
+        }
+
+        if (cantidad <= 0)
+        {
+            toastService.ShowWarning("Tiene que poner una cantidad del producto seleccionado", "No Valido!");
+            return;
+        }
+
+        if (compras.ComprasDetalles.Any(A => A.ProductoId == productos.ProductoId))
+        {
+            toastService.ShowWarning("Este producto ya se ha agregado", "Duplicado!");
+        }
+        else
+        {
+            this.compras.ComprasDetalles.Add(new ComprasDetalle
+            {
+                Id = 0,
+                CompraId = compras.CompraId,
+                ProductoId = productos.ProductoId,
+                Nombre = productos.Nombre,
+                Cantidad = cantidad,
+                PrecioCompra = productos.PrecioCompra,
+                SubTotal = cantidad * productos.PrecioCompra
+            });
+            ProductoId = string.Empty;
+            cantidad = 0;
+            productos = new Productos();
+        }
+
+        CalcularTotalDeCompra();
+    }
+
+    private void CalcularTotalDeCompra()
+    {
+        decimal total = 0;
+        foreach (var item in compras.ComprasDetalles)
+        {
+            total += item.SubTotal;
+        }
+        compras.Total = total;
+        compras.Balance = compras.Total + (compras.Total * (compras.Itbis / 100));
+    }
+
+    private void EliminarDetalle(ComprasDetalle detalle)
+    {
+        try
+        {
+            compras.ComprasDetalles.Remove(detalle);
+            CalcularTotalDeCompra();
+        }
+        catch (Exception)
+        {
+
+        }
+    }
+
+    private void BuscarProducto()
+    {
+        try
+        {
+            productos = productoscontrollers.Buscar(Int32.Parse(ProductoId));
+        }
+        catch
+        {
+            //sdfsd
+        }
+
+        //
+    }
 }
 
 
