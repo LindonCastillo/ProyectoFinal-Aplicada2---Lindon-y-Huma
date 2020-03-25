@@ -47,6 +47,9 @@
     }
 </style>
 
+
+
+
 @if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
 {
     <section class="form-register">
@@ -187,9 +190,9 @@
 
 @code {
 
-    Compras compras = new Compras();
-    Productos productos = new Productos();
-    List<Productos> listaProductos = new List<Productos>();
+        Compras compras = new Compras();
+        Productos productos = new Productos();
+        List<Productos> listaProductos = new List<Productos>();
     private string ProductoId;
     private int cantidad;
     string SeleccionarProovedor;
@@ -239,7 +242,7 @@
         }
 
         Proveedores proveedores = new Proveedores();
-        if (proveedorescontrollers.Buscar(compras.ProveedorId) == null)
+        if(proveedorescontrollers.Existe(compras.NombreProveedor))
         {
             toastService.ShowWarning("Parece que el proovedor no existe", "No existe proovedor");
         }
@@ -265,7 +268,7 @@
             {
                 toastService.ShowError("No se ha podido guardar", "Error!");
             }
-       
+        }
     }
 
     private void Eliminar()

@@ -125,5 +125,27 @@ namespace ProyectoFinal_Aplicada2.Controllers
             return lista;
         }
 
+
+        public bool Existe(string nombre)
+        {
+            Contexto db = new Contexto();
+            bool paso = false;
+
+            try
+            {
+                paso = db.Proveedores.Any(A => A.NombreProveedor == nombre);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            finally
+            {
+                db.Dispose();
+            }
+
+            return paso;
+        }
     }
 }
