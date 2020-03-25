@@ -358,26 +358,4 @@
         }
     }
 
-    string nombre;
-
-
-    private string BuscarProveedor()
-    {
-        try
-        {
-
-            Proveedores proveedores = new Proveedores();
-            proveedores = proveedorescontrollers.Buscar(compras.ProveedorId);
-            nombre = proveedores.NombreProveedor;
-
-        }
-        catch
-        {
-            //comentario
-        }
-        return nombre;
-    }
-
-
-
 }
