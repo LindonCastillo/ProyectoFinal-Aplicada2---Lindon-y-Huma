@@ -54,7 +54,6 @@
         <EditForm Model="@pagos" OnValidSubmit="Guardar">
             <DataAnnotationsValidator />
             <label for="Id">PagoId</label>
-
             <div class="row">
                 <div class="col-md-8">
                     <div class="form-group">
@@ -80,9 +79,9 @@
                     <InputSelect @bind-Value="CompraId" class="form-control" @onclick="BuscarCompra" @onchange="BuscarCompra">
                         <option value="">Elija una compra</option>
                         @foreach (var item in ListaCompras)
-                            {
+                        {
                             <option value="@item.CompraId">@item.DescripcionCompra</option>
-                            }
+                        }
                         /**/
                         /**/
                     </InputSelect>
@@ -152,9 +151,10 @@
             <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
         </EditForm>
     </section>
+    <br />
+    <br />
 }
-<br />
-<br />
+
 @code {
     [Parameter]
     public int Id { get; set; }
@@ -361,22 +361,6 @@
     string nombre;
 
 
-    private string BuscarProveedor()
-    {
-        try
-        {
-
-            Proveedores proveedores = new Proveedores();
-            proveedores = proveedorescontrollers.Buscar(compras.ProveedorId);
-            nombre = proveedores.NombreProveedor;
-
-        }
-        catch
-        {
-            //comentario
-        }
-        return nombre;
-    }
 
 
 
