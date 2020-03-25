@@ -140,53 +140,12 @@
                         </tr>
                     }
 
-                </tbody>
-
-            </table>
 
 
-        <InputSelect @bind-Value="compras.NombreProveedor" class="form-control">
-            @if (ProveedorLista.Count == 0)
-            {
-                <option value="">No hay proveedores que mostrar</option>
-            }
-            else
-            {
-                <option value="">Elija un proveedor</option>
-                @foreach (var item in ProveedorLista)
-                {
-                    <option value="@item.ProveedoresId">@item.NombreProveedor</option>
 
-                }
-            }
+         
 
-        </InputSelect>
-        <ValidationMessage For="(()=>compras.NombreProveedor)"></ValidationMessage>
-
-            <div class="form-group">
-                <label for="Itbis">Itbis</label>
-                <InputNumber @bind-Value="compras.Itbis" class="form-control"></InputNumber>
-                <ValidationMessage For="(()=>compras.Itbis)" @onchange="CalcularTotalDeCompra" @onfocusin="CalcularTotalDeCompra" @onfocusout="CalcularTotalDeCompra"></ValidationMessage>
-            </div>
-
-            <div class="form-group">
-                <label for="Total">Total</label>
-                <InputNumber @bind-Value="compras.Total" ReadOnly="true" class="form-control"></InputNumber>
-            </div>
-
-            <div class="form-group">
-                <label for="Balance">Balance</label>
-                <InputNumber @bind-Value="compras.Balance" ReadOnly="true" class="form-control"></InputNumber>
-            </div>
-
-            <button type="button" class="btn btn-secondary" @onclick="Nuevo">Nuevo</button>
-            <button type="submit" class="btn btn-success" @onclick="CalcularTotalDeCompra">Guardar</button>
-            <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
-        </EditForm>
-    </section>
-}
-<br />
-<br />
+        
 
 @code {
 
