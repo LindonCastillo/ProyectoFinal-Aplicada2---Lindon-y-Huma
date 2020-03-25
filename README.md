@@ -10,7 +10,7 @@ En caso de intentar entrar a un registro sin estar loguedo o sin los permiso pre
 
 
 ## Registros:
-
+En este sistema se implementarion los registros de Usuarios, Productos, Proveedores, Compras, Ventas y Pagos, descristos a contuniación. 
 ### Usuarios
 El registro de Usuarios conHsiste en crear, modificar, eliminar y leer Usuarios. En este sistema se maneja tres tipos de Usuarios, que son Administrador, Cajero y Contador. El Administrador es el tipo de usuario que posee los mayores privilegios, este tiene acceso a todos los registros y consultas que ofrece el sistema. El Contador tiene acceso a todos los registros y consultas, excepto a al Registro de Usuarios. Por último, el cajero tendrá acceso al registro y consulta de Productos, Proveedores y Ventas.
 ![Captura - Registro de Usuario](https://user-images.githubusercontent.com/50345256/77363640-7909e600-d29-11ea-988d-8521119d9f9a.PNG)
@@ -24,7 +24,7 @@ El registro de Proveedores se encarga de Introducir todos aquellos suplidores co
 ![Captura - Registro de Proveedores](https://user-images.githubusercontent.com/50345256/77363695-8d4de300-6d29-11ea-91b5-d561eddd467b.PNG)
  
 ### Compras
-El registro de Compras representa la adquisición de bienes a la empresa, una vez hecha la compra, se modificará automáticamente el campo Cantidad del Registro de Productos. 
+El registro de Compras representa la adquisición de bienes a la empresa.
 ![Captura - Registro de Compras (Detalle)](https://user-images.githubusercontent.com/50345256/77363775-b40c1980-6d29-11ea-8998-9d03e6c32204.PNG)
 
 ### Ventas
