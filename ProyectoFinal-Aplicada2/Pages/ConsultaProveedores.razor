@@ -22,87 +22,88 @@
     </AuthorizeView>
 </CascadingAuthenticationState>
 
-
-<h3>Consulta de Proveedores</h3>
-
-<div class="form-row">
-    <div class="col">
-        <button class="btn btn-dark" type="button" @onclick="Saltar">Pag. Siguiente</button>
-    </div>
-
-    <div class="col">
-        <input type="text" class="form-control" placeholder="Criterio" @onfocusin="Filtrar" @onfocusout="Filtrar" @onclick="Filtrar" @bind="Criterio" />
-    </div>
-
-    <div class="col">
-        <select class="form-control" @onclick="Filtrar" @bind="filtro">
-            <option value="0">Todos</option>
-            <option value="1">Id</option>
-            <option value="2">Nombre Proveedor</option>
-            <option value="3">Telefono</option>
-            <option value="4">Direcciones</option>
-            <option value="5">RNC</option>
-            <option value="6">TipoNegocio</option>
-            <option value="7">TipoMoneda</option>
-        </select>
-    </div>
-</div>
-<br />
-
-@if (Lista == null)
+@if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
 {
-    <p>No hay datos</p>
-}
-else
-{
-    <table class="table">
-        <thead class="thead-dark">
-            <tr>
-                <th>Id</th>
-                <th>Nombre</th>
-                <th>Telefono</th>
-                <th>Dirección</th>
-                <th>RNC</th>
-                <th>TipoNegocio</th>
-                <th>Tipo moneda</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Lista)
-            {
+    <h3>Consulta de Proveedores</h3>
+
+    <div class="form-row">
+        <div class="col">
+            <button class="btn btn-dark" type="button" @onclick="Saltar">Pag. Siguiente</button>
+        </div>
+
+        <div class="col">
+            <input type="text" class="form-control" placeholder="Criterio" @onfocusin="Filtrar" @onfocusout="Filtrar" @onclick="Filtrar" @bind="Criterio" />
+        </div>
+
+        <div class="col">
+            <select class="form-control" @onclick="Filtrar" @bind="filtro">
+                <option value="0">Todos</option>
+                <option value="1">Id</option>
+                <option value="2">Nombre Proveedor</option>
+                <option value="3">Telefono</option>
+                <option value="4">Direcciones</option>
+                <option value="5">RNC</option>
+                <option value="6">TipoNegocio</option>
+                <option value="7">TipoMoneda</option>
+            </select>
+        </div>
+    </div>
+    <br />
+
+    @if (Lista == null)
+    {
+        <p>No hay datos</p>
+    }
+    else
+    {
+        <table class="table">
+            <thead class="thead-dark">
                 <tr>
-                    <td>@item.ProveedoresId</td>
-                    <td>@item.NombreProveedor</td>
-                    <td>@item.Telefono</td>
-                    <td>@item.Direcciones</td>
-                    <td>@item.RNC</td>
-                    <td>@item.TipoNegocio</td>
-                    <td>@item.TipoMoneda</td>
-                    <td><a class="btn btn-outline-info" href="proveedores/@item.ProveedoresId">Ver</a></td>
+                    <th>Id</th>
+                    <th>Nombre</th>
+                    <th>Telefono</th>
+                    <th>Dirección</th>
+                    <th>RNC</th>
+                    <th>TipoNegocio</th>
+                    <th>Tipo moneda</th>
+                    <th></th>
                 </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Lista)
+                {
+                    <tr>
+                        <td>@item.ProveedoresId</td>
+                        <td>@item.NombreProveedor</td>
+                        <td>@item.Telefono</td>
+                        <td>@item.Direcciones</td>
+                        <td>@item.RNC</td>
+                        <td>@item.TipoNegocio</td>
+                        <td>@item.TipoMoneda</td>
+                        <td><a class="btn btn-outline-info" href="proveedores/@item.ProveedoresId">Ver</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+    <nav aria-label="...">
+        <ul class="pagination pagination-lg">
+            @for (int i = 1; i <= totaldepaginas; i++)
+            {
+                <li class="page-item"><a class="page-link" @onclick="OnInitialized" href="ConsultaProveedores/@i">@i</a></li>
             }
-        </tbody>
-    </table>
+
+        </ul>
+    </nav>
 }
 
-<nav aria-label="...">
-    <ul class="pagination pagination-lg">
-        @for (int i = 1; i <= totaldepaginas; i++)
-        {
-            <li class="page-item"><a class="page-link" @onclick="OnInitialized" href="ConsultaProveedores/@i">@i</a></li>
-        }
-
-    </ul>
-</nav>
+    @code {
+        List<Proveedores> Lista = new List<Proveedores>();
+        Contexto Contexto = new Contexto();
 
 
-@code {
-    List<Proveedores> Lista = new List<Proveedores>();
-    Contexto Contexto = new Contexto();
-
-
-    protected override void OnInitialized()
+protected override void OnInitialized()
     {
         conteo = Contexto.Compras.Count();
         totaldepaginas = Math.Ceiling(conteo / paginacion.CantidadMostrar);
@@ -218,4 +219,4 @@ else
             //papichulo
         }
     }
-}
+    }
