@@ -1,40 +1,62 @@
 ﻿@page "/ConsultaUsuarios"
 @page  "/ConsultaUsuarios/{I:int}"
 
-    <h3>Consulta de Usuario</h3>
-    <div class="row">
-        <div class="col">
-            <input id="desde_date" class="form-control" type="datetime-local" @bind="desdeFecha" />
-            <label for="desde_date">Desde</label>
-        </div>
-        <div class="col">
-            <input id="hasta_date" class="form-control" type="datetime-local" @bind="hastaFecha" />
-            <label for="hasta_date">Hasta</label>
-        </div>
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
-        <div class="col">
-            <button class="btn btn-primary" id="filtar_buton" @onclick="filtradoPorFecha">Filtar por Fecha</button>
-        </div>
+<CascadingAuthenticationState>
+    <AuthorizeView>
+        <NotAuthorized>
+            <div class="card text-center">
+                <div class="card-header">
+                    No Autorizado
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Atención</h5>
+                    <p class="card-text">Usted no esta autorizado para acceder a esta pagina.</p>
+                    <a href="MenuRegistros" class="btn btn-primary">Ir al Menú</a>
+                </div>
+                <div class="card-footer text-muted">
+                </div>
+            </div>
+        </NotAuthorized>
+    </AuthorizeView>
+</CascadingAuthenticationState>
 
-        <div class="col">
-            <button class="btn btn-dark" type="button" @onclick="Saltar">Pag. Siguiente</button>
-        </div>
 
-        <div class="col">
-            <input type="text" id="filtar" class="form-control" placeholder="Criterio" @onfocusin="Filtrar" @onfocusout="Filtrar" @onclick="Filtrar" @bind="Criterio" />
-        </div>
-
-        <div class="col">
-            <select class="form-control" id="filtro_select" @onclick="Filtrar" @bind="filtro">
-                <option value="0">Todos</option>
-                <option value="1">Id</option>
-                <option value="2">Nombre</option>
-                <option value="3">Email</option>
-                <option value="4">Nivel de Usuario</option>
-                <option value="5">Nombre de usuario</option>
-            </select>
-        </div>
+<h3>Consulta de Usuario</h3>
+<div class="row">
+    <div class="col">
+        <input id="desde_date" class="form-control" type="datetime-local" @bind="desdeFecha" />
+        <label for="desde_date">Desde</label>
     </div>
+    <div class="col">
+        <input id="hasta_date" class="form-control" type="datetime-local" @bind="hastaFecha" />
+        <label for="hasta_date">Hasta</label>
+    </div>
+
+    <div class="col">
+        <button class="btn btn-primary" id="filtar_buton" @onclick="filtradoPorFecha">Filtar por Fecha</button>
+    </div>
+
+    <div class="col">
+        <button class="btn btn-dark" type="button" @onclick="Saltar">Pag. Siguiente</button>
+    </div>
+
+    <div class="col">
+        <input type="text" id="filtar" class="form-control" placeholder="Criterio" @onfocusin="Filtrar" @onfocusout="Filtrar" @onclick="Filtrar" @bind="Criterio" />
+    </div>
+
+    <div class="col">
+        <select class="form-control" id="filtro_select" @onclick="Filtrar" @bind="filtro">
+            <option value="0">Todos</option>
+            <option value="1">Id</option>
+            <option value="2">Nombre</option>
+            <option value="3">Email</option>
+            <option value="4">Nivel de Usuario</option>
+            <option value="5">Nombre de usuario</option>
+        </select>
+    </div>
+</div>
 <br />
 
 
@@ -87,7 +109,7 @@ else
 @code {
     List<Usuarios> Lista = new List<Usuarios>();
 
-     [Parameter]
+    [Parameter]
     public int I { get; set; }
     private int Contador { get; set; }
     private int contCiclo { get; set; }
@@ -110,7 +132,7 @@ else
     private void Saltar()
     {
         Contador += paginacion.Pagina;
-        if(Contador >= totaldepaginas)
+        if (Contador >= totaldepaginas)
         {
             Contador = 0;
         }
@@ -123,14 +145,14 @@ else
     protected override void OnInitialized()
     {
         conteo = Contexto.Compras.Count();
-        totaldepaginas = Math.Ceiling(conteo/paginacion.CantidadMostrar);
+        totaldepaginas = Math.Ceiling(conteo / paginacion.CantidadMostrar);
         Lista = usuariocontroller.GetList(p => true);
         this.Lista = Contexto.Usuarios.Take(paginacion.CantidadMostrar).ToList();
         NumSaltar();
     }
 
 
-   
+
 
     DateTime hastaFecha = DateTime.Now;
     DateTime desdeFecha = DateTime.Now;
@@ -165,7 +187,7 @@ else
                     //Todos
                     case 0:
                         conteo = Contexto.Compras.Count();
-                        totaldepaginas = Math.Ceiling(conteo/paginacion.CantidadMostrar);
+                        totaldepaginas = Math.Ceiling(conteo / paginacion.CantidadMostrar);
                         Lista = usuariocontroller.GetList(p => true);
                         this.Lista = Contexto.Usuarios.Take(paginacion.CantidadMostrar).ToList();
                         break;
@@ -194,7 +216,7 @@ else
                         listado = usuariocontroller.GetList(p => p.NivelUsuario.Contains(Criterio));
                         Lista = listado;
                         break;
-                   case 5:
+                    case 5:
                         listado = usuariocontroller.GetList(p => p.NombreUsuario.Contains(Criterio));
                         Lista = listado;
                         break;

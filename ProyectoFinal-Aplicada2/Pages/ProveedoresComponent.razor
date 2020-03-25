@@ -1,6 +1,27 @@
 ﻿@page "/Proveedores"
 @page "/Proveedores/{Id:int}"
 
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<CascadingAuthenticationState>
+    <AuthorizeView>
+        <NotAuthorized>
+            <div class="card text-center">
+                <div class="card-header">
+                    No Autorizado
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Atención</h5>
+                    <p class="card-text">Usted no esta autorizado para acceder a esta pagina.</p>
+                    <a href="MenuRegistros" class="btn btn-primary">Ir al Menú</a>
+                </div>
+                <div class="card-footer text-muted">
+                </div>
+            </div>
+        </NotAuthorized>
+    </AuthorizeView>
+</CascadingAuthenticationState>
+
 
 <style>
     * {
@@ -25,84 +46,89 @@
         color: white;
     }
 </style>
-<section class="form-register">
 
-    <h3>Proveedores</h3>
-    <EditForm Model="proveedores" OnValidSubmit="Guardar">
-        <DataAnnotationsValidator></DataAnnotationsValidator>
-        <label for="Id">ProveedorId</label>
-        <div class="row">
-            <div class="col-md-8">
-                <div class="form-group">
+@if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
+{
+    <section class="form-register">
 
-                    <InputNumber @bind-Value="proveedores.ProveedoresId" class="form-control"></InputNumber>
-                    <ValidationMessage For="(()=>proveedores.ProveedoresId)"></ValidationMessage>
+        <h3>Proveedores</h3>
+        <EditForm Model="proveedores" OnValidSubmit="Guardar">
+            <DataAnnotationsValidator></DataAnnotationsValidator>
+            <label for="Id">ProveedorId</label>
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="form-group">
+
+                        <InputNumber @bind-Value="proveedores.ProveedoresId" class="form-control"></InputNumber>
+                        <ValidationMessage For="(()=>proveedores.ProveedoresId)"></ValidationMessage>
+                    </div>
+                </div>
+
+
+                <div class="col-md-4">
+                    <button type="button" class="btn btn-primary" @onclick="Buscar">Buscar</button>
                 </div>
             </div>
 
 
-            <div class="col-md-4">
-                <button type="button" class="btn btn-primary" @onclick="Buscar">Buscar</button>
+            <div class="form-group">
+                <label for="NombreProveedor">Nombre</label>
+                <InputText @bind-Value="proveedores.NombreProveedor" class="form-control"></InputText>
+                <ValidationMessage For="(()=>proveedores.NombreProveedor)"></ValidationMessage>
             </div>
-        </div>
 
+            <div class="form-group">
+                <label for="Telefono">Telefono</label>
+                <InputText @bind-Value="proveedores.Telefono" class="form-control"></InputText>
+                <ValidationMessage For="(()=>proveedores.Telefono)"></ValidationMessage>
+            </div>
 
-        <div class="form-group">
-            <label for="NombreProveedor">Nombre</label>
-            <InputText @bind-Value="proveedores.NombreProveedor" class="form-control"></InputText>
-            <ValidationMessage For="(()=>proveedores.NombreProveedor)"></ValidationMessage>
-        </div>
+            <div class="form-group">
+                <label for="RNC">RNC</label>
+                <InputText @bind-Value="proveedores.RNC" class="form-control"></InputText>
+                <ValidationMessage For="(()=>proveedores.RNC)"></ValidationMessage>
+            </div>
 
-        <div class="form-group">
-            <label for="Telefono">Telefono</label>
-            <InputText @bind-Value="proveedores.Telefono" class="form-control"></InputText>
-            <ValidationMessage For="(()=>proveedores.Telefono)"></ValidationMessage>
-        </div>
+            <div class="form-group">
+                <label for="TipoNegocio">Tipo de negocio</label>
+                <InputSelect @bind-Value="proveedores.TipoNegocio" class="form-control">
+                    <option value="Compra">Compra</option>
+                    <option value="Venta">Venta</option>
+                    <option value="Servicios">Servicios</option>
+                    <option value="Manufactura">Manufactura</option>
+                </InputSelect>
+                <ValidationMessage For="(()=>proveedores.TipoNegocio)"></ValidationMessage>
+            </div>
 
-        <div class="form-group">
-            <label for="RNC">RNC</label>
-            <InputText @bind-Value="proveedores.RNC" class="form-control"></InputText>
-            <ValidationMessage For="(()=>proveedores.RNC)"></ValidationMessage>
-        </div>
+            <div class="form-group">
+                <label for="Direccion">Dirección</label>
+                <InputText @bind-Value="proveedores.Direcciones" class="form-control"></InputText>
+                <ValidationMessage For="(()=>proveedores.Direcciones)"></ValidationMessage>
+            </div>
 
-        <div class="form-group">
-            <label for="TipoNegocio">Tipo de negocio</label>
-            <InputSelect @bind-Value="proveedores.TipoNegocio" class="form-control">
-                <option value="Compra">Compra</option>
-                <option value="Venta">Venta</option>
-                <option value="Servicios">Servicios</option>
-                <option value="Manufactura">Manufactura</option>
-            </InputSelect>
-            <ValidationMessage For="(()=>proveedores.TipoNegocio)"></ValidationMessage>
-        </div>
+            <div class="form-group">
+                <label for="TipoMoneda">Tipo Moneda</label>
 
-        <div class="form-group">
-            <label for="Direccion">Dirección</label>
-            <InputText @bind-Value="proveedores.Direcciones" class="form-control"></InputText>
-            <ValidationMessage For="(()=>proveedores.Direcciones)"></ValidationMessage>
-        </div>
+                <InputSelect @bind-Value="proveedores.TipoMoneda" class="form-control">
+                    <option value="Peso">Peso</option>
+                    <option value="Dolar">Dolar</option>
+                    <option value="Euro">Euro</option>
+                </InputSelect>
+                <ValidationMessage For="(()=>proveedores.TipoMoneda)"></ValidationMessage>
+            </div>
 
-        <div class="form-group">
-            <label for="TipoMoneda">Tipo Moneda</label>
+            <button type="button" class="btn btn-secondary" @onclick="Nuevo">Nuevo</button>
+            <button type="submit" class="btn btn-success">Guardar</button>
+            <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
 
-            <InputSelect @bind-Value="proveedores.TipoMoneda" class="form-control">
-                <option value="Peso">Peso</option>
-                <option value="Dolar">Dolar</option>
-                <option value="Euro">Euro</option>
-            </InputSelect>
-            <ValidationMessage For="(()=>proveedores.TipoMoneda)"></ValidationMessage>
-        </div>
+        </EditForm>
 
-        <button type="button" class="btn btn-secondary" @onclick="Nuevo">Nuevo</button>
-        <button type="submit" class="btn btn-success">Guardar</button>
-        <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
+    </section>
 
-    </EditForm>
+}
 
-</section>
-    
-
-
+<br />
+<br />
 
 @code {
 
@@ -115,7 +141,7 @@
 
     protected override void OnInitialized()
     {
-        if(Id>0)
+        if (Id > 0)
         {
             proveedores = proveedorescontrollers.Buscar(Id);
         }
@@ -124,18 +150,20 @@
 
     private void Guardar()
     {
-        if(proveedores.ProveedoresId>0)
+        if (proveedores.ProveedoresId > 0)
         {
             proveedorescontrollers.Guardar(proveedores);
             toastService.ShowSuccess("Has modificado el proveedor exitosamente", "Modificado!");
             this.proveedores = new Proveedores();
 
-        } else if(proveedores.ProveedoresId == 0)
+        }
+        else if (proveedores.ProveedoresId == 0)
         {
             proveedorescontrollers.Guardar(proveedores);
             toastService.ShowSuccess("Has guardado el proveedor exitosamente", "Guardado!");
             this.proveedores = new Proveedores();
-        } else
+        }
+        else
         {
             toastService.ShowError("No se guardar", "Error!");
         }
@@ -149,24 +177,26 @@
 
     private void Eliminar()
     {
-        if(proveedorescontrollers.Eliminar(proveedores.ProveedoresId))
+        if (proveedorescontrollers.Eliminar(proveedores.ProveedoresId))
         {
-            toastService.ShowInfo("Has eliminado el proveedor exitosamente","Eliminado!");
+            toastService.ShowInfo("Has eliminado el proveedor exitosamente", "Eliminado!");
             this.proveedores = new Proveedores();
-        } else
+        }
+        else
         {
-            toastService.ShowError("No se pudo eliminar","Error");
+            toastService.ShowError("No se pudo eliminar", "Error");
         }
     }
 
     private void Buscar()
     {
         Proveedores busca = proveedorescontrollers.Buscar(proveedores.ProveedoresId);
-        if(busca!=null)
+        if (busca != null)
         {
             this.proveedores = busca;
-            toastService.ShowInfo("El proveedor se ha encontrado","Encontrado!");
-        } else
+            toastService.ShowInfo("El proveedor se ha encontrado", "Encontrado!");
+        }
+        else
         {
             toastService.ShowWarning("No se pudo encontrar el proveedor", "No encontrado!");
         }

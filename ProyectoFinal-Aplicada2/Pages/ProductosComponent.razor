@@ -1,6 +1,28 @@
 ﻿@page "/Productos"
 @page "/Productos/{Id:int}"
 
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<CascadingAuthenticationState>
+    <AuthorizeView>
+        <NotAuthorized>
+            <div class="card text-center">
+                <div class="card-header">
+                    No Autorizado
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Atención</h5>
+                    <p class="card-text">Usted no esta autorizado para acceder a esta pagina.</p>
+                    <a href="MenuRegistros" class="btn btn-primary">Ir al Menú</a>
+                </div>
+                <div class="card-footer text-muted">
+                </div>
+            </div>
+        </NotAuthorized>
+    </AuthorizeView>
+</CascadingAuthenticationState>
+
+
 <style>
     * {
         margin: 0;
@@ -25,71 +47,75 @@
     }
 </style>
 
+@if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
+{
+    <section class="form-register">
 
-<section class="form-register">
-    
-    <h3>Productos</h3>
-    <EditForm Model="productos" OnValidSubmit="Guardar">
-        <DataAnnotationsValidator />
-        <label for="Id">ProductoId</label>
-        <div class="row">
-            <div class="col-md-8">
-                <div class="form-group">
+        <h3>Productos</h3>
+        <EditForm Model="productos" OnValidSubmit="Guardar">
+            <DataAnnotationsValidator />
+            <label for="Id">ProductoId</label>
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="form-group">
 
-                    <InputNumber @bind-Value="productos.ProductoId" class="form-control"></InputNumber>
-                    <ValidationMessage For="(()=>productos.ProductoId)"></ValidationMessage>
+                        <InputNumber @bind-Value="productos.ProductoId" class="form-control"></InputNumber>
+                        <ValidationMessage For="(()=>productos.ProductoId)"></ValidationMessage>
+                    </div>
+                </div>
+
+
+                <div class="col-md-4">
+
+                    <button type="button" class="btn btn-primary" @onclick="Buscar">Buscar</button>
+
                 </div>
             </div>
 
-
-            <div class="col-md-4">
-
-                <button type="button" class="btn btn-primary" @onclick="Buscar">Buscar</button>
-
+            <div class="form-group">
+                <label for="FechaEntrada">Fecha de entrada</label>
+                <InputDate @bind-Value="productos.FechaEntrada" class="form-control"></InputDate>
+                <ValidationMessage For="(()=>productos.FechaEntrada)"></ValidationMessage>
             </div>
-        </div>
 
-        <div class="form-group">
-            <label for="FechaEntrada">Fecha de entrada</label>
-            <InputDate @bind-Value="productos.FechaEntrada" class="form-control"></InputDate>
-            <ValidationMessage For="(()=>productos.FechaEntrada)"></ValidationMessage>
-        </div>
+            <div class="form-group">
+                <label for="Nombre">Nombre</label>
+                <InputText @bind-Value="productos.Nombre" class="form-control"></InputText>
+                <ValidationMessage For="(()=>productos.Nombre)"></ValidationMessage>
+            </div>
 
-        <div class="form-group">
-            <label for="Nombre">Nombre</label>
-            <InputText @bind-Value="productos.Nombre" class="form-control"></InputText>
-            <ValidationMessage For="(()=>productos.Nombre)"></ValidationMessage>
-        </div>
+            <div class="form-group">
+                <label for="Cantidad">Cantidad</label>
+                <InputNumber @bind-Value="productos.Cantidad" class="form-control"></InputNumber>
+                <ValidationMessage For="(()=>productos.Cantidad)"></ValidationMessage>
+            </div>
 
-        <div class="form-group">
-            <label for="Cantidad">Cantidad</label>
-            <InputNumber @bind-Value="productos.Cantidad" class="form-control"></InputNumber>
-            <ValidationMessage For="(()=>productos.Cantidad)"></ValidationMessage>
-        </div>
+            <div class="form-group">
+                <label for="PrecioCompra">Precio de compra</label>
+                <InputNumber @bind-Value="productos.PrecioCompra" @onfocusin="CalcularPrecioDeVenta" @onfocusout="CalcularPrecioDeVenta" class="form-control"></InputNumber>
+                <ValidationMessage For="(()=>productos.PrecioCompra)"></ValidationMessage>
+            </div>
 
-        <div class="form-group">
-            <label for="PrecioCompra">Precio de compra</label>
-            <InputNumber @bind-Value="productos.PrecioCompra" @onfocusin="CalcularPrecioDeVenta" @onfocusout="CalcularPrecioDeVenta" class="form-control"></InputNumber>
-            <ValidationMessage For="(()=>productos.PrecioCompra)"></ValidationMessage>
-        </div>
+            <div class="form-group">
+                <label for="PorcentajeGanancia">Porcentaje de ganancia</label>
+                <InputNumber @bind-Value="productos.PorcentajeGanancias" @onfocusin="CalcularPrecioDeVenta" @onfocusout="CalcularPrecioDeVenta" class="form-control"></InputNumber>
+                <ValidationMessage For="(()=>productos.PorcentajeGanancias)"></ValidationMessage>
+            </div>
 
-        <div class="form-group">
-            <label for="PorcentajeGanancia">Porcentaje de ganancia</label>
-            <InputNumber @bind-Value="productos.PorcentajeGanancias" @onfocusin="CalcularPrecioDeVenta" @onfocusout="CalcularPrecioDeVenta" class="form-control"></InputNumber>
-            <ValidationMessage For="(()=>productos.PorcentajeGanancias)"></ValidationMessage>
-        </div>
+            <div class="form-group">
+                <label for="PrecioVenta">Precio de venta</label>
+                <InputNumber @bind-Value="productos.PrecioVentas" ReadOnly="true" class="form-control" @onchange="CalcularPrecioDeVenta"></InputNumber>
+            </div>
 
-        <div class="form-group">
-            <label for="PrecioVenta">Precio de venta</label>
-            <InputNumber @bind-Value="productos.PrecioVentas" ReadOnly="true" class="form-control" @onchange="CalcularPrecioDeVenta"></InputNumber>
-        </div>
+            <button type="button" class="btn btn-secondary" @onclick="Nuevo">Nuevo</button>
+            <button type="submit" class="btn btn-success" @onclick="CalcularPrecioDeVenta">Guardar</button>
+            <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
 
-        <button type="button" class="btn btn-secondary" @onclick="Nuevo">Nuevo</button>
-        <button type="submit" class="btn btn-success" @onclick="CalcularPrecioDeVenta">Guardar</button>
-        <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
-
-    </EditForm>
-</section>
+        </EditForm>
+    </section>
+}
+<br />
+<br />
 
 @code {
     Productos productos = new Productos();
@@ -99,7 +125,7 @@
 
     protected override void OnInitialized()
     {
-        if(Id>0)
+        if (Id > 0)
         {
             productos = productoscontrollers.Buscar(Id);
         }
@@ -113,18 +139,20 @@
 
     private void Guardar()
     {
-        if(productos.ProductoId>0)
+        if (productos.ProductoId > 0)
         {
             productoscontrollers.Guardar(productos);
             toastService.ShowSuccess("Has modificado el producto exitosamente", "Modificado!");
             this.productos = new Productos();
 
-        } else if(productos.ProductoId == 0)
+        }
+        else if (productos.ProductoId == 0)
         {
             productoscontrollers.Guardar(productos);
             toastService.ShowSuccess("Has guardado el producto exitosamente", "Guardado!");
             this.productos = new Productos();
-        } else
+        }
+        else
         {
             toastService.ShowError("No se puedo guardar", "Error!");
         }
@@ -134,11 +162,12 @@
 
     private void Eliminar()
     {
-        if(productoscontrollers.Eliminar(productos.ProductoId))
+        if (productoscontrollers.Eliminar(productos.ProductoId))
         {
             toastService.ShowInfo("Se ha eliminado el producto correctamente", "Eliminado!");
             this.productos = new Productos();
-        } else
+        }
+        else
         {
             toastService.ShowError("No se pudo eliminar", "Error!");
         }
@@ -147,11 +176,12 @@
     private void Buscar()
     {
         Productos busca = productoscontrollers.Buscar(productos.ProductoId);
-        if(busca!=null)
+        if (busca != null)
         {
             this.productos = busca;
-            toastService.ShowInfo("Has encontrado el producto","Encontrado!");
-        } else
+            toastService.ShowInfo("Has encontrado el producto", "Encontrado!");
+        }
+        else
         {
             toastService.ShowWarning("No se ha podido encontrar el producto", "No encontrado!");
         }

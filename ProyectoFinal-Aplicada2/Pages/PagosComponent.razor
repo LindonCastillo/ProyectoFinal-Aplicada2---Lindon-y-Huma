@@ -1,6 +1,27 @@
 ﻿@page "/pagos"
 @page "/pagos/{Id:int}"
 
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<CascadingAuthenticationState>
+    <AuthorizeView>
+        <NotAuthorized>
+            <div class="card text-center">
+                <div class="card-header">
+                    No Autorizado
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Atención</h5>
+                    <p class="card-text">Usted no esta autorizado para acceder a esta pagina.</p>
+                    <a href="MenuRegistros" class="btn btn-primary">Ir al Menú</a>
+                </div>
+                <div class="card-footer text-muted">
+                </div>
+            </div>
+        </NotAuthorized>
+    </AuthorizeView>
+</CascadingAuthenticationState>
+
 
 <style>
     * {
@@ -26,112 +47,113 @@
     }
 </style>
 
-<section class="form-register">
-    <h3>Pagos</h3>
-    <EditForm Model="@pagos" OnValidSubmit="Guardar">
-        <DataAnnotationsValidator />
-        <label for="Id">PagoId</label>
+@if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
+{
+    <section class="form-register">
+        <h3>Pagos</h3>
+        <EditForm Model="@pagos" OnValidSubmit="Guardar">
+            <DataAnnotationsValidator />
+            <label for="Id">PagoId</label>
 
-        <div class="row">
-            <div class="col-md-8">
-                <div class="form-group">
-                    <InputNumber id="id" @bind-Value="pagos.PagoId" class="form-control"></InputNumber>
-                    <ValidationMessage For="(()=>pagos.PagoId)"></ValidationMessage>
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="form-group">
+                        <InputNumber id="id" @bind-Value="pagos.PagoId" class="form-control"></InputNumber>
+                        <ValidationMessage For="(()=>pagos.PagoId)"></ValidationMessage>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <button type="button" class="btn btn-primary" @onclick="Buscar">Buscar</button>
                 </div>
             </div>
 
-            <div class="col-md-4">
-                <button type="button" class="btn btn-primary" @onclick="Buscar">Buscar</button>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label for="PagoFecha">Fecha de pago</label>
-            <InputDate @bind-Value="pagos.PagoFecha" class="form-control"></InputDate>
-            <ValidationMessage For="(()=>pagos.PagoFecha)"></ValidationMessage>
-        </div>
-
-        <div class="row">
-            <div class="col">
-                <label for="CompraId">CompraId</label>
-                <InputSelect @bind-Value="CompraId" class="form-control" @onclick="BuscarCompra" @onchange="BuscarCompra">
-                    <option value="">Elija una compra</option>
-                    @foreach (var item in ListaCompras)
-                    {
-                        <option value="@item.CompraId">@item.DescripcionCompra</option>
-                    }
-                </InputSelect>
+            <div class="form-group">
+                <label for="PagoFecha">Fecha de pago</label>
+                <InputDate @bind-Value="pagos.PagoFecha" class="form-control"></InputDate>
+                <ValidationMessage For="(()=>pagos.PagoFecha)"></ValidationMessage>
             </div>
 
-            <div class="col">
-                <label for="TipoPago">Tipo de pago</label>
-                <InputSelect @bind-Value="TipoPago" class="form-control">
-                    <option value="">Tipo pago</option>
-                    <option value="Efectivo">Efectivo</option>
-                    <option value="Cheque">Cheque</option>
-                </InputSelect>
+            <div class="row">
+                <div class="col">
+                    <label for="CompraId">CompraId</label>
+                    <InputSelect @bind-Value="CompraId" class="form-control" @onclick="BuscarCompra" @onchange="BuscarCompra">
+                        <option value="">Elija una compra</option>
+                        @foreach (var item in ListaCompras)
+                            {
+                            <option value="@item.CompraId">@item.DescripcionCompra</option>
+                            }
+                        /**/
+                    </InputSelect>
+                </div>
+
+                <div class="col">
+                    <label for="TipoPago">Tipo de pago</label>
+                    <InputSelect @bind-Value="TipoPago" class="form-control">
+                        <option value="">Tipo pago</option>
+                        <option value="Efectivo">Efectivo</option>
+                        <option value="Cheque">Cheque</option>
+                    </InputSelect>
+                </div>
+
+
             </div>
 
-           
-        </div>
+            <div class="row">
+                <div class="col">
+                    <label for="Balance">Balance</label>
+                    <InputNumber @bind-Value="compras.Balance" disabled class="form-control"></InputNumber>
+                </div>
 
-        <div class="row">
-            <div class="col">
-                <label for="Balance">Balance</label>
-                <InputNumber @bind-Value="compras.Balance" disabled class="form-control"></InputNumber>
+                <div class="col">
+                    <label for="Pago">Pago</label>
+                    <InputNumber @bind-Value="Pago" class="form-control"></InputNumber>
+                    <button type="button" class="btn btn-info" @onclick="AgregarCompra">Agregar</button>
+                </div>
+
             </div>
 
-            <div class="col">
-                <label for="Pago">Pago</label>
-                <InputNumber @bind-Value="Pago" class="form-control"></InputNumber>
-                <button type="button" class="btn btn-info" @onclick="AgregarCompra">Agregar</button>
-            </div>
+            <br />
 
-        </div>
-
-        <br />
-
-        <table class="table">
-            <thead class="thead-dark">
-                <tr>
-                    <th>Id</th>
-                    <th>PagoId</th>
-                    <th>CompraId</th>
-                    <th>Tipo de pago</th>
-                    <th>Pago</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody class="bg-white">
-                @foreach (var item in pagos.PagosDetalles)
-                {
+            <table class="table">
+                <thead class="thead-dark">
                     <tr>
-                        <td>@item.Id</td>
-                        <td>@item.PagoId</td>
-                        <td>@item.CompraId</td>
-                        <td>@item.TipoPago</td>
-                        <td>@item.Pago</td>
-                        <th><button class="btn btn-outline-danger" type="button" @onclick="(()=>EliminarDetalle(item))">Remover</button></th>
+                        <th>Id</th>
+                        <th>PagoId</th>
+                        <th>CompraId</th>
+                        <th>Tipo de pago</th>
+                        <th>Pago</th>
+                        <th></th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody class="bg-white">
+                    @foreach (var item in pagos.PagosDetalles)
+                    {
+                        <tr>
+                            <td>@item.Id</td>
+                            <td>@item.PagoId</td>
+                            <td>@item.CompraId</td>
+                            <td>@item.TipoPago</td>
+                            <td>@item.Pago</td>
+                            <th><button class="btn btn-outline-danger" type="button" @onclick="(()=>EliminarDetalle(item))">Remover</button></th>
+                        </tr>
+                    }
+                </tbody>
+            </table>
 
-        <div class="form-group">
-            <label for="PagoTotal">Pago Total</label>
-            <InputNumber @bind-Value="pagos.PagoTotal" disabled class="form-control"></InputNumber>
-        </div>
+            <div class="form-group">
+                <label for="PagoTotal">Pago Total</label>
+                <InputNumber @bind-Value="pagos.PagoTotal" disabled class="form-control"></InputNumber>
+            </div>
 
-        <button type="button" class="btn btn-secondary" @onclick="Nuevo">Nuevo</button>
-        <button type="submit" class="btn btn-success">Guardar</button>
-        <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
-    </EditForm>
-</section>
-
-
-
-
-
+            <button type="button" class="btn btn-secondary" @onclick="Nuevo">Nuevo</button>
+            <button type="submit" class="btn btn-success">Guardar</button>
+            <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
+        </EditForm>
+    </section>
+}
+<br />
+<br />
 @code {
     [Parameter]
     public int Id { get; set; }
@@ -146,7 +168,7 @@
 
     protected override void OnInitialized()
     {
-        if(Id>0)
+        if (Id > 0)
         {
             pagos = pagoscontroller.Buscar(Id);
         }
@@ -158,36 +180,38 @@
 
     private void Guardar()
     {
-        if(pagos.PagosDetalles == null)
+        if (pagos.PagosDetalles == null)
         {
             toastService.ShowWarning("La lista está vacía", "Lista nula!");
             return;
         }
 
-        if(pagos.PagoTotal == 0)
+        if (pagos.PagoTotal == 0)
         {
             toastService.ShowWarning("La lista está vacía", "Lista nula!");
             return;
         }
 
-        if(!ExisteCompra())
+        if (!ExisteCompra())
         {
             toastService.ShowWarning("El Id de compra no existe", "No existe Compra!");
             return;
         }
 
-        if(pagos.PagoId>0)
+        if (pagos.PagoId > 0)
         {
             pagoscontroller.Guardar(pagos);
             toastService.ShowSuccess("Has modificado el pago exitosamente", "Modificado!");
             Nuevo();
-        } else if(pagos.PagoId == 0)
+        }
+        else if (pagos.PagoId == 0)
         {
             pagoscontroller.Guardar(pagos);
             toastService.ShowSuccess("Has guardado el pago exitosamente", "Guardado!");
             this.pagos = new Pagos();
             Nuevo();
-        } else
+        }
+        else
         {
             toastService.ShowError("No se pudo guardar", "Error!");
         }
@@ -198,7 +222,7 @@
     {
         bool paso = false;
 
-        if(comprascontroller.Buscar(Convert.ToInt32(CompraId))!=null)
+        if (comprascontroller.Buscar(Convert.ToInt32(CompraId)) != null)
         {
             paso = true;
         }
@@ -207,13 +231,14 @@
 
     private void Eliminar()
     {
-        if(pagoscontroller.Eliminar(pagos.PagoId))
+        if (pagoscontroller.Eliminar(pagos.PagoId))
         {
-            toastService.ShowInfo("Se ha eliminado el pago exitosamente","Eliminado!");
+            toastService.ShowInfo("Se ha eliminado el pago exitosamente", "Eliminado!");
             this.pagos = new Pagos();
-        } else
+        }
+        else
         {
-            toastService.ShowWarning("No se pudo eliminar el pago","No se pudo eliminar!");
+            toastService.ShowWarning("No se pudo eliminar el pago", "No se pudo eliminar!");
         }
     }
 
@@ -231,13 +256,14 @@
     private void Buscar()
     {
         Pagos busca = pagoscontroller.Buscar(pagos.PagoId);
-        if(busca!=null)
+        if (busca != null)
         {
             this.pagos = busca;
-            toastService.ShowSuccess("El pago se ha encontrado exitosamente","Encontrado");
-        } else
+            toastService.ShowSuccess("El pago se ha encontrado exitosamente", "Encontrado");
+        }
+        else
         {
-            toastService.ShowWarning("El pago no se ha podido encontrar","No encontrado!");
+            toastService.ShowWarning("El pago no se ha podido encontrar", "No encontrado!");
         }
     }
 
@@ -253,20 +279,20 @@
     private bool Validar()
     {
         bool paso = true;
-        if(string.IsNullOrEmpty(TipoPago))
+        if (string.IsNullOrEmpty(TipoPago))
         {
             toastService.ShowWarning("Debes elegir un tipo de pago", "Error");
             paso = false;
         }
-        if(Pago<1)
+        if (Pago < 1)
         {
-            toastService.ShowWarning("El pago debe ser mayor que cero","Error");
+            toastService.ShowWarning("El pago debe ser mayor que cero", "Error");
             paso = false;
         }
 
-        if(string.IsNullOrEmpty(TipoPago))
+        if (string.IsNullOrEmpty(TipoPago))
         {
-            toastService.ShowWarning("El tipo de pago es igual a cero","Tipo pago vacío");
+            toastService.ShowWarning("El tipo de pago es igual a cero", "Tipo pago vacío");
             paso = false;
         }
 
@@ -276,15 +302,16 @@
     private void AgregarCompra()
     {
 
-        if(!Validar())
+        if (!Validar())
         {
             return;
         }
 
-        if(pagos.PagosDetalles.Any(C=>C.CompraId == compras.CompraId))
+        if (pagos.PagosDetalles.Any(C => C.CompraId == compras.CompraId))
         {
-            toastService.ShowWarning("No puedes agregar una compra repetida","Compra Existente!");
-        } else
+            toastService.ShowWarning("No puedes agregar una compra repetida", "Compra Existente!");
+        }
+        else
         {
             this.pagos.PagosDetalles.Add(new PagosDetalle()
             {
@@ -323,7 +350,8 @@
         try
         {
             compras = comprascontroller.SoloCompra(Int32.Parse(CompraId));
-        }catch
+        }
+        catch
         {
             //Cargo
         }
@@ -341,7 +369,8 @@
             proveedores = proveedorescontrollers.Buscar(compras.ProveedorId);
             nombre = proveedores.NombreProveedor;
 
-        }catch
+        }
+        catch
         {
             //comentario
         }
