@@ -140,22 +140,10 @@
                     </tr>
                 }
 
-            </tbody>
-
-        </table>
-
-        <div class="form-group">
-            <label for="ProveedorId">ProveedorId</label>
-            <InputText @bind-Value="compras.NombreProveedor" class="form-control"></InputText>
-            <ValidationMessage For="(() => compras.NombreProveedor)"></ValidationMessage>
-        </div>
 
 
-        <div class="form-group">
-            <label for="Itbis">Itbis</label>
-            <InputNumber @bind-Value="compras.Itbis" class="form-control"></InputNumber>
-            <ValidationMessage For="(() => compras.Itbis)" @onchange="CalcularTotalDeCompra" @onfocusin="CalcularTotalDeCompra" @onfocusout="CalcularTotalDeCompra"></ValidationMessage>
-        </div>
+
+         
 
         <div class="form-group">
             <label for="Total">Total</label>
