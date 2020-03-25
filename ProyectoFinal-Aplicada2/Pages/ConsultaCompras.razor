@@ -3,7 +3,24 @@
 
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
-
+    <CascadingAuthenticationState>
+        <AuthorizeView>
+            <NotAuthorized>
+                <div class="card text-center">
+                    <div class="card-header">
+                        No Autorizado
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Atención</h5>
+                        <p class="card-text">Usted no está autorizado para acceder a esta pagina.</p>
+                        <a href="MenuRegistros" class="btn btn-primary">Ir al Menú</a>
+                    </div>
+                    <div class="card-footer text-muted">
+                    </div>
+                </div>
+            </NotAuthorized>
+        </AuthorizeView>
+    </CascadingAuthenticationState>
     @code {
        
 

@@ -140,12 +140,36 @@
                         </tr>
                     }
 
+                </tbody>
+                </table>
 
+         <div class="form-group">
+             <InputSelect @bind-Value="compras.NombreProveedor" class="form-control">
+                 <option value="">Elija un proveedor</option>
+                 @foreach (var  item in ProveedorLista)
+	            {
+		             <option value="@item.NombreProveedor">@item.NombreProveedor</option>
+	            }
+             </InputSelect>
+             <ValidationMessage For="(()=>compras.NombreProveedor)"></ValidationMessage>
+         </div>
 
+        <div class="form-group">
+            <label for="Itbis">Itebis</label>
+            <InputNumber @bind-Value="compras.Itbis" class="form-control"></InputNumber>
+            <ValidationMessage For="(()=>compras.Itbis)"></ValidationMessage>
+        </div>
 
-         
+        <div class="form-group">
+            <label for="Total">Total</label>
+            <InputNumber @bind-Value="compras.Total" class="form-control" ReadOnly="true"></InputNumber>
+            <ValidationMessage For="(()=>compras.Total)"></ValidationMessage>
+        </div>
 
-        
+        <div class="form-group">
+            <label for="Balance">Balance</label>
+            <InputNumber @bind-Value="compras.Balance" class="form-control" ReadOnly="true"></InputNumber>
+        </div>
 
 @code {
 
