@@ -48,110 +48,139 @@
 </style>
 
 
-
-
 @if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
 {
-    <section class="form-register">
-        <h3>Compras</h3>
-        <EditForm Model="@compras" OnValidSubmit="Guardar">
-            <DataAnnotationsValidator />
-            <label for="Id">CompraId</label>
-            <div class="row">
-                <div class="col-md-8">
-                    <div class="form-group">
+<section class="form-register">
+    <h3>Compras</h3>
+    <EditForm Model="@compras" OnValidSubmit="Guardar">
+        <DataAnnotationsValidator />
+        <label for="Id">CompraId</label>
+        <div class="row">
+            <div class="col-md-8">
+                <div class="form-group">
 
-                        <InputNumber @bind-Value="compras.CompraId" class="form-control"></InputNumber>
-                        <ValidationMessage For="(()=>compras.CompraId)"></ValidationMessage>
-                    </div>
-                </div>
-
-
-                <div class="col-md-4">
-
-                    <button type="button" class="btn btn-primary" @onclick="Buscar">Buscar</button>
-
+                    <InputNumber @bind-Value="compras.CompraId" class="form-control"></InputNumber>
+                    <ValidationMessage For="(() => compras.CompraId)"></ValidationMessage>
                 </div>
             </div>
 
-            <div class="form-group">
-                <label for="FechaCompra">Fecha de compra</label>
-                <InputDate @bind-Value="compras.FechaCompra" class="form-control"></InputDate>
-                <ValidationMessage For="(()=>compras.FechaCompra)"></ValidationMessage>
+            <div class="col-md-4">
+
+                <button type="button" class="btn btn-primary" @onclick="Buscar">Buscar</button>
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="FechaCompra">Fecha de compra</label>
+            <InputDate @bind-Value="compras.FechaCompra" class="form-control"></InputDate>
+            <ValidationMessage For="(() => compras.FechaCompra)"></ValidationMessage>
+        </div>
+
+        <div class="form-group">
+            <label for="Descripcion">Descripcion</label>
+            <InputText @bind-Value="compras.DescripcionCompra" class="form-control" placeholder="descripcion aquí"></InputText>
+            <ValidationMessage For="(() => compras.DescripcionCompra)"></ValidationMessage>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <label for="Producto">Producto</label>
+                <InputSelect @bind-Value="ProductoId" @onclick="BuscarProducto" @onchange="BuscarProducto" class="form-control">
+                    <option value="">Elija un Producto</option>
+                    @foreach (var item in listaProductos)
+                        {
+                        <option value="@item.ProductoId">@item.Nombre</option>
+                        }
+                    /**/
+                    /**/
+                    /**/
+                    /**/
+                </InputSelect>
             </div>
 
-            <div class="form-group">
-                <label for="Descripcion">Descripcion</label>
-                <InputText @bind-Value="compras.DescripcionCompra" class="form-control" placeholder="descripcion aquí"></InputText>
-                <ValidationMessage For="(()=>compras.DescripcionCompra)"></ValidationMessage>
+            <div class="col">
+                <label for="Cantidad">Cantidad</label>
+                <InputNumber @bind-Value="cantidad" class="form-control"></InputNumber>
             </div>
 
-            <div class="row">
-                <div class="col">
-                    <label for="Producto">Producto</label>
-                    <InputSelect @bind-Value="ProductoId" @onclick="BuscarProducto" @onchange="BuscarProducto" class="form-control">
-                        <option value="">Elija un Producto</option>
-                        @foreach (var item in listaProductos)
-                            {
-                            <option value="@item.ProductoId">@item.Nombre</option>
-                            }
-                        /**/
-                    </InputSelect>
-                </div>
-
-                <div class="col">
-                    <label for="Cantidad">Cantidad</label>
-                    <InputNumber @bind-Value="cantidad" class="form-control"></InputNumber>
-                </div>
-
-                <div class="col">
-                    <label for="PrecioCompra">Precio de compra</label>
-                    <InputNumber @bind-Value="productos.PrecioCompra" class="form-control"></InputNumber>
-                    <button class="btn btn-info" @onclick="AgregarProducto" type="button">Agregar</button>
-                </div>
+            <div class="col">
+                <label for="PrecioCompra">Precio de compra</label>
+                <InputNumber @bind-Value="productos.PrecioCompra" class="form-control"></InputNumber>
+                <button class="btn btn-info" @onclick="AgregarProducto" type="button">Agregar</button>
             </div>
-            <br />
+        </div>
+        <br />
 
-            <table class="table">
-                <thead class="thead-dark">
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Id</th>
+                    <th>CompraId</th>
+                    <th>ProductoId</th>
+                    <th>Nombre</th>
+                    <th>Cantidad</th>
+                    <th>Precio de Compra</th>
+                    <th>SubTotal</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody class="bg-white">
+                @foreach (var item in compras.ComprasDetalles)
+                {
                     <tr>
-                        <th>Id</th>
-                        <th>CompraId</th>
-                        <th>ProductoId</th>
-                        <th>Nombre</th>
-                        <th>Cantidad</th>
-                        <th>Precio de Compra</th>
-                        <th>SubTotal</th>
-                        <th></th>
+                        <td>@item.Id</td>
+                        <td>@item.CompraId</td>
+                        <td>@item.ProductoId</td>
+                        <td>@item.Nombre</td>
+                        <td>@item.Cantidad</td>
+                        <td>@item.PrecioCompra</td>
+                        <td>@item.SubTotal</td>
+                        <td><button class="btn btn-outline-danger" @onclick="(() => EliminarDetalle(item))" type="button">Remover</button></td>
                     </tr>
-                </thead>
-                <tbody class="bg-white">
-                    @foreach (var item in compras.ComprasDetalles)
-                    {
-                        <tr>
-                            <td>@item.Id</td>
-                            <td>@item.CompraId</td>
-                            <td>@item.ProductoId</td>
-                            <td>@item.Nombre</td>
-                            <td>@item.Cantidad</td>
-                            <td>@item.PrecioCompra</td>
-                            <td>@item.SubTotal</td>
-                            <td><button class="btn btn-outline-danger" @onclick="(() => EliminarDetalle(item))" type="button">Remover</button></td>
-                        </tr>
-                    }
+                }
+
+            </tbody>
+
+        </table>
+
+        <div class="form-group">
+            <label for="ProveedorId">ProveedorId</label>
+            <InputText @bind-Value="compras.NombreProveedor" class="form-control"></InputText>
+            <ValidationMessage For="(() => compras.NombreProveedor)"></ValidationMessage>
+        </div>
 
 
+        <div class="form-group">
+            <label for="Itbis">Itbis</label>
+            <InputNumber @bind-Value="compras.Itbis" class="form-control"></InputNumber>
+            <ValidationMessage For="(() => compras.Itbis)" @onchange="CalcularTotalDeCompra" @onfocusin="CalcularTotalDeCompra" @onfocusout="CalcularTotalDeCompra"></ValidationMessage>
+        </div>
+
+        <div class="form-group">
+            <label for="Total">Total</label>
+            <InputNumber @bind-Value="compras.Total" ReadOnly="true" class="form-control"></InputNumber>
+        </div>
+
+        <div class="form-group">
+            <label for="Balance">Balance</label>
+            <InputNumber @bind-Value="compras.Balance" ReadOnly="true" class="form-control"></InputNumber>
+        </div>
+
+        <button type="button" class="btn btn-secondary" @onclick="Nuevo">Nuevo</button>
+        <button type="submit" class="btn btn-success" @onclick="CalcularTotalDeCompra">Guardar</button>
+        <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
+    </EditForm>
+ </section>
+}
 
 
-         
-
-        
 
 @code {
 
-        Compras compras = new Compras();
-        Productos productos = new Productos();
-        List<Productos> listaProductos = new List<Productos>();
+    Compras compras = new Compras();
+    Productos productos = new Productos();
+    List<Productos> listaProductos = new List<Productos>();
     private string ProductoId;
     private int cantidad;
     string SeleccionarProovedor;
@@ -174,7 +203,7 @@
         }
 
         listaProductos = productoscontrollers.GetList(p => true);
-        ProveedorLista = proveedorescontrollers.GetList(p=>true);
+        ProveedorLista = proveedorescontrollers.GetList(p => true);
         productos = new Productos();
     }
 
@@ -201,7 +230,7 @@
         }
 
         Proveedores proveedores = new Proveedores();
-        if(proveedorescontrollers.Existe(compras.NombreProveedor))
+        if (proveedorescontrollers.Existe(compras.NombreProveedor))
         {
             toastService.ShowWarning("Parece que el proovedor no existe", "No existe proovedor");
         }
@@ -334,5 +363,7 @@
         //
     }
 }
+
+
 
 
