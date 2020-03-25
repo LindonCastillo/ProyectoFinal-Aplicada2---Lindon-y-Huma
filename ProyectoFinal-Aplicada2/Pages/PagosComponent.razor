@@ -193,12 +193,6 @@
             return;
         }
 
-        if (!ExisteCompra())
-        {
-            toastService.ShowWarning("El Id de compra no existe", "No existe Compra!");
-            return;
-        }
-
         if (pagos.PagoId > 0)
         {
             pagoscontroller.Guardar(pagos);
@@ -217,17 +211,6 @@
             toastService.ShowError("No se pudo guardar", "Error!");
         }
 
-    }
-
-    private bool ExisteCompra()
-    {
-        bool paso = false;
-
-        if (comprascontroller.Buscar(Convert.ToInt32(CompraId)) != null)
-        {
-            paso = true;
-        }
-        return paso;
     }
 
     private void Eliminar()
