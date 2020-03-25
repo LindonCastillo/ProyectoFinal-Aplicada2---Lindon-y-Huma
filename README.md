@@ -1,4 +1,4 @@
-# ProyectoFinal-Aplicada2--Lindon-y-Huma
+# COOASAR PROJECT - Compra y venta
 
 ## Comenzando 🚀
 Este sistema está basado en las operaciones de Corporación de Servicios Múltiples de la Provincia Sánchez Ramírez (COOASAR). Esta es una empresa dedicada a la venta y compra de productos agropecuarios y ganaderos con sede en Cotuí, Provincia Sánchez Ramírez, República Dominicana.  
