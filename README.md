@@ -10,7 +10,7 @@ y un menú con todas las consultas:
 ![Captura - Menu de Consultas](https://user-images.githubusercontent.com/50345256/77573693-6d442e00-6ea7-11ea-9615-b3cd0c5bd617.PNG)
 
 
-En caso de intentar entrar a un registro sin estar loguedo o sin los permiso previos saltara este mensaje:
+En caso de intentar entrar a un registro sin estar loguedo o sin los permiso previos saltará este mensaje:
 ![Captura - Aleta de Control de Usuarios](https://user-images.githubusercontent.com/50345256/77560520-f8b3c400-6e93-11ea-8571-42bb59b50721.PNG)
 
 
