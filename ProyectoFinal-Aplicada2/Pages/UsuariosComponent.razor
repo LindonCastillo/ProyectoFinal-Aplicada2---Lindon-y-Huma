@@ -1,6 +1,27 @@
 ﻿@page "/Usuarios"
 @page "/Usuarios/{Id:int}"
 
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<CascadingAuthenticationState>
+    <AuthorizeView>
+        <NotAuthorized>
+            <div class="card text-center">
+                <div class="card-header">
+                    No Autorizado
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Atención</h5>
+                    <p class="card-text">Usted no esta autorizado para acceder a esta pagina.</p>
+                    <a href="MenuRegistros" class="btn btn-primary">Ir al Menú</a>
+                </div>
+                <div class="card-footer text-muted">
+                </div>
+            </div>
+        </NotAuthorized>
+    </AuthorizeView>
+</CascadingAuthenticationState>
+
 
 <style>
     * {
@@ -26,77 +47,81 @@
     }
 </style>
 
-<section class="form-register">
-    <h3>Usuarios</h3>
-    <EditForm Model="@usuarios" OnValidSubmit="Guardar">
-        <DataAnnotationsValidator />
-        <label for="Id">UsuarioId</label>
-        <div class="row">
-            <div class="col-md-8">
-                <div class="form-group">
-                    <InputNumber @bind-Value="usuarios.UsuarioId" class="form-control"></InputNumber>
-                    <ValidationMessage For="(()=> usuarios.UsuarioId)"></ValidationMessage>
+@if(AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
+{
+    <section class="form-register">
+        <h3>Usuarios</h3>
+        <EditForm Model="@usuarios" OnValidSubmit="Guardar">
+            <DataAnnotationsValidator />
+            <label for="Id">UsuarioId</label>
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="form-group">
+                        <InputNumber @bind-Value="usuarios.UsuarioId" class="form-control"></InputNumber>
+                        <ValidationMessage For="(()=> usuarios.UsuarioId)"></ValidationMessage>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <button type="button" class="btn btn-primary" @onclick="Buscar">Buscar</button>
                 </div>
             </div>
 
-            <div class="col-md-4">
-                <button type="button" class="btn btn-primary" @onclick="Buscar">Buscar</button>
+            <div class="form-group">
+                <label for="NombrePersona_text">Nombre</label>
+                <InputText id="NombrePersona_text" placeholder="Tu nombre" class="form-control" @bind-Value="usuarios.NombrePersona"></InputText>
+                <ValidationMessage For="(() => usuarios.NombrePersona)" />
             </div>
-        </div>
-
-        <div class="form-group">
-            <label for="NombrePersona_text">Nombre</label>
-            <InputText id="NombrePersona_text" placeholder="Tu nombre" class="form-control" @bind-Value="usuarios.NombrePersona"></InputText>
-            <ValidationMessage For="(() => usuarios.NombrePersona)" />
-        </div>
 
 
-        <div class="form-group">
-            <label for="NombreUsuario _text">Nombre de usuario</label>
-            <InputText id="NombreUsuario_text" placeholder="Nombre de usuario" class="form-control" @bind-Value="usuarios.NombreUsuario"></InputText>
-            <ValidationMessage For="(() => usuarios.NombreUsuario)" />
-        </div>
-        <div class="form-group">
-            <label for="EmailUsuario_text">Email</label>
-            <InputText id="EmailUsuario_text" class="form-control" placeholder="" @bind-Value="usuarios.EmailUsuario"></InputText>
-            <ValidationMessage For="(() => usuarios.EmailUsuario)" />
-        </div>
+            <div class="form-group">
+                <label for="NombreUsuario _text">Nombre de usuario</label>
+                <InputText id="NombreUsuario_text" placeholder="Nombre de usuario" class="form-control" @bind-Value="usuarios.NombreUsuario"></InputText>
+                <ValidationMessage For="(() => usuarios.NombreUsuario)" />
+            </div>
+            <div class="form-group">
+                <label for="EmailUsuario_text">Email</label>
+                <InputText id="EmailUsuario_text" class="form-control" placeholder="" @bind-Value="usuarios.EmailUsuario"></InputText>
+                <ValidationMessage For="(() => usuarios.EmailUsuario)" />
+            </div>
 
-        <div class="form-group">
-            <label for="Clave_text">Clave</label>
-            <InputText id="Clave_text" type="password" class="form-control" @bind-Value="usuarios.Clave"></InputText>
-            <ValidationMessage For="(() => usuarios.Clave)" />
-        </div>
+            <div class="form-group">
+                <label for="Clave_text">Clave</label>
+                <InputText id="Clave_text" type="password" class="form-control" @bind-Value="usuarios.Clave"></InputText>
+                <ValidationMessage For="(() => usuarios.Clave)" />
+            </div>
 
-        <div class="form-group">
-            <label for="ConfirmarClave_text">Confirmar Clave</label>
-            <InputText id="ConfirmarClave_text" type="password" class="form-control" @bind-Value="usuarios.ConfirmarClave"></InputText>
-            <ValidationMessage For="(() => usuarios.ConfirmarClave)" />
-        </div>
+            <div class="form-group">
+                <label for="ConfirmarClave_text">Confirmar Clave</label>
+                <InputText id="ConfirmarClave_text" type="password" class="form-control" @bind-Value="usuarios.ConfirmarClave"></InputText>
+                <ValidationMessage For="(() => usuarios.ConfirmarClave)" />
+            </div>
 
-        <div class="form-group">
-            <label for="nivelusuario">Nivel de Usuario</label>
-            <InputSelect id="nivelusuario" class="form-control" @bind-Value="@usuarios.NivelUsuario">
-                <option value="Administrador">Administrador</option>
-                <option value="Contador">Contador</option>
-                <option value="Cajero">Cajero</option>
-            </InputSelect>
-            <ValidationMessage For="(() => usuarios.NivelUsuario)" />
-        </div>
+            <div class="form-group">
+                <label for="nivelusuario">Nivel de Usuario</label>
+                <InputSelect id="nivelusuario" class="form-control" @bind-Value="@usuarios.NivelUsuario">
+                    <option value="Administrador">Administrador</option>
+                    <option value="Contador">Contador</option>
+                    <option value="Cajero">Cajero</option>
+                </InputSelect>
+                <ValidationMessage For="(() => usuarios.NivelUsuario)" />
+            </div>
 
-        <div class="form-group">
-            <label for="FechaIngreso_date">Fecha de Ingreso</label>
-            <InputDate id="FechaIngreso_date" class="form-control" @bind-Value="usuarios.FechaIngreso"></InputDate>
-            <ValidationMessage For="(() => usuarios.FechaIngreso)" />
-        </div>
+            <div class="form-group">
+                <label for="FechaIngreso_date">Fecha de Ingreso</label>
+                <InputDate id="FechaIngreso_date" class="form-control" @bind-Value="usuarios.FechaIngreso"></InputDate>
+                <ValidationMessage For="(() => usuarios.FechaIngreso)" />
+            </div>
 
-        <div>
-            <button type="button" class="btn btn-danger" @onclick="Limpiar">Nuevo</button>
-            <button type="submit" class="btn btn-success">Guardar</button>
-            <button type="button" class="btn btn-secondary" @onclick="Eliminar">Eliminar</button>
-        </div>
-    </EditForm>
-</section>
+            <div>
+                <button type="button" class="btn btn-danger" @onclick="Limpiar">Nuevo</button>
+                <button type="submit" class="btn btn-success">Guardar</button>
+                <button type="button" class="btn btn-secondary" @onclick="Eliminar">Eliminar</button>
+            </div>
+        </EditForm>
+    </section>
+}
+
 <br />
 <br />
 
@@ -157,9 +182,9 @@
     {
         UsuariosControllers controller = new UsuariosControllers();
 
-        if(usuarios.ConfirmarClave != usuarios.Clave  )
+        if (usuarios.ConfirmarClave != usuarios.Clave)
         {
-            toastService.ShowWarning("La claves no son iguales","No Iguales!");
+            toastService.ShowWarning("La claves no son iguales", "No Iguales!");
             return;
         }
 
@@ -175,25 +200,25 @@
                 }
                 else
                 {
-                    toastService.ShowError("No se pudo modificar","Error!");
+                    toastService.ShowError("No se pudo modificar", "Error!");
                 }
 
             }
             else
             {
-                toastService.ShowError("No se puede modificar un usuario que no existe","Error");
+                toastService.ShowError("No se puede modificar un usuario que no existe", "Error");
             }
         }
         else
         {
             if (controller.Guardar(usuarios))
             {
-                toastService.ShowSuccess("El usuario se ha guardado correctamente","Guardado!");
+                toastService.ShowSuccess("El usuario se ha guardado correctamente", "Guardado!");
                 Limpiar();
             }
             else
             {
-                toastService.ShowError("El usuario no se ha podigo guardar","Error!");
+                toastService.ShowError("El usuario no se ha podigo guardar", "Error!");
             }
         }
     }
@@ -208,7 +233,7 @@
             {
                 controller.Eliminar(id);
                 Limpiar();
-                toastService.ShowInfo("El usuario se ha eliminado correctamente","Eliminado!");
+                toastService.ShowInfo("El usuario se ha eliminado correctamente", "Eliminado!");
             }
             else
             {
@@ -226,11 +251,11 @@
         if (buscado != null)
         {
             usuarios = buscado;
-            toastService.ShowSuccess("Se ha encontrado al usuario exitosamente","Encontrado!");
+            toastService.ShowSuccess("Se ha encontrado al usuario exitosamente", "Encontrado!");
         }
         else
         {
-            toastService.ShowWarning("No se ha podido encontrar el usuario","No encontrado!");
+            toastService.ShowWarning("No se ha podido encontrar el usuario", "No encontrado!");
         }
     }
 }

@@ -1,6 +1,27 @@
 ﻿@page "/ConsultaProveedores"
 @page "/ConsultaProveedores/{I:int}"
 
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<CascadingAuthenticationState>
+    <AuthorizeView>
+        <NotAuthorized>
+            <div class="card text-center">
+                <div class="card-header">
+                    No Autorizado
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Atención</h5>
+                    <p class="card-text">Usted no esta autorizado para acceder a esta pagina.</p>
+                    <a href="MenuRegistros" class="btn btn-primary">Ir al Menú</a>
+                </div>
+                <div class="card-footer text-muted">
+                </div>
+            </div>
+        </NotAuthorized>
+    </AuthorizeView>
+</CascadingAuthenticationState>
+
 
 <h3>Consulta de Proveedores</h3>
 
@@ -84,7 +105,7 @@ else
     protected override void OnInitialized()
     {
         conteo = Contexto.Compras.Count();
-        totaldepaginas = Math.Ceiling(conteo/paginacion.CantidadMostrar);
+        totaldepaginas = Math.Ceiling(conteo / paginacion.CantidadMostrar);
         Lista = proveedorescontrollers.GetList(p => true);
         this.Lista = Contexto.Proveedores.Take(paginacion.CantidadMostrar).ToList();
         NumSaltar();
@@ -103,7 +124,7 @@ else
 
     private string filtro;
     private string Criterio;
-    
+
 
     private void NumSaltar()
     {
@@ -114,7 +135,7 @@ else
     private void Saltar()
     {
         Contador += paginacion.Pagina;
-        if(Contador >= totaldepaginas)
+        if (Contador >= totaldepaginas)
         {
             Contador = 0;
         }
@@ -144,7 +165,7 @@ else
                     //Todos
                     case 0:
                         conteo = Contexto.Compras.Count();
-                        totaldepaginas = Math.Ceiling(conteo/paginacion.CantidadMostrar);
+                        totaldepaginas = Math.Ceiling(conteo / paginacion.CantidadMostrar);
                         Lista = proveedorescontrollers.GetList(p => true);
                         this.Lista = Contexto.Proveedores.Take(paginacion.CantidadMostrar).ToList();
                         break;

@@ -7,77 +7,56 @@
 </div>
 
 <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
-        <ul class="nav flex-column">
-            <li class="nav-item px-3">
-                <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                    <span class="oi oi-home" aria-hidden="true"></span> Home
-                </NavLink>
-            </li>
-
-        @*Registros*@
+    <ul class="nav flex-column">
         <li class="nav-item px-3">
-            <NavLink class="nav-link" href="Usuarios/0">
-                <span class="oi oi-plus" aria-hidden="true"></span> Usuarios
+            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                <span class="oi oi-home" aria-hidden="true"></span> Home
             </NavLink>
         </li>
         <li class="nav-item px-3">
-            <NavLink class="nav-link" href="Productos/0">
-                <span class="oi oi-plus" aria-hidden="true"></span> Productos
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="Proveedores/0">
-                <span class="oi oi-plus" aria-hidden="true"></span> Proveedores
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="Compras/0">
-                <span class="oi oi-plus" aria-hidden="true"></span> Compra
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="Ventas/0">
-                <span class="oi oi-plus" aria-hidden="true"></span> Ventas
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="Pagos/0">
-                <span class="oi oi-plus" aria-hidden="true"></span> Pagos
+            <NavLink class="nav-link" href="MenuRegistros">
+                <span class="oi oi-plus" aria-hidden="true"></span> Registros
             </NavLink>
         </li>
 
-            <li class="nav-item px-3">
-                <NavLink class="nav-link" href="ConsultaUsuarios">
-                    <span class="oi oi-list-rich" aria-hidden="true"></span> Consulta Usuarios
-                </NavLink>
-            </li>
-            <li class="nav-item px-3">
-                <NavLink class="nav-link" href="ConsultaProductos">
-                    <span class="oi oi-list-rich" aria-hidden="true"></span> Consulta Productos
-                </NavLink>
-            </li>
-            <li class="nav-item px-3">
-                <NavLink class="nav-link" href="ConsultaProveedores">
-                    <span class="oi oi-list-rich" aria-hidden="true"></span> Consulta proveedores
-                </NavLink>
-            </li>
-            <li class="nav-item px-3">
-                <NavLink class="nav-link" href="ConsultaCompras" >
-                    <span class="oi oi-list-rich" aria-hidden="true"></span> Consulta Compras
-                </NavLink>
-            </li>
-            <li class="nav-item px-3">
-                <NavLink class="nav-link" href="ConsultaVentas">
-                    <span class="oi oi-list-rich" aria-hidden="true"></span> Consulta Ventas
-                </NavLink>
-            </li>
-            <li class="nav-item px-3">
-                <NavLink class="nav-link" href="ConsultaPagos">
-                    <span class="oi oi-list-rich" aria-hidden="true"></span> Consulta Pagos
-                </NavLink>
-            </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Consultas
+            </NavLink>
+        </li>
 
-        </ul>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="ConsultaUsuarios">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Consulta Usuarios
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="ConsultaProductos">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Consulta Productos
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="ConsultaProveedores">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Consulta proveedores
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="ConsultaCompras">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Consulta Compras
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="ConsultaVentas">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Consulta Ventas
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="ConsultaPagos">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Consulta Pagos
+            </NavLink>
+        </li>
+
+    </ul>
     </div>
 
 @code {
