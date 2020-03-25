@@ -1,4 +1,6 @@
 # ProyectoFinal-Aplicada2--Lindon-y-Huma
+SISTEMA COMPRA Y VENTA
+![LOGO](https://user-images.githubusercontent.com/50345256/77563213-5990cb80-6e97-11ea-8711-50a77049a168.png)
 
 ## Comenzando 🚀
 ![Captura - Menu de Registros](https://user-images.githubusercontent.com/50345256/77560086-572c7280-6e93-11ea-82d0-4f6bc7035c66.PNG)
