@@ -22,94 +22,95 @@
     </AuthorizeView>
 </CascadingAuthenticationState>
 
-
-<h3>Consulta de Usuario</h3>
-<div class="row">
-    <div class="col">
-        <input id="desde_date" class="form-control" type="datetime-local" @bind="desdeFecha" />
-        <label for="desde_date">Desde</label>
-    </div>
-    <div class="col">
-        <input id="hasta_date" class="form-control" type="datetime-local" @bind="hastaFecha" />
-        <label for="hasta_date">Hasta</label>
-    </div>
-
-    <div class="col">
-        <button class="btn btn-primary" id="filtar_buton" @onclick="filtradoPorFecha">Filtar por Fecha</button>
-    </div>
-
-    <div class="col">
-        <button class="btn btn-dark" type="button" @onclick="Saltar">Pag. Siguiente</button>
-    </div>
-
-    <div class="col">
-        <input type="text" id="filtar" class="form-control" placeholder="Criterio" @onfocusin="Filtrar" @onfocusout="Filtrar" @onclick="Filtrar" @bind="Criterio" />
-    </div>
-
-    <div class="col">
-        <select class="form-control" id="filtro_select" @onclick="Filtrar" @bind="filtro">
-            <option value="0">Todos</option>
-            <option value="1">Id</option>
-            <option value="2">Nombre</option>
-            <option value="3">Email</option>
-            <option value="4">Nivel de Usuario</option>
-            <option value="5">Nombre de usuario</option>
-        </select>
-    </div>
-</div>
-<br />
-
-
-@if (Lista == null)
+@if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
 {
-    <p>No hay datos que mostrar</p>
-    return;
-}
-else
-{
-    <table class="table">
-        <thead class="thead-dark">
-            <tr>
-                <th>Id</th>
-                <th>Nombre</th>
-                <th>Email</th>
-                <th>Nivel de Usuario</th>
-                <th>Nombre de usuario</th>
-                <th>Fecha de Ingreso</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Lista)
-            {
+    <h3>Consulta de Usuario</h3>
+    <div class="row">
+        <div class="col">
+            <input id="desde_date" class="form-control" type="datetime-local" @bind="desdeFecha" />
+            <label for="desde_date">Desde</label>
+        </div>
+        <div class="col">
+            <input id="hasta_date" class="form-control" type="datetime-local" @bind="hastaFecha" />
+            <label for="hasta_date">Hasta</label>
+        </div>
+
+        <div class="col">
+            <button class="btn btn-primary" id="filtar_buton" @onclick="filtradoPorFecha">Filtar por Fecha</button>
+        </div>
+
+        <div class="col">
+            <button class="btn btn-dark" type="button" @onclick="Saltar">Pag. Siguiente</button>
+        </div>
+
+        <div class="col">
+            <input type="text" id="filtar" class="form-control" placeholder="Criterio" @onfocusin="Filtrar" @onfocusout="Filtrar" @onclick="Filtrar" @bind="Criterio" />
+        </div>
+
+        <div class="col">
+            <select class="form-control" id="filtro_select" @onclick="Filtrar" @bind="filtro">
+                <option value="0">Todos</option>
+                <option value="1">Id</option>
+                <option value="2">Nombre</option>
+                <option value="3">Email</option>
+                <option value="4">Nivel de Usuario</option>
+                <option value="5">Nombre de usuario</option>
+            </select>
+        </div>
+    </div>
+    <br />
+
+
+    @if (Lista == null)
+    {
+        <p>No hay datos que mostrar</p>
+        return;
+    }
+    else
+    {
+        <table class="table">
+            <thead class="thead-dark">
                 <tr>
-                    <td>@item.UsuarioId</td>
-                    <td>@item.NombrePersona</td>
-                    <td>@item.EmailUsuario</td>
-                    <td>@item.NivelUsuario</td>
-                    <td>@item.NombreUsuario</td>
-                    <td>@item.FechaIngreso.ToString("dd/MM/yyyy")</td>
-                    <td><a class="btn btn-outline-info" href="Usuarios/@item.UsuarioId">Ver</a></td>
+                    <th>Id</th>
+                    <th>Nombre</th>
+                    <th>Email</th>
+                    <th>Nivel de Usuario</th>
+                    <th>Nombre de usuario</th>
+                    <th>Fecha de Ingreso</th>
+                    <th></th>
                 </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Lista)
+                {
+                    <tr>
+                        <td>@item.UsuarioId</td>
+                        <td>@item.NombrePersona</td>
+                        <td>@item.EmailUsuario</td>
+                        <td>@item.NivelUsuario</td>
+                        <td>@item.NombreUsuario</td>
+                        <td>@item.FechaIngreso.ToString("dd/MM/yyyy")</td>
+                        <td><a class="btn btn-outline-info" href="Usuarios/@item.UsuarioId">Ver</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+    <nav aria-label="...">
+        <ul class="pagination pagination-lg">
+            @for (int i = 1; i <= totaldepaginas; i++)
+            {
+                <li class="page-item"><a class="page-link" @onclick="OnInitialized" href="ConsultaUsuarios/@i">@i</a></li>
             }
-        </tbody>
-    </table>
+
+        </ul>
+    </nav>
 }
+    @code {
+        List<Usuarios> Lista = new List<Usuarios>();
 
-<nav aria-label="...">
-    <ul class="pagination pagination-lg">
-        @for (int i = 1; i <= totaldepaginas; i++)
-        {
-            <li class="page-item"><a class="page-link" @onclick="OnInitialized" href="ConsultaUsuarios/@i">@i</a></li>
-        }
-
-    </ul>
-</nav>
-
-@code {
-    List<Usuarios> Lista = new List<Usuarios>();
-
-    [Parameter]
+[Parameter]
     public int I { get; set; }
     private int Contador { get; set; }
     private int contCiclo { get; set; }
@@ -233,4 +234,4 @@ else
             //algo
         }
     }
-}
+    }

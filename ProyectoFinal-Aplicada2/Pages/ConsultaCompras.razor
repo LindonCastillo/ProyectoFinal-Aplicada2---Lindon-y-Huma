@@ -22,98 +22,100 @@
     </AuthorizeView>
 </CascadingAuthenticationState>
 
-
-<h3>Consulta de Compras</h3>
-
-<div class="form-row">
-
-    <div class="col">
-        <input id="desde_date" class="form-control" type="datetime-local" @bind="desdeFecha" />
-        <label for="desde_date">Desde</label>
-    </div>
-    <div class="col">
-        <input id="hasta_date" class="form-control" type="datetime-local" @bind="hastaFecha" />
-        <label for="hasta_date">Hasta</label>
-    </div>
-
-    <div class="col">
-        <button class="btn btn-primary" id="filtar_buton" @onclick="filtradoPorFecha">Filtar por Fecha</button>
-    </div>
-    <div class="col">
-        <button class="btn btn-dark" type="button" @onclick="Saltar">Pag. Siguiente</button>
-    </div>
-    <div class="col">
-        <input type="text" class="form-control" placeholder="Criterio" @onfocusin="Filtrar" @onfocusout="Filtrar" @onclick="Filtrar" @bind="Criterio" />
-    </div>
-
-    <div class="col">
-        <select class="form-control" @onclick="Filtrar" @bind="filtro">
-            <option value="0">Todos</option>
-            <option value="1">Id</option>
-            <option value="2">ProveedorId</option>
-            <option value="3">Itbis</option>
-            <option value="4">Balance</option>
-            <option value="5">Descripción</option>
-        </select>
-    </div>
-</div>
-<br />
-
-@if (Lista == null)
+@if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
 {
-    <p>No hay datos que mostrar</p>
-    return;
-}
-else
-{
-    <table class="table">
-        <thead class="thead-dark">
-            <tr>
-                <th>Id</th>
-                <th>Fecha de compra</th>
-                <th>Proveedor</th>
-                <th>Itbis</th>
-                <th>Descripción</th>
-                <th>Balance</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Lista)
-            {
+    <h3>Consulta de Compras</h3>
+
+    <div class="form-row">
+
+        <div class="col">
+            <input id="desde_date" class="form-control" type="datetime-local" @bind="desdeFecha" />
+            <label for="desde_date">Desde</label>
+        </div>
+        <div class="col">
+            <input id="hasta_date" class="form-control" type="datetime-local" @bind="hastaFecha" />
+            <label for="hasta_date">Hasta</label>
+        </div>
+
+        <div class="col">
+            <button class="btn btn-primary" id="filtar_buton" @onclick="filtradoPorFecha">Filtar por Fecha</button>
+        </div>
+        <div class="col">
+            <button class="btn btn-dark" type="button" @onclick="Saltar">Pag. Siguiente</button>
+        </div>
+        <div class="col">
+            <input type="text" class="form-control" placeholder="Criterio" @onfocusin="Filtrar" @onfocusout="Filtrar" @onclick="Filtrar" @bind="Criterio" />
+        </div>
+
+        <div class="col">
+            <select class="form-control" @onclick="Filtrar" @bind="filtro">
+                <option value="0">Todos</option>
+                <option value="1">Id</option>
+                <option value="2">ProveedorId</option>
+                <option value="3">Itbis</option>
+                <option value="4">Balance</option>
+                <option value="5">Descripción</option>
+            </select>
+        </div>
+    </div>
+    <br />
+
+    @if (Lista == null)
+    {
+        <p>No hay datos que mostrar</p>
+        return;
+    }
+    else
+    {
+        <table class="table">
+            <thead class="thead-dark">
                 <tr>
-                    <td>@item.CompraId</td>
-                    <td>@item.FechaCompra.ToString("dd/MM/yyyy")</td>
-                    <td>@item.NombreProveedor</td>
-                    <td>@item.Itbis</td>
-                    <td>@item.DescripcionCompra</td>
-                    <td>@item.Balance</td>
-                    <td><a class="btn btn-outline-info" href="Compras/@item.CompraId">Ver</a></td>
+                    <th>Id</th>
+                    <th>Fecha de compra</th>
+                    <th>Proveedor</th>
+                    <th>Itbis</th>
+                    <th>Descripción</th>
+                    <th>Balance</th>
+                    <th></th>
                 </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Lista)
+                {
+                    <tr>
+                        <td>@item.CompraId</td>
+                        <td>@item.FechaCompra.ToString("dd/MM/yyyy")</td>
+                        <td>@item.NombreProveedor</td>
+                        <td>@item.Itbis</td>
+                        <td>@item.DescripcionCompra</td>
+                        <td>@item.Balance</td>
+                        <td><a class="btn btn-outline-info" href="Compras/@item.CompraId">Ver</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+    <nav aria-label="...">
+        <ul class="pagination pagination-lg">
+            @for (int i = 1; i <= totaldepaginas; i++)
+            {
+                <li class="page-item"><a class="page-link" @onclick="OnInitialized" href="ConsultaCompras/@i">@i</a></li>
             }
-        </tbody>
-    </table>
+
+        </ul>
+    </nav>
 }
 
-<nav aria-label="...">
-    <ul class="pagination pagination-lg">
-        @for (int i = 1; i <= totaldepaginas; i++)
-        {
-            <li class="page-item"><a class="page-link" @onclick="OnInitialized" href="ConsultaCompras/@i">@i</a></li>
-        }
+    @code {
+        List<Compras> Lista = new List<Compras>();
+        List<Compras> listacompra = new List<Compras>();
 
-    </ul>
-</nav>
+        Contexto contexto = new Contexto();
 
-@code {
-    List<Compras> Lista = new List<Compras>();
-    List<Compras> listacompra = new List<Compras>();
+        Proveedores proveedor = new Proveedores();
 
-    Contexto contexto = new Contexto();
-
-    Proveedores proveedor = new Proveedores();
-
-    [Parameter]
+[Parameter]
     public int I { get; set; }
     private int Contador { get; set; }
     private int contCiclo { get; set; }
@@ -212,10 +214,10 @@ else
                         break;
                     //ProveedorId
                     case 2:
-                 
-                                listado = comprascontroller.GetList(p=>p.NombreProveedor.Contains(Criterio));
-                            Lista = listado;
-                        
+
+                        listado = comprascontroller.GetList(p => p.NombreProveedor.Contains(Criterio));
+                        Lista = listado;
+
                         break;
                     //Itbis
                     case 3:
@@ -259,7 +261,7 @@ else
         }
     }
 
-}
+    }
 
 
 
