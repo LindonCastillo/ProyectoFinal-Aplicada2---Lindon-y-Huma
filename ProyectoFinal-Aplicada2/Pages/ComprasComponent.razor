@@ -144,6 +144,7 @@
                 </table>
 
          <div class="form-group">
+             <label for="NombreProveedor">Nombre del proveedor</label>
              <InputSelect @bind-Value="compras.NombreProveedor" class="form-control">
                  <option value="">Elija un proveedor</option>
                  @foreach (var  item in ProveedorLista)
@@ -169,6 +170,7 @@
         <div class="form-group">
             <label for="Balance">Balance</label>
             <InputNumber @bind-Value="compras.Balance" class="form-control" ReadOnly="true"></InputNumber>
+            <ValidationMessage For="(()=>compras.Balance)"></ValidationMessage>
         </div>
 
 @code {
