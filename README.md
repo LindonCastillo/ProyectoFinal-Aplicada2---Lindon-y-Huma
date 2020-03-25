@@ -6,7 +6,7 @@ Este sistema está basado en las operaciones de Corporación de Servicios Múlti
 Cuenta con Menu con todos los registros:
 ![Captura - Menu de Registros](https://user-images.githubusercontent.com/50345256/77560086-572c7280-6e93-11ea-82d0-4f6bc7035c66.PNG)
 
-y un menu con tyodas las consultas:
+y un menu con todas las consultas:
 ![Captura - Menu de Consultas](https://user-images.githubusercontent.com/50345256/77573693-6d442e00-6ea7-11ea-9615-b3cd0c5bd617.PNG)
 
 
