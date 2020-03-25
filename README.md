@@ -1,9 +1,14 @@
 # ProyectoFinal-Aplicada2--Lindon-y-Huma
 
 ## Comenzando 🚀
+Este sistema está basado en las operaciones de Corporación de Servicios Múltiples de la Provincia Sánchez Ramírez (COOASAR). Esta es una empresa dedicada a la venta y compra de productos agropecuarios y ganaderos con sede en Cotuí, Provincia Sánchez Ramírez, República Dominicana.  
+
+Cuenta con Menu con todos los registros:
 ![Captura - Menu de Registros](https://user-images.githubusercontent.com/50345256/77560086-572c7280-6e93-11ea-82d0-4f6bc7035c66.PNG)
 
-Este sistema está basado en las operaciones de Corporación de Servicios Múltiples de la Provincia Sánchez Ramírez (COOASAR). Esta es una empresa dedicada a la venta y compra de productos agropecuarios y ganaderos con sede en Cotuí, Provincia Sánchez Ramírez, República Dominicana.  
+y un menu con tyodas las consultas:
+![Captura - Menu de Consultas](https://user-images.githubusercontent.com/50345256/77573693-6d442e00-6ea7-11ea-9615-b3cd0c5bd617.PNG)
+
 
 En caso de intentar entrar a un registro sin estar loguedo o sin los permiso previos saltara este mensaje:
 ![Captura - Aleta de Control de Usuarios](https://user-images.githubusercontent.com/50345256/77560520-f8b3c400-6e93-11ea-8571-42bb59b50721.PNG)
@@ -13,7 +18,8 @@ En caso de intentar entrar a un registro sin estar loguedo o sin los permiso pre
 En este sistema se implementarion los registros de Usuarios, Productos, Proveedores, Compras, Ventas y Pagos, descristos a contuniación. 
 ### Usuarios
 El registro de Usuarios conHsiste en crear, modificar, eliminar y leer Usuarios. En este sistema se maneja tres tipos de Usuarios, que son Administrador, Cajero y Contador. El Administrador es el tipo de usuario que posee los mayores privilegios, este tiene acceso a todos los registros y consultas que ofrece el sistema. El Contador tiene acceso a todos los registros y consultas, excepto a al Registro de Usuarios. Por último, el cajero tendrá acceso al registro y consulta de Productos, Proveedores y Ventas.
-![Captura - Registro de Usuario](https://user-images.githubusercontent.com/50345256/77363640-7909e600-d29-11ea-988d-8521119d9f9a.PNG)
+
+![Captura - Registro de Usuario 2](https://user-images.githubusercontent.com/50345256/77574084-f6f3fb80-6ea7-11ea-9ebc-973403d58aa6.PNG)
 
 ### Productos
 El registro de Productos representa la entrada de mercancía a la empresa, aquí se tendrá la libertad de elegir el porciento de ganancia para cada producto.
