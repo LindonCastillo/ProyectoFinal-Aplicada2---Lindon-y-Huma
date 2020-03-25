@@ -1,6 +1,7 @@
 # ProyectoFinal-Aplicada2--Lindon-y-Huma
 
 ## Comenzando 🚀
+![Captura - Menu de Registros](https://user-images.githubusercontent.com/50345256/77560086-572c7280-6e93-11ea-82d0-4f6bc7035c66.PNG)
 
 ## Registros:
 
