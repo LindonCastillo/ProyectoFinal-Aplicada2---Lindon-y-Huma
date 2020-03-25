@@ -23,6 +23,7 @@ El registro de Usuarios conHsiste en crear, modificar, eliminar y leer Usuarios.
 
 ### Productos
 El registro de Productos representa la entrada de mercancía a la empresa, aquí se tendrá la libertad de elegir el porciento de ganancia para cada producto.
+
 ![Captura - Registro de Productos](https://user-images.githubusercontent.com/50345256/77363694-8d4de300-6d29-11ea-93cd-bcabc941b044.PNG)
 
 ### Proveedores
@@ -35,6 +36,7 @@ El registro de Compras representa la adquisición de bienes a la empresa.
 
 ### Ventas
 El registro de Ventas representa el despacho de productos por parte de la empresa, este registro, al igual que el Compras, afecta el campo Cantidad de Productos. 
+
 ![Captura - Registro de Ventas (Detalle)](https://user-images.githubusercontent.com/50345256/77363782-b7070a00-6d29-11ea-861d-f139618f652b.PNG)
 
 ### Pagos
