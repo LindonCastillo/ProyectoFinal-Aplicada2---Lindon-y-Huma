@@ -9,8 +9,8 @@ using ProyectoFinal_Aplicada2.Data;
 namespace ProyectoFinal_Aplicada2.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20200318234437_C&V")]
-    partial class CV
+    [Migration("20200325014126_CommitInitial")]
+    partial class CommitInitial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -38,8 +38,9 @@ namespace ProyectoFinal_Aplicada2.Migrations
                     b.Property<decimal>("Itbis")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("ProveedorId")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("NombreProveedor")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<decimal>("Total")
                         .HasColumnType("TEXT");

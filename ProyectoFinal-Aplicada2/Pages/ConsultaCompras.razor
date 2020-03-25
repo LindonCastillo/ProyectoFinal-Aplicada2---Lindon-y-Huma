@@ -62,7 +62,7 @@ else
                 <tr>
                     <td>@item.CompraId</td>
                     <td>@item.FechaCompra.ToString("dd/MM/yyyy")</td>
-                    <td>@comprascontroller.ObtenerNombreProveedor(item.ProveedorId)</td>
+                    <td>@item.NombreProveedor</td>
                     <td>@item.Itbis</td>
                     <td>@item.DescripcionCompra</td>
                     <td>@item.Balance</td>
@@ -139,7 +139,6 @@ else
 
     private string filtro;
     private string Criterio;
-    private bool fechaFiltro;
 
     DateTime hastaFecha = DateTime.Now;
     DateTime desdeFecha = DateTime.Now;
@@ -191,13 +190,10 @@ else
                         break;
                     //ProveedorId
                     case 2:
-                        int id2 = 0;
-                        if (int.TryParse(Criterio, out id2))
-                        {
-                            id2 = Convert.ToInt32(Criterio);
-                            listado = comprascontroller.GetList(p => p.ProveedorId == id2);
+                 
+                                listado = comprascontroller.GetList(p=>p.NombreProveedor.Contains(Criterio));
                             Lista = listado;
-                        }
+                        
                         break;
                     //Itbis
                     case 3:

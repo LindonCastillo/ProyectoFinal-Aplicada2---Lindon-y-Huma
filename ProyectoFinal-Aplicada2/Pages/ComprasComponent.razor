@@ -70,7 +70,9 @@
                         <option value="@item.ProductoId">@item.Nombre</option>
                     }
                 </InputSelect>
+               
             </div>
+           
 
             <div class="col">
                 <label for="Cantidad">Cantidad</label>
@@ -80,6 +82,7 @@
             <div class="col">
                 <label for="PrecioCompra">Precio de compra</label>
                 <InputNumber @bind-Value="productos.PrecioCompra" class="form-control"></InputNumber>
+                <br />
                 <button class="btn btn-info" @onclick="AgregarProducto" type="button">Agregar</button>
             </div>
         </div>
@@ -117,12 +120,24 @@
 
         </table>
 
-        <div class="form-group">
-            <label for="ProveedorId">ProveedorId</label>
-            <InputNumber @bind-Value="compras.ProveedorId" class="form-control"></InputNumber>
-            <ValidationMessage For="(()=>compras.ProveedorId)"></ValidationMessage>
-        </div>
 
+        <InputSelect @bind-Value="compras.NombreProveedor" class="form-control">
+            @if (ProveedorLista.Count == 0)
+            {
+                <option value="">No hay proveedores que mostrar</option>
+            }
+            else
+            {
+                <option value="">Elija un proveedor</option>
+                @foreach (var item in ProveedorLista)
+                {
+                    <option value="@item.ProveedoresId">@item.NombreProveedor</option>
+
+                }
+            }
+
+        </InputSelect>
+        <ValidationMessage For="(()=>compras.NombreProveedor)"></ValidationMessage>
 
         <div class="form-group">
             <label for="Itbis">Itbis</label>
@@ -152,8 +167,14 @@
     List<Productos> listaProductos = new List<Productos>();
     private string ProductoId;
     private int cantidad;
+    string SeleccionarProovedor;
+
+    Proveedores proveedores = new Proveedores();
 
     List<Compras> compraslista = new List<Compras>();
+
+    public List<Proveedores> ProveedorLista { get; set; }
+
 
     [Parameter]
     public int Id { get; set; }
@@ -166,6 +187,7 @@
         }
 
         listaProductos = productoscontrollers.GetList(p => true);
+        ProveedorLista = proveedorescontrollers.GetList(p=>true);
         productos = new Productos();
     }
 
@@ -185,20 +207,15 @@
             return;
         }
 
+     
+             
         if(compras.Total == 0)
         {
             toastService.ShowWarning("La lista está vacía", "Lista nula!");
             return;
         }
-
-        Proveedores proveedores = new Proveedores();
-        if(proveedorescontrollers.Buscar(compras.ProveedorId)==null)
-        {
-            toastService.ShowWarning("Parece que el proovedor no existe","No existe proovedor");
-        }
-        else
-        {
-            if(compras.CompraId > 0)
+    
+        if(compras.CompraId > 0)
             {
                 comprascontroller.Guardar(compras);
                 toastService.ShowSuccess("Se ha modifcado la compra correctamente","Modificado!");
@@ -217,7 +234,7 @@
             {
                 toastService.ShowError("No se ha podido guardar", "Error!");
             }
-        }
+       
     }
 
     private void Eliminar()

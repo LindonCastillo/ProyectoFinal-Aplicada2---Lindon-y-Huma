@@ -170,11 +170,11 @@
             return;
         }
 
-        if(!ExisteCompra())
-        {
-            toastService.ShowWarning("El Id de compra no existe", "No existe Compra!");
-            return;
-        }
+        //if(!ExisteCompra())
+        //{
+        //    toastService.ShowWarning("El Id de compra no existe", "No existe Compra!");
+        //    return;
+        //}
 
         if(pagos.PagoId>0)
         {
@@ -198,11 +198,13 @@
     {
         bool paso = false;
 
+
         if(comprascontroller.Buscar(Convert.ToInt32(CompraId))!=null)
         {
             paso = true;
         }
         return paso;
+
     }
 
     private void Eliminar()
@@ -258,17 +260,19 @@
             toastService.ShowWarning("Debes elegir un tipo de pago", "Error");
             paso = false;
         }
+
+        if(string.IsNullOrEmpty(CompraId))
+        {
+            toastService.ShowWarning("Debes elegir una compra","Error");
+            paso = false;
+        }
+
         if(Pago<1)
         {
             toastService.ShowWarning("El pago debe ser mayor que cero","Error");
             paso = false;
         }
 
-        if(string.IsNullOrEmpty(TipoPago))
-        {
-            toastService.ShowWarning("El tipo de pago es igual a cero","Tipo pago vacío");
-            paso = false;
-        }
 
         return paso;
     }
@@ -329,24 +333,8 @@
         }
     }
 
-    string nombre;
 
 
-    private string BuscarProveedor()
-    {
-        try
-        {
-
-            Proveedores proveedores = new Proveedores();
-            proveedores = proveedorescontrollers.Buscar(compras.ProveedorId);
-            nombre = proveedores.NombreProveedor;
-
-        }catch
-        {
-            //comentario
-        }
-        return nombre;
-    }
 
 
 

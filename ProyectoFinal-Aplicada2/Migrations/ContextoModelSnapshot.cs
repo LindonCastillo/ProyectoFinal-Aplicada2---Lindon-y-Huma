@@ -36,8 +36,9 @@ namespace ProyectoFinal_Aplicada2.Migrations
                     b.Property<decimal>("Itbis")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("ProveedorId")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("NombreProveedor")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<decimal>("Total")
                         .HasColumnType("TEXT");

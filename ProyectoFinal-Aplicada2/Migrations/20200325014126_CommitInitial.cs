@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ProyectoFinal_Aplicada2.Migrations
 {
-    public partial class CV : Migration
+    public partial class CommitInitial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -14,7 +14,7 @@ namespace ProyectoFinal_Aplicada2.Migrations
                     CompraId = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     FechaCompra = table.Column<DateTime>(nullable: false),
-                    ProveedorId = table.Column<int>(nullable: false),
+                    NombreProveedor = table.Column<string>(nullable: false),
                     Itbis = table.Column<decimal>(nullable: false),
                     DescripcionCompra = table.Column<string>(maxLength: 30, nullable: false),
                     Total = table.Column<decimal>(nullable: false),

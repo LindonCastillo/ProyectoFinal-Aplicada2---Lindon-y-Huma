@@ -39,10 +39,6 @@
     }
 </style>
 
-@if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
-{
-
-
 
     <section class="form-register">
         <h3>Ventas</h3>
@@ -142,7 +138,7 @@
         </EditForm>
     </section>
 
-}
+
     @code {
 
 

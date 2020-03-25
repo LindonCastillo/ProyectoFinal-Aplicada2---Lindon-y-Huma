@@ -18,11 +18,11 @@ namespace ProyectoFinal_Aplicada2.Models
         
         [Required(ErrorMessage = "El campo fecha no puede estar vacío")]
         public DateTime FechaCompra { get; set; }
-        [Required(ErrorMessage ="El campo ProveedorId debe ser un numero")]
-        [Range(1,1000000000,ErrorMessage ="El campo ProveedorId debe ser mayor que cero")]
-        public int ProveedorId { get; set; }
-        [Range(0, 100, ErrorMessage = "El campo Itbis no puede ser menor que cero ni mayor a 100")]
+        [Required(ErrorMessage ="El nombre del proveedor no puede estar vacío")]
+        public string NombreProveedor { get; set; }
 
+        [Range(0, 100, ErrorMessage = "El campo Itbis no puede ser menor que cero ni mayor a 100")]
+        [Required(ErrorMessage ="El campo Itebis debe ser un numero")]
         public decimal Itbis { get; set; }
         [Required(ErrorMessage ="La descripción de compra no puede estar vacía")]
         [MinLength(4,ErrorMessage ="Descripción muy corta")]
@@ -39,7 +39,7 @@ namespace ProyectoFinal_Aplicada2.Models
         {
             CompraId = 0;
             FechaCompra = DateTime.Now;
-            ProveedorId = 0;
+            NombreProveedor = string.Empty;
             Itbis = 0;
             Total = 0;
             DescripcionCompra = string.Empty;
