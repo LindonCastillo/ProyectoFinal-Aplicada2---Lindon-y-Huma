@@ -3,6 +3,10 @@
 ## Comenzando 🚀
 ![Captura - Menu de Registros](https://user-images.githubusercontent.com/50345256/77560086-572c7280-6e93-11ea-82d0-4f6bc7035c66.PNG)
 
+En caso de intentar entrar a un registro sin estar loguedo o sin los permiso previos saltara este mensaje:
+![Captura - Aleta de Control de Usuarios](https://user-images.githubusercontent.com/50345256/77560520-f8b3c400-6e93-11ea-8571-42bb59b50721.PNG)
+
+
 ## Registros:
 
 ### Usuarios
