@@ -54,7 +54,9 @@
         <h3>Productos</h3>
         <EditForm Model="productos" OnValidSubmit="Guardar">
             <DataAnnotationsValidator />
-            <label for="Id">ProductoId</label>
+            <div class="row">
+                <label for="Id">ProductoId</label>
+            </div>
             <div class="row">
                 <div class="col-md-8">
                     <div class="form-group">
@@ -69,7 +71,7 @@
 
                     <button type="button" class="btn btn-primary" @onclick="Buscar">Buscar</button>
 
-                </div>
+                </div> 
             </div>
 
             <div class="form-group">
