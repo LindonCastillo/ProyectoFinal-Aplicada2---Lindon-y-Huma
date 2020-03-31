@@ -73,6 +73,19 @@
                 <ValidationMessage For="(() => ventas.FechaVenta)"></ValidationMessage>
             </div>
 
+            <div class="form-group">
+                <label for="Categoria">Cliente</label>
+                <InputSelect class="form-control" @bind-Value="ventas.ClientesVentas">
+                    <option value="">Elija un cliente</option>
+                    @foreach (var item in ListaClientes)
+	                {
+		                <option value="@item.Nombres">@item.Apellidos,@item.Nombres </option>
+	                }
+                </InputSelect>
+                <ValidationMessage For="(()=>ventas.ClientesVentas)"></ValidationMessage>
+            </div>
+
+
             <div class="row">
                 <div class="col">
                     <label for="producto_select">Producto</label>
@@ -160,6 +173,8 @@
 
     public Productos productos { get; set; }
 
+    private List<Clientes> ListaClientes = new List<Clientes>();
+
     Ventas ventas = new Ventas();
     List<Productos> MiLista = new List<Productos>();
 
@@ -171,7 +186,7 @@
             ventas = ventascontroller.Buscar(Id);
         }
         MiLista = productoscontrollers.GetList(A => true);
-
+        ListaClientes = clientescontollers.GetList(P => true);
     }
 
     private void CargarProducto()

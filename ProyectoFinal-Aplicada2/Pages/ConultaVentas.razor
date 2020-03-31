@@ -53,6 +53,7 @@
                 <option value="0">Todos</option>
                 <option value="1">Id</option>
                 <option value="2">Total</option>
+                <option value="3">Cliente</option>
             </select>
         </div>
     </div>
@@ -72,6 +73,7 @@
                     <th>Id</th>
                     <th>Fecha de Venta</th>
                     <th>Total</th>
+                    <th>Cliente</th>
                     <th></th>
                 </tr>
             </thead>
@@ -82,6 +84,7 @@
                         <td>@item.VentaId</td>
                         <td>@item.FechaVenta.ToString("dd/MM/yyyy")</td>
                         <td>@item.Total</td>
+                        <td>@item.ClientesVentas</td>
 
                         <td><a class="btn btn-outline-info" href="Ventas/@item.VentaId">Ver</a></td>
                     </tr>
@@ -105,119 +108,123 @@
         List<Ventas> Lista = new List<Ventas>();
 
 
-[Parameter]
-    public int I { get; set; }
-    private int Contador { get; set; }
-    private int contCiclo { get; set; }
+        [Parameter]
+        public int I { get; set; }
+        private int Contador { get; set; }
+        private int contCiclo { get; set; }
 
-    Paginacion paginacion = new Paginacion();
-    public double totaldepaginas { get; set; }
-    Contexto Contexto = new Contexto();
-    double conteo = 0;
-    private void NumSaltar()
-    {
-        Contador = I - 1;
-        Saltar();
-    }
-
-    private void Saltar()
-    {
-        Contador += paginacion.Pagina;
-        if (Contador >= totaldepaginas)
+        Paginacion paginacion = new Paginacion();
+        public double totaldepaginas { get; set; }
+        Contexto Contexto = new Contexto();
+        double conteo = 0;
+        private void NumSaltar()
         {
-            Contador = 0;
-        }
-        Lista = Contexto.Ventas
-            .Skip(Contador * paginacion.CantidadMostrar)
-            .Take(paginacion.CantidadMostrar)
-            .ToList();
-    }
-
-    protected override void OnInitialized()
-    {
-        conteo = Contexto.Compras.Count();
-        totaldepaginas = Math.Ceiling(conteo / paginacion.CantidadMostrar);
-        Lista = ventascontroller.GetList(p => true);
-        this.Lista = Contexto.Ventas.Take(paginacion.CantidadMostrar).ToList();
-        NumSaltar();
-    }
-
-
-    private string filtro;
-    private string Criterio;
-
-    DateTime hastaFecha = DateTime.Now;
-    DateTime desdeFecha = DateTime.Now;
-
-
-    public List<Ventas> listado { get; set; }
-
-
-    private void filtradoPorFecha()
-    {
-        try
-        {
-            Lista = Lista.Where(p => p.FechaVenta >= desdeFecha && p.FechaVenta <= hastaFecha).ToList();
-        }
-        catch (Exception)
-        {
-
-            //wey klok
+            Contador = I - 1;
+            Saltar();
         }
 
-    }
-
-    private void Filtrar()
-    {
-
-        try
+        private void Saltar()
         {
-            int filtroIndex = Int32.Parse(filtro);
-
-            if (Criterio.Trim().Length > 0)
+            Contador += paginacion.Pagina;
+            if (Contador >= totaldepaginas)
             {
-                switch (filtroIndex)
+                Contador = 0;
+            }
+            Lista = Contexto.Ventas
+                .Skip(Contador * paginacion.CantidadMostrar)
+                .Take(paginacion.CantidadMostrar)
+                .ToList();
+        }
+
+        protected override void OnInitialized()
+        {
+            conteo = Contexto.Compras.Count();
+            totaldepaginas = Math.Ceiling(conteo / paginacion.CantidadMostrar);
+            Lista = ventascontroller.GetList(p => true);
+            this.Lista = Contexto.Ventas.Take(paginacion.CantidadMostrar).ToList();
+            NumSaltar();
+        }
+
+
+        private string filtro;
+        private string Criterio;
+
+        DateTime hastaFecha = DateTime.Now;
+        DateTime desdeFecha = DateTime.Now;
+
+
+        public List<Ventas> listado { get; set; }
+
+
+        private void filtradoPorFecha()
+        {
+            try
+            {
+                Lista = Lista.Where(p => p.FechaVenta >= desdeFecha && p.FechaVenta <= hastaFecha).ToList();
+            }
+            catch (Exception)
+            {
+
+                //wey klok
+            }
+
+        }
+
+        private void Filtrar()
+        {
+
+            try
+            {
+                int filtroIndex = Int32.Parse(filtro);
+
+                if (Criterio.Trim().Length > 0)
                 {
-                    //Todos
-                    case 0:
-                        conteo = Contexto.Compras.Count();
-                        totaldepaginas = Math.Ceiling(conteo / paginacion.CantidadMostrar);
-                        Lista = ventascontroller.GetList(p => true);
-                        this.Lista = Contexto.Ventas.Take(paginacion.CantidadMostrar).ToList();
-                        break;
+                    switch (filtroIndex)
+                    {
+                        //Todos
+                        case 0:
+                            conteo = Contexto.Compras.Count();
+                            totaldepaginas = Math.Ceiling(conteo / paginacion.CantidadMostrar);
+                            Lista = ventascontroller.GetList(p => true);
+                            this.Lista = Contexto.Ventas.Take(paginacion.CantidadMostrar).ToList();
+                            break;
 
-                    //Id
-                    case 1:
-                        int id = 0;
-                        if (int.TryParse(Criterio, out id))
-                        {
-                            id = Convert.ToInt32(Criterio);
-                            listado = ventascontroller.GetList(p => p.VentaId == id);
+                        //Id
+                        case 1:
+                            int id = 0;
+                            if (int.TryParse(Criterio, out id))
+                            {
+                                id = Convert.ToInt32(Criterio);
+                                listado = ventascontroller.GetList(p => p.VentaId == id);
+                                Lista = listado;
+                            }
+                            break;
+                        //Total
+                        case 2:
+                            decimal total = 0;
+                            if (decimal.TryParse(Criterio, out total))
+                            {
+                                total = Convert.ToInt32(Criterio);
+                                listado = ventascontroller.GetList(p => p.Total == total);
+                                Lista = listado;
+                            }
+                            break;
+                        case 3:
+                            listado = ventascontroller.GetList(p => p.ClientesVentas.Contains(Criterio));
                             Lista = listado;
-                        }
-                        break;
-                    //Total
-                    case 2:
-                        decimal total = 0;
-                        if (decimal.TryParse(Criterio, out total))
-                        {
-                            total = Convert.ToInt32(Criterio);
-                            listado = ventascontroller.GetList(p => p.Total == total);
-                            Lista = listado;
-                        }
-                        break;
+                            break;
+                    }
                 }
-            }
-            else
-            {
-                listado = ventascontroller.GetList(p => true);
-                Lista = listado;
-            }
+                else
+                {
+                    listado = ventascontroller.GetList(p => true);
+                    Lista = listado;
+                }
 
+            }
+            catch (Exception)
+            {
+                //papichulo
+            }
         }
-        catch (Exception)
-        {
-            //papichulo
-        }
-    }
     }

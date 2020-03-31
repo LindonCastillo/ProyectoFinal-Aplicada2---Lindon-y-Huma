@@ -20,6 +20,9 @@ namespace ProyectoFinal_Aplicada2.Models
         public DateTime FechaVenta { get; set; }
         public decimal Total { get; set; }
 
+        [Required(ErrorMessage ="Debes seleccionar un cliente")]
+        public string ClientesVentas { get; set; }
+
         [ForeignKey("VentaId")]
         public virtual List<VentasDetalle> VentasDetalles { get; set; }
 
@@ -28,6 +31,7 @@ namespace ProyectoFinal_Aplicada2.Models
             VentaId = 0;
             FechaVenta = DateTime.Now;
             Total = 0;
+            ClientesVentas = string.Empty;
             VentasDetalles = new List<VentasDetalle>();
         }
     }

@@ -1,5 +1,5 @@
-﻿@page "/ConsultaTipoProductos"
-@page "/ConsultaTipoProductos/{I:int}"
+﻿@page "/ConsultaTipoCategorias"
+@page "/ConsultaTipoCategorias/{I:int}"
 
 
 @inject AuthenticationStateProvider AuthenticationStateProvider
@@ -25,7 +25,7 @@
 
 @if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
 {
-    <h3>Consulta de Tipo de Productos</h3>
+    <h3>Consulta de Categorías</h3>
     
     <div class="form-row">
 
@@ -42,8 +42,7 @@
             <select class="form-control" @onclick="Filtrar" @bind="filtro">
                 <option value="0">Todos</option>
                 <option value="1">Id</option>
-                <option value="2">Categoría</option>
-                <option value="3">Nombre del producto</option>             
+                <option value="2">Nombre de la categoría</option>                  
             </select>
         </div>
 
@@ -67,14 +66,13 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in ListaTipoProductos)
+                @foreach (var item in ListaCategoria)
                 {
                     <tr>
-                        <td>@item.TipoProductoId</td>
-                        <td>@item.Categoria</td>
-                        <td>@item.ProductoSeleccionado</td>
+                        <td>@item.CategoriaId</td>
+                        <td>@itemNombreCategoria.</td>
                      
-                        <td><a class="btn btn-outline-info" href="TiposProductos/@item.TipoProductoId">Ver</a></td>
+                        <td><a class="btn btn-outline-info" href="Categorias/@item.CategoriaId">Ver</a></td>
                     </tr>
                 }
             </tbody>
@@ -85,7 +83,7 @@
         <ul class="pagination pagination-lg">
             @for (int i = 1; i <= totaldepaginas; i++)
             {
-                <li class="page-item"><a class="page-link" @onclick="OnInitialized" href="ConsultaTipoProductos/@i">@i</a></li>
+                <li class="page-item"><a class="page-link" @onclick="OnInitialized" href="ConsultaTipoCategorias/@i">@i</a></li>
             }
 
         </ul>
@@ -95,7 +93,7 @@
 
 @code {
 
-    List<TipoProductos> ListaTipoProductos = new List<TipoProductos>();
+    List<Categorias> ListaCategoria = new List<Categorias>();
 
     [Parameter]
     public int I { get; set; }
@@ -109,10 +107,10 @@
 
     protected override void OnInitialized()
     {
-        conteo = contexto.TipoProductos.Count();
+        conteo = contexto.Categorias.Count();
         totaldepaginas = Math.Ceiling(conteo / paginacion.CantidadMostrar);
-        ListaTipoProductos = tiposproductoscontrollers.GetList(p => true);
-        this.ListaTipoProductos = contexto.TipoProductos.Take(paginacion.CantidadMostrar).ToList();
+        ListaCategoria = categoriascontrollers.GetList(p => true);
+        this.ListaCategoria = contexto.Categorias.Take(paginacion.CantidadMostrar).ToList();
         NumSaltar();
     }
 
@@ -130,7 +128,7 @@
             Contador = 0;
         }
 
-        ListaTipoProductos = contexto.TipoProductos
+        ListaTipoProductos = contexto.Categorias
             .Skip(Contador * paginacion.CantidadMostrar)
             .Take(paginacion.CantidadMostrar)
             .ToList();
@@ -139,7 +137,7 @@
     private string filtro;
     private string Criterio;
 
-    List<TipoProductos> listado = new List<TipoProductos>();
+    List<Categorias> listado = new List<Categorias>();
 
     private void Filtrar()
     {
@@ -155,10 +153,10 @@
                 {
                     //Todos
                     case 0:
-                        conteo = contexto.TipoProductos.Count();
+                        conteo = contexto.Categorias.Count();
                         totaldepaginas = Math.Ceiling(conteo / paginacion.CantidadMostrar);
-                        ListaTipoProductos = tiposproductoscontrollers.GetList(A => true);
-                        this.ListaTipoProductos = contexto.TipoProductos.Take(paginacion.CantidadMostrar).ToList();
+                        ListaCategoria = categoriascontrollers.GetList(A => true);
+                        this.ListaTipoProductos = contexto.Categorias.Take(paginacion.CantidadMostrar).ToList();
                         break;
                     //Int
                     case 1:
@@ -166,20 +164,13 @@
                         if (int.TryParse(Criterio, out id))
                         {
                             id = Convert.ToInt32(Criterio);
-                            ListaTipoProductos = tiposproductoscontrollers.GetList(p => p.TipoProductoId == id);
+                            ListaCategoria = categoriascontrollers.GetList(p => p.CategoriaId == id);
                             ListaTipoProductos = listado;
                         }
                         break;
                     //Categoria
                     case 2:
-                        listado = tiposproductoscontrollers.GetList(p => p.Categoria.Contains(Criterio));
-                        ListaTipoProductos = listado;
-                        break;
-
-                    //Nombre del producto
-                    case 3:
-
-                        listado = tiposproductoscontrollers.GetList(p => p.ProductoSeleccionado.Contains(Criterio));
+                        listado = categoriascontrollers.GetList(p => p.NombreCategoria.Contains(Criterio));
                         ListaTipoProductos = listado;
                         break;
                  
@@ -187,8 +178,8 @@
             }
             else
             {
-                listado = tiposproductoscontrollers.GetList(p => true);
-                ListaTipoProductos = listado;
+                listado = categoriascontrollers.GetList(p => true);
+                ListaCategoria = listado;
             }
 
         }

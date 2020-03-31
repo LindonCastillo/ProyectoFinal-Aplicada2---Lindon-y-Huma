@@ -58,6 +58,7 @@
                 <option value="4">Precio de compra</option>
                 <option value="5">Porcentaje de ganancia</option>
                 <option value="6">Precio de venta</option>
+                <option value="7">Categoría</option>
             </select>
         </div>
     </div>
@@ -80,22 +81,24 @@
                     <th>Precio de compra</th>
                     <th>Porcentaje de ganancia</th>
                     <th>Precio de venta</th>
+                    <th>Categoría</th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var item in Lista)
                 {
-                    <tr>
-                        <td>@item.ProductoId</td>
-                        <td>@item.Nombre</td>
-                        <td>@item.Cantidad</td>
-                        <td>@item.FechaEntrada.ToString("dd/MM/yyyy")</td>
-                        <td>@item.PrecioCompra</td>
-                        <td>@item.PorcentajeGanancias</td>
-                        <td>@item.PrecioVentas</td>
-                        <td><a class="btn btn-outline-info" href="Productos/@item.ProductoId">Ver</a></td>
-                    </tr>
+                <tr>
+                    <td>@item.ProductoId</td>
+                    <td>@item.Nombre</td>
+                    <td>@item.Cantidad</td>
+                    <td>@item.FechaEntrada.ToString("dd/MM/yyyy")</td>
+                    <td>@item.PrecioCompra</td>
+                    <td>@item.PorcentajeGanancias</td>
+                    <td>@item.PrecioVentas</td>
+                    <td>@item.CategoriaProducto</td>
+                    <td><a class="btn btn-outline-info" href="Productos/@item.ProductoId">Ver</a></td>
+                </tr>
                 }
             </tbody>
         </table>
@@ -114,160 +117,165 @@
 }
 
     @code {
- List<Productos> Lista = new List<Productos>();
+            List<Productos> Lista = new List<Productos>();
 
 
 
 [Parameter]
-    public int I { get; set; }
+        public int I { get; set; }
 
-    double conteo = 0;
-    double totaldepaginas = 0;
-    Contexto contexto = new Contexto();
-    Paginacion paginacion = new Paginacion();
-    public int Contador { get; set; }
+        double conteo = 0;
+        double totaldepaginas = 0;
+        Contexto contexto = new Contexto();
+        Paginacion paginacion = new Paginacion();
+        public int Contador { get; set; }
 
-    protected override void OnInitialized()
-    {
-        conteo = contexto.Productos.Count();
-        totaldepaginas = Math.Ceiling(conteo / paginacion.CantidadMostrar);
-        Lista = productoscontrollers.GetList(A => true);
-        this.Lista = contexto.Productos.Take(paginacion.CantidadMostrar).ToList();
-        NumSaltar();
-    }
-
-    private void NumSaltar()
-    {
-        Contador = I - 1;
-        Saltar();
-    }
-
-    private void Saltar()
-    {
-        Contador += paginacion.Pagina;
-        if (Contador >= totaldepaginas)
+        protected override void OnInitialized()
         {
-            Contador = 0;
+            conteo = contexto.Productos.Count();
+            totaldepaginas = Math.Ceiling(conteo / paginacion.CantidadMostrar);
+            Lista = productoscontrollers.GetList(A => true);
+            this.Lista = contexto.Productos.Take(paginacion.CantidadMostrar).ToList();
+            NumSaltar();
         }
 
-        Lista = contexto.Productos
-            .Skip(Contador * paginacion.CantidadMostrar)
-            .Take(paginacion.CantidadMostrar)
-            .ToList();
-    }
-
-
-
-    private string filtro;
-    private string Criterio;
-
-    DateTime hastaFecha = DateTime.Now;
-    DateTime desdeFecha = DateTime.Now;
-
-    public List<Productos> listado { get; set; }
-
-    private void filtradoPorFecha()
-    {
-        try
+        private void NumSaltar()
         {
-            Lista = Lista.Where(p => p.FechaEntrada >= desdeFecha && p.FechaEntrada <= hastaFecha).ToList();
-        }
-        catch (Exception)
-        {
-
-            //wey klok
+            Contador = I - 1;
+            Saltar();
         }
 
-    }
-
-    private void Filtrar()
-    {
-
-        try
+        private void Saltar()
         {
-            int filtroIndex = Int32.Parse(filtro);
-
-
-            if (Criterio.Trim().Length > 0)
+            Contador += paginacion.Pagina;
+            if (Contador >= totaldepaginas)
             {
-                switch (filtroIndex)
+                Contador = 0;
+            }
+
+            Lista = contexto.Productos
+                .Skip(Contador * paginacion.CantidadMostrar)
+                .Take(paginacion.CantidadMostrar)
+                .ToList();
+        }
+
+
+
+        private string filtro;
+        private string Criterio;
+
+        DateTime hastaFecha = DateTime.Now;
+        DateTime desdeFecha = DateTime.Now;
+
+        public List<Productos> listado { get; set; }
+
+        private void filtradoPorFecha()
+        {
+            try
+            {
+                Lista = Lista.Where(p => p.FechaEntrada >= desdeFecha && p.FechaEntrada <= hastaFecha).ToList();
+            }
+            catch (Exception)
+            {
+
+                //wey klok
+            }
+
+        }
+
+        private void Filtrar()
+        {
+
+            try
+            {
+                int filtroIndex = Int32.Parse(filtro);
+
+
+                if (Criterio.Trim().Length > 0)
                 {
-                    //Todos
-                    case 0:
-                        conteo = contexto.Productos.Count();
-                        totaldepaginas = Math.Ceiling(conteo / paginacion.CantidadMostrar);
-                        Lista = productoscontrollers.GetList(A => true);
-                        this.Lista = contexto.Productos.Take(paginacion.CantidadMostrar).ToList();
-                        break;
-                    //Int
-                    case 1:
-                        int id = 0;
-                        if (int.TryParse(Criterio, out id))
-                        {
-                            id = Convert.ToInt32(Criterio);
-                            listado = productoscontrollers.GetList(p => p.ProductoId == id);
-                            Lista = listado;
-                        }
-                        break;
-                    //Nombre
-                    case 2:
-                        listado = productoscontrollers.GetList(p => p.Nombre.Contains(Criterio));
-                        break;
+                    switch (filtroIndex)
+                    {
+                        //Todos
+                        case 0:
+                            conteo = contexto.Productos.Count();
+                            totaldepaginas = Math.Ceiling(conteo / paginacion.CantidadMostrar);
+                            Lista = productoscontrollers.GetList(A => true);
+                            this.Lista = contexto.Productos.Take(paginacion.CantidadMostrar).ToList();
+                            break;
+                        //Int
+                        case 1:
+                            int id = 0;
+                            if (int.TryParse(Criterio, out id))
+                            {
+                                id = Convert.ToInt32(Criterio);
+                                listado = productoscontrollers.GetList(p => p.ProductoId == id);
+                                Lista = listado;
+                            }
+                            break;
+                        //Nombre
+                        case 2:
+                            listado = productoscontrollers.GetList(p => p.Nombre.Contains(Criterio));
+                            break;
 
-                    //Cantidas
-                    case 3:
-                        int cantidad = 0;
-                        if (int.TryParse(Criterio, out cantidad))
-                        {
-                            cantidad = Convert.ToInt32(Criterio);
-                            listado = productoscontrollers.GetList(p => p.Cantidad == cantidad);
-                            Lista = listado;
-                        }
-                        break;
-                    //PrecioCompra
-                    case 4:
-                        decimal compra = 0;
-                        if (decimal.TryParse(Criterio, out compra))
-                        {
-                            compra = Convert.ToDecimal(Criterio);
-                            listado = productoscontrollers.GetList(p => p.PrecioCompra == compra);
-                            Lista = listado;
-                        }
-                        break;
-                    //PorcentajeGanancias
-                    case 5:
-                        decimal porcentaje = 0;
-                        if (decimal.TryParse(Criterio, out porcentaje))
-                        {
-                            porcentaje = Convert.ToDecimal(Criterio);
-                            listado = productoscontrollers.GetList(p => p.PorcentajeGanancias == porcentaje);
-                            Lista = listado;
-                        }
-                        break;
-                    //PrecioVentas
-                    case 6:
-                        decimal venta = 0;
-                        if (decimal.TryParse(Criterio, out venta))
-                        {
-                            venta = Convert.ToDecimal(Criterio);
-                            listado = productoscontrollers.GetList(p => p.PrecioVentas == venta);
-                            Lista = listado;
-                        }
-                        break;
+                        //Cantidas
+                        case 3:
+                            int cantidad = 0;
+                            if (int.TryParse(Criterio, out cantidad))
+                            {
+                                cantidad = Convert.ToInt32(Criterio);
+                                listado = productoscontrollers.GetList(p => p.Cantidad == cantidad);
+                                Lista = listado;
+                            }
+                            break;
+                        //PrecioCompra
+                        case 4:
+                            decimal compra = 0;
+                            if (decimal.TryParse(Criterio, out compra))
+                            {
+                                compra = Convert.ToDecimal(Criterio);
+                                listado = productoscontrollers.GetList(p => p.PrecioCompra == compra);
+                                Lista = listado;
+                            }
+                            break;
+                        //PorcentajeGanancias
+                        case 5:
+                            decimal porcentaje = 0;
+                            if (decimal.TryParse(Criterio, out porcentaje))
+                            {
+                                porcentaje = Convert.ToDecimal(Criterio);
+                                listado = productoscontrollers.GetList(p => p.PorcentajeGanancias == porcentaje);
+                                Lista = listado;
+                            }
+                            break;
+                        //PrecioVentas
+                        case 6:
+                            decimal venta = 0;
+                            if (decimal.TryParse(Criterio, out venta))
+                            {
+                                venta = Convert.ToDecimal(Criterio);
+                                listado = productoscontrollers.GetList(p => p.PrecioVentas == venta);
+                                Lista = listado;
+                            }
+                            break;
+                        case 7:
+
+                            listado = productoscontrollers.GetList(p => p.CategoriaProducto.Contains(Criterio));
+                            lista = listado;
+                            break;
+                    }
                 }
-            }
-            else
-            {
-                listado = productoscontrollers.GetList(p => true);
-                Lista = listado;
-            }
+                else
+                {
+                    listado = productoscontrollers.GetList(p => true);
+                    Lista = listado;
+                }
 
+            }
+            catch (Exception)
+            {
+                //papichulo
+            }
         }
-        catch (Exception)
-        {
-            //papichulo
-        }
-    }
 
 
     }

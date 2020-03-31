@@ -82,6 +82,18 @@
             </div>
 
             <div class="form-group">
+                <label for="Categoria">Categoría</label>
+                <InputSelect class="form-control" @bind-Value="productos.CategoriaProducto">
+                    <option value="">Elija una categoría</option>
+                    @foreach (var item in ListaCategorias)
+	                {
+		                <option value="@item.NombreCategoria">@item.NombreCategoria</option>
+	                }
+                </InputSelect>
+                <ValidationMessage For="(()=>productos.CategoriaProducto)"></ValidationMessage>
+            </div>
+
+            <div class="form-group">
                 <label for="Cantidad">Cantidad</label>
                 <InputNumber @bind-Value="productos.Cantidad" class="form-control"></InputNumber>
                 <ValidationMessage For="(()=>productos.Cantidad)"></ValidationMessage>
@@ -120,13 +132,15 @@
     [Parameter]
     public int Id { get; set; }
 
+    private List<Categorias> ListaCategorias = new List<Categorias>();
+
     protected override void OnInitialized()
     {
         if (Id > 0)
         {
             productos = productoscontrollers.Buscar(Id);
         }
-
+        ListaCategorias = categoriascontrollers.GetList(P => true);
     }
 
     private void Nuevo()

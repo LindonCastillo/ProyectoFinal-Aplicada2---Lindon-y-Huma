@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 
 namespace ProyectoFinal_Aplicada2.Models
@@ -33,6 +30,9 @@ namespace ProyectoFinal_Aplicada2.Models
        
         public decimal PrecioVentas { get; set; }
 
+        [Required(ErrorMessage ="Tienes que elegir una categoría")]
+        public string CategoriaProducto { get; set; }
+
         public Productos()
         {
             ProductoId = 0;
@@ -42,6 +42,7 @@ namespace ProyectoFinal_Aplicada2.Models
             PrecioCompra = 0;
             PorcentajeGanancias = 0;
             PrecioVentas = 0;
+            CategoriaProducto = string.Empty;
         }
 
     }

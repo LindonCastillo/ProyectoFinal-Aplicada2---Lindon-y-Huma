@@ -55,7 +55,7 @@ namespace ProyectoFinal_Aplicada2
             services.AddScoped<ComprasControllers>();
             services.AddScoped<VentasControllers>();
             services.AddScoped<UsuariosControllers>();
-            services.AddScoped<TipoProductosControllers>();
+            
             services.AddScoped<ClientesControllers>();
             services.AddScoped<PagosControllers>();
             services.AddScoped<CategoriasControllers>();
