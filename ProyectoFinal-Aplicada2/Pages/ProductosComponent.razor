@@ -54,24 +54,19 @@
         <h3>Productos</h3>
         <EditForm Model="productos" OnValidSubmit="Guardar">
             <DataAnnotationsValidator />
-            <div class="row">
-                <label for="Id">ProductoId</label>
-            </div>
-            <div class="row">
-                <div class="col-md-8">
-                    <div class="form-group">
 
-                        <InputNumber @bind-Value="productos.ProductoId" class="form-control"></InputNumber>
-                        <ValidationMessage For="(()=>productos.ProductoId)"></ValidationMessage>
+            <label for="Id">ProductoId</label>
+            <div>
+                <div class="input-group">
+                    <InputNumber @bind-Value="productos.ProductoId" class="form-control"></InputNumber>
+                    <ValidationMessage For="(() => productos.ProductoId)"></ValidationMessage>
+                    <div class="input-group-append">
+                        <button type="button" class="btn btn-primary" @onclick="Buscar">Buscar</button>
+                        <div />
+                        <div />
+                        <div />
                     </div>
                 </div>
-
-
-                <div class="col-md-4">
-
-                    <button type="button" class="btn btn-primary" @onclick="Buscar">Buscar</button>
-
-                </div> 
             </div>
 
             <div class="form-group">
