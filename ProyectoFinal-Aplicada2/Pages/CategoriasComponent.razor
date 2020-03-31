@@ -1,0 +1,109 @@
+﻿@page "/Categorias"
+@page "/Categorias/{Id:int}"
+
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<CascadingAuthenticationState>
+    <AuthorizeView>
+        <NotAuthorized>
+            <div class="card text-center">
+                <div class="card-header">
+                    No Autorizado
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Atención</h5>
+                    <p class="card-text">Usted no está autorizado para acceder a esta pagina.</p>
+                    <a href="MenuConsultas" class="btn btn-primary">Ir al Menú</a>
+                </div>
+                <div class="card-footer text-muted">
+                </div>
+            </div>
+        </NotAuthorized>
+    </AuthorizeView>
+</CascadingAuthenticationState>
+
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    .form-register {
+        width: 800px;
+        background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
+        padding: 30px;
+        margin: auto;
+        margin-top: 100px;
+        border-radius: 4px;
+        font-family: 'calibri';
+        color: white;
+        box-shadow: 7px 13px 37px #000;
+    }
+
+    .h3 {
+        color: white;
+    }
+</style>
+
+@if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
+{
+<section class="form-register">
+    <h3>Categorias</h3>
+    <EditForm Model="@categoria" OnValidSubmit="Guardar">
+        <label for="Id">CategoriaId</label>
+            <div class="input-group">
+                <InputNumber @bind-Value="categoria.CategoriaId" class="form-control"></InputNumber>
+                <ValidationMessage For="(() => categoria.CategoriaId)"></ValidationMessage>
+                <div class="input-group-append">
+                    <button type="button" class="btn btn-primary" @onclick="Buscar">Buscar</button>
+                    <div />
+                    <div />
+                    <div />
+                </div>
+            </div>
+        
+
+        <div class="form-group">
+            <label for="Descripcion">Nombre de la Categoría</label>
+            <InputText @bind-Value="categoria.NombreCategoria" class="form-control" placeholder="Categoría"></InputText>
+            <ValidationMessage For="(() => categoria.NombreCategoria)"></ValidationMessage>
+        </div>
+
+        <div class="form-group">
+            <button type="button" class="btn btn-secondary" @onclick="Nuevo">Nuevo</button>
+            <button type="submit" class="btn btn-success">Guardar</button>
+            <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
+        </div>
+    </EditForm>
+</section>
+
+}
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    Categorias categoria = new Categorias();
+
+
+    private void Guardar()
+    {
+
+    }
+
+    private void Nuevo()
+    {
+
+    }
+
+    private void Buscar()
+    {
+
+    }
+
+    private void Eliminar()
+    {
+
+    }
+}

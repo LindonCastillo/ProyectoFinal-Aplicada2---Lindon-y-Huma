@@ -54,20 +54,16 @@
         <EditForm Model="@ventas" OnValidSubmit="Guardar">
             <DataAnnotationsValidator />
             <label for="Id">VentaId</label>
-            <div class="row">
-                <div class="col-md-8">
-                    <div class="form-group">
-
-                        <InputNumber @bind-Value="ventas.VentaId" class="form-control"></InputNumber>
-                        <ValidationMessage For="(() => ventas.VentaId)"></ValidationMessage>
+            <div>
+                <div class="input-group">
+                    <InputNumber @bind-Value="ventas.VentaId" class="form-control"></InputNumber>
+                    <ValidationMessage For="(() => ventas.VentaId)"></ValidationMessage>
+                    <div class="input-group-append">
+                        <button type="button" class="btn btn-primary" @onclick="Buscar">Buscar</button>
+                        <div />
+                        <div />
+                        <div />
                     </div>
-                </div>
-
-
-                <div class="col-md-4">
-
-                    <button type="button" class="btn btn-primary" @onclick="Buscar">Buscar</button>
-
                 </div>
             </div>
 
@@ -86,6 +82,7 @@
                             {
                             <option value="@item.ProductoId">@item.Nombre</option>
                             }
+                        /**/
                         /**/
                         /**/
                     </InputSelect>
