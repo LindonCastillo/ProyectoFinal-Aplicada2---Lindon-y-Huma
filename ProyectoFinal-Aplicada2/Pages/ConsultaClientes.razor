@@ -30,19 +30,7 @@
 
     <div class="form-row">
 
-        <div class="col">
-            <input id="desde_date" class="form-control" type="datetime-local" @bind="desdeFecha" />
-            <label for="desde_date">Desde</label>
-        </div>
-        <div class="col">
-            <input id="hasta_date" class="form-control" type="datetime-local" @bind="hastaFecha" />
-            <label for="hasta_date">Hasta</label>
-        </div>
-
-        <div class="col">
-            <button class="btn btn-primary" id="filtar_buton" @onclick="filtradoPorFecha">Filtar por Fecha</button>
-        </div>
-
+      
         <div class="col">
             <button class="btn btn-dark" type="button" @onclick="Saltar">Pag. Siguiente</button>
         </div>
@@ -78,7 +66,6 @@
                     <th>Nombre</th>
                     <th>Apellidos</th>
                     <th>Fecha de nacimiento</th>
-                    <th>Número de ´télefono o celular</th>
                     <th>Dirección</th>
                     <th></th>
                 </tr>
@@ -89,8 +76,7 @@
                     <tr>
                         <td>@item.ClienteId</td>
                         <td>@item.Nombres</td>
-                        <td>@item.Apellidos</td>
-                        <td>@item.FechaNacimiento.ToString("dd/MM/yyyy")</td>
+                        <td>@item.Apellidos</td>                  
                         <td>@item.Telefono_O_Celular</td>
                         <td>@item.Direccion</td>
                         <td><a class="btn btn-outline-info" href="ConsultaClientes/@item.ClienteId">Ver</a></td>
@@ -160,25 +146,11 @@
     private string filtro;
     private string Criterio;
 
-    DateTime hastaFecha = DateTime.Now;
-    DateTime desdeFecha = DateTime.Now;
+   
 
     public List<Clientes> listado { get; set; }
 
-    private void filtradoPorFecha()
-    {
-        try
-        {
-            Lista = Lista.Where(p => p.FechaNacimiento >= desdeFecha && p.FechaNacimiento <= hastaFecha).ToList();
-        }
-        catch (Exception)
-        {
-
-            //wey klok
-        }
-
-    }
-
+  
     private void Filtrar()
     {
 
