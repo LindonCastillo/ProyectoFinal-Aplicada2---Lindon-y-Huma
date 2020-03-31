@@ -86,24 +86,65 @@
 
     Categorias categoria = new Categorias();
 
+    protected override void OnInitialized()
+    {
+        if (Id > 0)
+        {
+            categoria = tiposproductoscontrollers.Buscar(Id);
+        }
+
+    }
 
     private void Guardar()
     {
+        if (tipoProductos.TipoProductoId > 0)
+        {
+            tiposproductoscontrollers.Guardar(tipoProductos);
+            toastService.ShowSuccess("Has modificado el tipo de producto exitosamente", "Modificado!");
+            Nuevo();
+        }
+        else if (tipoProductos.TipoProductoId == 0)
+        {
+            tiposproductoscontrollers.Guardar(tipoProductos);
+            toastService.ShowSuccess("Has guardado el tipo de producto exitosamente", "Guardado!");
+            Nuevo();
+        }
+        else
+        {
+            toastService.ShowWarning("No se pudo guardar el tipo de producto", "Error!");
+        }
 
     }
 
     private void Nuevo()
     {
-
-    }
-
-    private void Buscar()
-    {
-
+        this.tipoProductos = new TipoProductos();
     }
 
     private void Eliminar()
     {
+        if (tiposproductoscontrollers.Eliminar(tipoProductos.TipoProductoId))
+        {
+            toastService.ShowInfo("Has eliminado al tipo de producto exitosamente", "Eliminado!");
+            Nuevo();
+        }
+        else
+        {
+            toastService.ShowError("No se pudo eliminar el tipo de producto", "Error!");
+        }
+    }
 
+    private void Buscar()
+    {
+        TipoProductos busca = tiposproductoscontrollers.Buscar(tipoProductos.TipoProductoId);
+        if (busca != null)
+        {
+            this.tipoProductos = busca;
+            toastService.ShowInfo("Has encontrado el tipo de producto", "Encontrado!");
+        }
+        else
+        {
+            toastService.ShowWarning("No se pudo encontrar el tipo de producto", "No encontrado!");
+        }
     }
 }

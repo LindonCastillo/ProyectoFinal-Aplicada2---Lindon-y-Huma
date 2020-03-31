@@ -10,24 +10,22 @@ namespace ProyectoFinal_Aplicada2.Models
     {
         [Key]
         [Required(ErrorMessage = "El campo Id no puede estar vacío")]
-        //[Range(0, 10000000, ErrorMessage = "El campo Id no puede ser menor que cero")]
+        [Range(0, 10000000, ErrorMessage = "El campo Id no puede ser menor que cero")]
         public int ClienteId { get; set; }
         [Required(ErrorMessage ="El campo Nombres no puede estar vacío")]
-        //[MinLength(2,ErrorMessage ="El nombre debe tener por lo menos 2 caracteres")]
-        //[MaxLength(50,ErrorMessage ="Nombre muy largo")]
+        [MinLength(2, ErrorMessage = "El nombre debe tener por lo menos 2 caracteres")]
+        [MaxLength(50, ErrorMessage = "Nombre muy largo")]
         public string Nombres { get; set; }
         [Required(ErrorMessage = "El campo Apellidos no puede estar vacío")]
-        //[MinLength(2, ErrorMessage = "El apellido debe tener por lo menos 2 caracteres")]
-        //[MaxLength(50, ErrorMessage = "Apellido muy largo")]
+        [MinLength(2, ErrorMessage = "El apellido debe tener por lo menos 2 caracteres")]
+        [MaxLength(50, ErrorMessage = "Apellido muy largo")]
         public string Apellidos { get; set; }
-        [Required(ErrorMessage ="Debes poner una fecha")]
-        [DataType(DataType.Date, ErrorMessage = "El campo debe ser una fecha")]
-        public DateTime FechaNacimiento { get; set; }
-      //  [Range(minimum:10,maximum:10,ErrorMessage ="Este campo debe tener 10 caracteres")]
+
+        [Range(minimum:10,maximum:10,ErrorMessage ="Este campo debe tener 10 caracteres")]
         [RegularExpression("^(?!0+$)(\\+\\d{1,3}[- ]?)?(?!0+$)\\d{10,15}$", ErrorMessage = "Por favor ingrese un No. de teléfono válido")]
         [MaxLength(10, ErrorMessage = "El campo teléfono no tiene más de diez dígitos")]
         [MinLength(10, ErrorMessage = "El campo teléfono no puede tener menos de diez dígitos")]
-        public string Telefono_O_Celular { get; set; }
+        public string Numero { get; set; }
        
         [Required(ErrorMessage ="El campo dirección no puede estar vacío")]
         [MinLength(3,ErrorMessage =  "Dirección muy corta")]
@@ -39,8 +37,7 @@ namespace ProyectoFinal_Aplicada2.Models
             ClienteId = 0;
             Nombres = string.Empty;
             Apellidos = string.Empty;
-            FechaNacimiento = DateTime.Now;
-            Telefono_O_Celular = string.Empty;
+            Numero = string.Empty;
             Direccion = string.Empty;
         }
     }
