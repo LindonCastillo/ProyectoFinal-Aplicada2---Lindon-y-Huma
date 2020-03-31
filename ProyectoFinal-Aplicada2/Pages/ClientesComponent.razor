@@ -86,15 +86,9 @@
             </div>
 
             <div class="form-group">
-                <label for="FechaNacimiento">Fecha de nacimiento</label>
-                <InputDate @bind-Value="clientes.FechaNacimiento" class="form-control"></InputDate>
-                <ValidationMessage For="(() => clientes.FechaNacimiento)"></ValidationMessage>
-            </div>
-
-            <div class="form-group">
                 <label for="Telefono_O_Celular">Ingrese su número de teléfono o celular</label>
-                <InputText @bind-Value="clientes.Telefono_O_Celular" class="form-control" placeholder="celular o teléfono aquí"></InputText>
-                <ValidationMessage For="(() => clientes.Telefono_O_Celular)"></ValidationMessage>
+                <InputText @bind-Value="clientes.Numero" class="form-control" placeholder="celular o teléfono aquí"></InputText>
+                <ValidationMessage For="(() => clientes.Numero)"></ValidationMessage>
             </div>
 
             <div class="form-group">
