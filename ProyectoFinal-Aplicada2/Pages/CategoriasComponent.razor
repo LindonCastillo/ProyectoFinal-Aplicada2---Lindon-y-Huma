@@ -90,61 +90,60 @@
     {
         if (Id > 0)
         {
-            categoria = tiposproductoscontrollers.Buscar(Id);
+            categoria = categoriascontrollers.Buscar(Id);
         }
-
     }
 
     private void Guardar()
     {
-        if (tipoProductos.TipoProductoId > 0)
+        if (categoria.CategoriaId > 0)
         {
-            tiposproductoscontrollers.Guardar(tipoProductos);
-            toastService.ShowSuccess("Has modificado el tipo de producto exitosamente", "Modificado!");
+            categoriascontrollers.Guardar(categoria);
+            toastService.ShowSuccess("Has modificado exitosamente", "Modificado!");
             Nuevo();
         }
-        else if (tipoProductos.TipoProductoId == 0)
+        else if (categoria.CategoriaId == 0)
         {
-            tiposproductoscontrollers.Guardar(tipoProductos);
-            toastService.ShowSuccess("Has guardado el tipo de producto exitosamente", "Guardado!");
+            categoriascontrollers.Guardar(categoria);
+            toastService.ShowSuccess("Has guardado exitosamente", "Guardado!");
             Nuevo();
         }
         else
         {
-            toastService.ShowWarning("No se pudo guardar el tipo de producto", "Error!");
+            toastService.ShowWarning("No se pudo guardar", "Error!");
         }
 
     }
 
     private void Nuevo()
     {
-        this.tipoProductos = new TipoProductos();
+        this.categoria = new Categorias();
     }
 
     private void Eliminar()
     {
-        if (tiposproductoscontrollers.Eliminar(tipoProductos.TipoProductoId))
+        if (categoriascontrollers.Eliminar(categoria.CategoriaId))
         {
-            toastService.ShowInfo("Has eliminado al tipo de producto exitosamente", "Eliminado!");
+            toastService.ShowInfo("Se eliminado la categoría exitosamente", "Eliminado!");
             Nuevo();
         }
         else
         {
-            toastService.ShowError("No se pudo eliminar el tipo de producto", "Error!");
+            toastService.ShowError("No se pudo eliminar la categoría", "Error!");
         }
     }
 
     private void Buscar()
     {
-        TipoProductos busca = tiposproductoscontrollers.Buscar(tipoProductos.TipoProductoId);
+        Categorias busca = categoriascontrollers.Buscar(categoria.CategoriaId);
         if (busca != null)
         {
-            this.tipoProductos = busca;
-            toastService.ShowInfo("Has encontrado el tipo de producto", "Encontrado!");
+            this.categoria = busca;
+            toastService.ShowInfo("Has encontrado la categoría", "Encontrado!");
         }
         else
         {
-            toastService.ShowWarning("No se pudo encontrar el tipo de producto", "No encontrado!");
+            toastService.ShowWarning("No se pudo encontrar la categoría", "No encontrado!");
         }
     }
 }
