@@ -40,19 +40,25 @@ namespace ProyectoFinal_Aplicada2
                 CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie();
 
-            services.AddRazorPages();
-            services.AddServerSideBlazor();
-            services.AddScoped<ProductosControllers>();
-            services.AddScoped<ProveedoresControllers>();
-            services.AddScoped<ComprasControllers>();
-            services.AddScoped<VentasControllers>();
-            services.AddScoped<UsuariosControllers>();
+            //Servicios de Blazor
             services.AddBlazoredToast();
             services.AddHttpContextAccessor();
             services.AddScoped<HttpContextAccessor>();
             services.AddHttpClient();
             services.AddScoped<HttpClient>();
+            services.AddRazorPages();
+            services.AddServerSideBlazor();
+
+            //Controladores de la entidades del proyecto
+            services.AddScoped<ProductosControllers>();
+            services.AddScoped<ProveedoresControllers>();
+            services.AddScoped<ComprasControllers>();
+            services.AddScoped<VentasControllers>();
+            services.AddScoped<UsuariosControllers>();
+            services.AddScoped<TipoProductosControllers>();
+            services.AddScoped<ClientesControllers>();
             services.AddScoped<PagosControllers>();
+
 
         }
 

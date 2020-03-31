@@ -1,0 +1,202 @@
+﻿@page "/ConsultaTipoProductos"
+@page "/ConsultaTipoProductos/{I:int}"
+
+
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<CascadingAuthenticationState>
+    <AuthorizeView>
+        <NotAuthorized>
+            <div class="card text-center">
+                <div class="card-header">
+                    No Autorizado
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Atención</h5>
+                    <p class="card-text">Usted no está autorizado para acceder a esta pagina.</p>
+                    <a href="MenuConsultas" class="btn btn-primary">Ir al Menú</a>
+                </div>
+                <div class="card-footer text-muted">
+                </div>
+            </div>
+        </NotAuthorized>
+    </AuthorizeView>
+</CascadingAuthenticationState>
+
+@if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
+{
+    <h3>Consulta de Tipo de Productos</h3>
+    
+    <div class="form-row">
+
+
+        <div class="col">
+            <button class="btn btn-dark" type="button" @onclick="Saltar">Pag. Siguiente</button>
+        </div>
+
+        <div class="col">
+            <input type="text" class="form-control" placeholder="Criterio" @onfocusin="Filtrar" @onfocusout="Filtrar" @onclick="Filtrar" @bind="Criterio" />
+        </div>
+
+        <div class="col">
+            <select class="form-control" @onclick="Filtrar" @bind="filtro">
+                <option value="0">Todos</option>
+                <option value="1">Id</option>
+                <option value="2">Categoría</option>
+                <option value="3">Nombre del producto</option>             
+            </select>
+        </div>
+
+    </div>
+    <br />
+
+    @if (ListaTipoProductos == null)
+    {
+        <p>No hay datos que mostrar</p>
+        return;
+    }
+    else
+    {
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Id</th>
+                    <th>Categoría</th>
+                    <th>Nombre del producto</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in ListaTipoProductos)
+                {
+                    <tr>
+                        <td>@item.TipoProductoId</td>
+                        <td>@item.Categoria</td>
+                        <td>@item.ProductoSeleccionado</td>
+                     
+                        <td><a class="btn btn-outline-info" href="TiposProductos/@item.TipoProductoId">Ver</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+    <nav aria-label="...">
+        <ul class="pagination pagination-lg">
+            @for (int i = 1; i <= totaldepaginas; i++)
+            {
+                <li class="page-item"><a class="page-link" @onclick="OnInitialized" href="ConsultaTipoProductos/@i">@i</a></li>
+            }
+
+        </ul>
+    </nav>
+
+}
+
+@code {
+
+    List<TipoProductos> ListaTipoProductos = new List<TipoProductos>();
+
+    [Parameter]
+    public int I { get; set; }
+
+
+    double conteo = 0;
+    double totaldepaginas = 0;
+    Contexto contexto = new Contexto();
+    Paginacion paginacion = new Paginacion();
+    public int Contador { get; set; }
+
+    protected override void OnInitialized()
+    {
+        conteo = contexto.TipoProductos.Count();
+        totaldepaginas = Math.Ceiling(conteo / paginacion.CantidadMostrar);
+        ListaTipoProductos = tiposproductoscontrollers.GetList(p => true);
+        this.ListaTipoProductos = contexto.TipoProductos.Take(paginacion.CantidadMostrar).ToList();
+        NumSaltar();
+    }
+
+    private void NumSaltar()
+    {
+        Contador = I - 1;
+        Saltar();
+    }
+
+    private void Saltar()
+    {
+        Contador += paginacion.Pagina;
+        if (Contador >= totaldepaginas)
+        {
+            Contador = 0;
+        }
+
+        ListaTipoProductos = contexto.TipoProductos
+            .Skip(Contador * paginacion.CantidadMostrar)
+            .Take(paginacion.CantidadMostrar)
+            .ToList();
+    }
+
+    private string filtro;
+    private string Criterio;
+
+    List<TipoProductos> listado = new List<TipoProductos>();
+
+    private void Filtrar()
+    {
+
+        try
+        {
+            int filtroIndex = Int32.Parse(filtro);
+
+
+            if (Criterio.Trim().Length > 0)
+            {
+                switch (filtroIndex)
+                {
+                    //Todos
+                    case 0:
+                        conteo = contexto.TipoProductos.Count();
+                        totaldepaginas = Math.Ceiling(conteo / paginacion.CantidadMostrar);
+                        ListaTipoProductos = tiposproductoscontrollers.GetList(A => true);
+                        this.ListaTipoProductos = contexto.TipoProductos.Take(paginacion.CantidadMostrar).ToList();
+                        break;
+                    //Int
+                    case 1:
+                        int id = 0;
+                        if (int.TryParse(Criterio, out id))
+                        {
+                            id = Convert.ToInt32(Criterio);
+                            ListaTipoProductos = tiposproductoscontrollers.GetList(p => p.TipoProductoId == id);
+                            ListaTipoProductos = listado;
+                        }
+                        break;
+                    //Categoria
+                    case 2:
+                        listado = tiposproductoscontrollers.GetList(p => p.Categoria.Contains(Criterio));
+                        ListaTipoProductos = listado;
+                        break;
+
+                    //Nombre del producto
+                    case 3:
+
+                        listado = tiposproductoscontrollers.GetList(p => p.ProductoSeleccionado.Contains(Criterio));
+                        ListaTipoProductos = listado;
+                        break;
+                 
+                }
+            }
+            else
+            {
+                listado = tiposproductoscontrollers.GetList(p => true);
+                ListaTipoProductos = listado;
+            }
+
+        }
+        catch (Exception)
+        {
+            //papichulo
+        }
+    }
+
+
+}

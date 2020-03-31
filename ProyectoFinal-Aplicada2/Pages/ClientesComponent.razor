@@ -1,0 +1,185 @@
+﻿@page "/Clientes"
+@page  "/Clientes/{Id:int}"
+
+
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<CascadingAuthenticationState>
+    <AuthorizeView>
+        <NotAuthorized>
+            <div class="card text-center">
+                <div class="card-header">
+                    No Autorizado
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Atención</h5>
+                    <p class="card-text">Usted no está autorizado para acceder a esta pagina.</p>
+                    <a href="MenuRegistros" class="btn btn-primary">Ir al Menú</a>
+                </div>
+                <div class="card-footer text-muted">
+                </div>
+            </div>
+        </NotAuthorized>
+    </AuthorizeView>
+</CascadingAuthenticationState>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    .form-register {
+        width: 500px;
+        background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
+        padding: 30px;
+        margin: auto;
+        margin-top: 50px;
+        border-radius: 4px;
+        font-family: 'calibri';
+        color: white;
+        box-shadow: 7px 13px 37px #000;
+    }
+
+    .h3 {
+        color: white;
+    }
+</style>
+@if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
+{
+    <section class="form-register">
+        <h3>Clientes</h3>
+        <EditForm Model="clientes" OnValidSubmit="Guardar">
+            <DataAnnotationsValidator />
+            <div class="row">
+                <label for="Id">ProductoId</label>
+            </div>
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="form-group">
+                        <InputNumber @bind-Value="clientes.ClienteId" class="form-control"></InputNumber>
+                        <ValidationMessage For="(() => clientes.ClienteId)"></ValidationMessage>
+                    </div>
+                </div>
+
+
+                <div class="col-md-4">
+
+                    <button type="button" class="btn btn-primary" @onclick="Buscar">Buscar</button>
+
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="Nombres">Nombres</label>
+                <InputText @bind-Value="clientes.Nombres" class="form-control" placeholder="Nombres aquí"></InputText>
+                <ValidationMessage For="(() => clientes.Nombres)"></ValidationMessage>
+            </div>
+
+            <div class="form-group">
+                <label for="Apellidos">Apellidos</label>
+                <InputText @bind-Value="clientes.Apellidos" class="form-control" placeholder="Apellidos aquí"></InputText>
+                <ValidationMessage For="(() => clientes.Apellidos)"></ValidationMessage>
+            </div>
+
+            <div class="form-group">
+                <label for="FechaNacimiento">Fecha de nacimiento</label>
+                <InputDate @bind-Value="clientes.FechaNacimiento" class="form-control"></InputDate>
+                <ValidationMessage For="(() => clientes.FechaNacimiento)"></ValidationMessage>
+            </div>
+
+            <div class="form-group">
+                <label for="Telefono_O_Celular">Ingrese su número de teléfono o celular</label>
+                <InputText @bind-Value="clientes.Telefono_O_Celular" class="form-control" placeholder="celular o teléfono aquí"></InputText>
+                <ValidationMessage For="(() => clientes.Telefono_O_Celular)"></ValidationMessage>
+            </div>
+
+            <div class="form-group">
+                <label for="Direccion">Dirección</label>
+                <InputText @bind-Value="clientes.Direccion" class="form-control"></InputText>
+                <ValidationMessage For="(() => clientes.Direccion)"></ValidationMessage>
+            </div>
+
+            <button type="button" class="btn btn-secondary" @onclick="Nuevo">Nuevo</button>
+            <button type="submit" class="btn btn-success">Guardar</button>
+            <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
+
+
+        </EditForm>
+
+    </section>
+
+}
+
+
+    @code {
+
+        [Parameter]
+        public int Id { get; set; }
+
+        Clientes clientes = new Clientes();
+
+        protected override void OnInitialized()
+        {
+            if (Id > 0)
+            {
+                clientes = clientescontollers.Buscar(Id);
+            }
+        }
+
+        private void Guardar()
+        {
+            if (clientes.ClienteId > 0)
+            {
+                clientescontollers.Guardar(clientes);
+                toastService.ShowSuccess("Has modificado el cliente exitosamente", "Modificado!");
+                Nuevo();
+            }
+            else if (clientes.ClienteId == 0)
+            {
+                clientescontollers.Guardar(clientes);
+                toastService.ShowSuccess("Has guardado el cliente exitosamente", "Guardado!");
+                Nuevo();
+            }
+            else
+            {
+                toastService.ShowWarning("No se pudo guardar el cliente", "Error!");
+            }
+
+        }
+
+        private void Nuevo()
+        {
+            this.clientes = new Clientes();
+        }
+
+        private void Eliminar()
+        {
+            if (clientescontollers.Eliminar(clientes.ClienteId))
+            {
+                toastService.ShowInfo("Has eliminado al cliente exitosamente", "Eliminado!");
+                Nuevo();
+            }
+            else
+            {
+                toastService.ShowError("No se pudo eliminar el cliente", "Error!");
+            }
+        }
+
+        private void Buscar()
+        {
+            Clientes busca = clientescontollers.Buscar(clientes.ClienteId);
+            if (busca != null)
+            {
+                this.clientes = busca;
+                toastService.ShowInfo("Has encontrado al cliente", "Encontrado!");
+            }
+            else
+            {
+                toastService.ShowWarning("No se pudo encontrar el cliente", "No encontrado!");
+            }
+        }
+
+
+    }

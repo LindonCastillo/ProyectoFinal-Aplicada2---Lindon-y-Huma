@@ -1,5 +1,6 @@
-﻿@page "/ConsultaProductos"
-@page "/ConsultaProductos/{I:int}"
+﻿@page "/ConsultaClientes"
+@page "/ConsultaClientes/{I:int}"
+
 
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
@@ -24,7 +25,8 @@
 
 @if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
 {
-    <h3>Consulta de Productos</h3>
+    <h3>Consulta de Clientes</h3>
+
 
     <div class="form-row">
 
@@ -53,11 +55,10 @@
             <select class="form-control" @onclick="Filtrar" @bind="filtro">
                 <option value="0">Todos</option>
                 <option value="1">Id</option>
-                <option value="2">Nombre</option>
-                <option value="3">Cantidad</option>
-                <option value="4">Precio de compra</option>
-                <option value="5">Porcentaje de ganancia</option>
-                <option value="6">Precio de venta</option>
+                <option value="2">Nombres</option>
+                <option value="3">Apellidos</option>
+                <option value="4">Teléfono o celular</option>
+                <option value="5">Dirección</option>         
             </select>
         </div>
     </div>
@@ -75,11 +76,10 @@
                 <tr>
                     <th>Id</th>
                     <th>Nombre</th>
-                    <th>Cantidad</th>
-                    <th>Fecha de entrada</th>
-                    <th>Precio de compra</th>
-                    <th>Porcentaje de ganancia</th>
-                    <th>Precio de venta</th>
+                    <th>Apellidos</th>
+                    <th>Fecha de nacimiento</th>
+                    <th>Número de ´télefono o celular</th>
+                    <th>Dirección</th>
                     <th></th>
                 </tr>
             </thead>
@@ -87,38 +87,37 @@
                 @foreach (var item in Lista)
                 {
                     <tr>
-                        <td>@item.ProductoId</td>
-                        <td>@item.Nombre</td>
-                        <td>@item.Cantidad</td>
-                        <td>@item.FechaEntrada.ToString("dd/MM/yyyy")</td>
-                        <td>@item.PrecioCompra</td>
-                        <td>@item.PorcentajeGanancias</td>
-                        <td>@item.PrecioVentas</td>
-                        <td><a class="btn btn-outline-info" href="Productos/@item.ProductoId">Ver</a></td>
+                        <td>@item.ClienteId</td>
+                        <td>@item.Nombres</td>
+                        <td>@item.Apellidos</td>
+                        <td>@item.FechaNacimiento.ToString("dd/MM/yyyy")</td>
+                        <td>@item.Telefono_O_Celular</td>
+                        <td>@item.Direccion</td>
+                        <td><a class="btn btn-outline-info" href="ConsultaClientes/@item.ClienteId">Ver</a></td>
                     </tr>
                 }
             </tbody>
         </table>
     }
 
+
     <nav aria-label="...">
         <ul class="pagination pagination-lg">
             @for (int i = 1; i <= totaldepaginas; i++)
             {
-                <li class="page-item"><a class="page-link" @onclick="OnInitialized" href="ConsultaProductos/@i">@i</a></li>
+                <li class="page-item"><a class="page-link" @onclick="OnInitialized" href="ConsultaClientes/@i">@i</a></li>
             }
 
         </ul>
     </nav>
-
 }
 
-    @code {
- List<Productos> Lista = new List<Productos>();
 
+@code {
 
+    List<Clientes> Lista = new List<Clientes>();
 
-[Parameter]
+    [Parameter]
     public int I { get; set; }
 
     double conteo = 0;
@@ -129,10 +128,10 @@
 
     protected override void OnInitialized()
     {
-        conteo = contexto.Productos.Count();
+        conteo = contexto.Clientes.Count();
         totaldepaginas = Math.Ceiling(conteo / paginacion.CantidadMostrar);
-        Lista = productoscontrollers.GetList(A => true);
-        this.Lista = contexto.Productos.Take(paginacion.CantidadMostrar).ToList();
+        Lista = clientescontollers.GetList(A => true);
+        this.Lista = contexto.Clientes.Take(paginacion.CantidadMostrar).ToList();
         NumSaltar();
     }
 
@@ -150,7 +149,7 @@
             Contador = 0;
         }
 
-        Lista = contexto.Productos
+        Lista = contexto.Clientes
             .Skip(Contador * paginacion.CantidadMostrar)
             .Take(paginacion.CantidadMostrar)
             .ToList();
@@ -164,13 +163,13 @@
     DateTime hastaFecha = DateTime.Now;
     DateTime desdeFecha = DateTime.Now;
 
-    public List<Productos> listado { get; set; }
+    public List<Clientes> listado { get; set; }
 
     private void filtradoPorFecha()
     {
         try
         {
-            Lista = Lista.Where(p => p.FechaEntrada >= desdeFecha && p.FechaEntrada <= hastaFecha).ToList();
+            Lista = Lista.Where(p => p.FechaNacimiento >= desdeFecha && p.FechaNacimiento <= hastaFecha).ToList();
         }
         catch (Exception)
         {
@@ -194,71 +193,52 @@
                 {
                     //Todos
                     case 0:
-                        conteo = contexto.Productos.Count();
+                        conteo = contexto.Clientes.Count();
                         totaldepaginas = Math.Ceiling(conteo / paginacion.CantidadMostrar);
-                        Lista = productoscontrollers.GetList(A => true);
-                        this.Lista = contexto.Productos.Take(paginacion.CantidadMostrar).ToList();
+                        Lista = clientescontollers.GetList(A => true);
+                        this.Lista = contexto.Clientes.Take(paginacion.CantidadMostrar).ToList();
                         break;
-                    //Int
+                    //Id
                     case 1:
                         int id = 0;
                         if (int.TryParse(Criterio, out id))
                         {
                             id = Convert.ToInt32(Criterio);
-                            listado = productoscontrollers.GetList(p => p.ProductoId == id);
+                            listado = clientescontollers.GetList(p => p.ClienteId == id);
                             Lista = listado;
                         }
                         break;
-                    //Nombre
+                    //Nombres
                     case 2:
-                        listado = productoscontrollers.GetList(p => p.Nombre.Contains(Criterio));
+                        listado = clientescontollers.GetList(p => p.Nombres.Contains(Criterio));
+                        Lista = listado;
                         break;
 
                     //Cantidas
                     case 3:
-                        int cantidad = 0;
-                        if (int.TryParse(Criterio, out cantidad))
-                        {
-                            cantidad = Convert.ToInt32(Criterio);
-                            listado = productoscontrollers.GetList(p => p.Cantidad == cantidad);
-                            Lista = listado;
-                        }
+
+                        listado = clientescontollers.GetList(p => p.Apellidos.Contains(Criterio));
+                        Lista = listado;
+
                         break;
-                    //PrecioCompra
+                    //El telefono o el celular
                     case 4:
-                        decimal compra = 0;
-                        if (decimal.TryParse(Criterio, out compra))
-                        {
-                            compra = Convert.ToDecimal(Criterio);
-                            listado = productoscontrollers.GetList(p => p.PrecioCompra == compra);
-                            Lista = listado;
-                        }
+
+                        listado = clientescontollers.GetList(p => p.Telefono_O_Celular.Contains(Criterio));
+                        Lista = listado;
+
                         break;
                     //PorcentajeGanancias
                     case 5:
-                        decimal porcentaje = 0;
-                        if (decimal.TryParse(Criterio, out porcentaje))
-                        {
-                            porcentaje = Convert.ToDecimal(Criterio);
-                            listado = productoscontrollers.GetList(p => p.PorcentajeGanancias == porcentaje);
-                            Lista = listado;
-                        }
+                        listado = clientescontollers.GetList(p => p.Apellidos.Contains(Criterio));
+                        Lista = listado;
                         break;
-                    //PrecioVentas
-                    case 6:
-                        decimal venta = 0;
-                        if (decimal.TryParse(Criterio, out venta))
-                        {
-                            venta = Convert.ToDecimal(Criterio);
-                            listado = productoscontrollers.GetList(p => p.PrecioVentas == venta);
-                            Lista = listado;
-                        }
-                        break;
+
                 }
             }
             else
             {
-                listado = productoscontrollers.GetList(p => true);
+                listado = clientescontollers.GetList(p => true);
                 Lista = listado;
             }
 
@@ -269,5 +249,4 @@
         }
     }
 
-
-    }
+}
