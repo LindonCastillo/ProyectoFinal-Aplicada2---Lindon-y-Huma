@@ -11,9 +11,10 @@ namespace ProyectoFinal_Aplicada2.Data
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            base.OnConfiguring(optionsBuilder.UseSqlite("Data Source = Database/ProyectoFinalLindonYHuma-COOASAR"));
+            base.OnConfiguring(optionsBuilder);
+            optionsBuilder.UseSqlServer(@"Server = .\SqlExpress; Database= CooasarDb; Trusted_Connection = True; ");
         }
-
+    
         public DbSet<Productos> Productos { get; set; }
         public DbSet<Proveedores> Proveedores { get; set; }
         public DbSet<Compras> Compras { get; set; }
