@@ -65,7 +65,7 @@
                     <th>Id</th>
                     <th>Nombre</th>
                     <th>Apellidos</th>
-                    <th>Fecha de nacimiento</th>
+                    <th>Numero</th>
                     <th>Dirección</th>
                     <th></th>
                 </tr>
@@ -77,7 +77,7 @@
                         <td>@item.ClienteId</td>
                         <td>@item.Nombres</td>
                         <td>@item.Apellidos</td>                  
-                        <td>@item.Telefono_O_Celular</td>
+                        <td>@item.Numero</td>
                         <td>@item.Direccion</td>
                         <td><a class="btn btn-outline-info" href="ConsultaClientes/@item.ClienteId">Ver</a></td>
                     </tr>
@@ -196,7 +196,7 @@
                     //El telefono o el celular
                     case 4:
 
-                        listado = clientescontollers.GetList(p => p.Telefono_O_Celular.Contains(Criterio));
+                        listado = clientescontollers.GetList(p => p.Numero.Contains(Criterio));
                         Lista = listado;
 
                         break;

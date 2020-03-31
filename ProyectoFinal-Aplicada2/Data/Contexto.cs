@@ -22,5 +22,6 @@ namespace ProyectoFinal_Aplicada2.Data
         public DbSet<Usuarios> Usuarios { get; set; }
         public DbSet<Clientes> Clientes { get; set; }
         public DbSet<TipoProductos> TipoProductos { get; set; }
+        public DbSet<Categorias> Categorias { get; set; }
     }
 }
