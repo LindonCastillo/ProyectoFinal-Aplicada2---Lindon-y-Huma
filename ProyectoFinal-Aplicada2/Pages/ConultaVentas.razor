@@ -1,5 +1,5 @@
 ﻿@page "/ConsultaVentas"
-@page  "/ConsultaVentas/{I:int}"
+@page "/ConsultaVentas/{I:int}"
 
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
@@ -21,6 +21,16 @@
         </NotAuthorized>
     </AuthorizeView>
 </CascadingAuthenticationState>
+
+<style>
+    . {
+    }
+
+        .Azul {
+            color: #0094ff;
+        }
+</style>
+
 @if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
 {
     <h3>Consulta de Ventas</h3>
@@ -38,10 +48,6 @@
 
         <div class="col">
             <button class="btn btn-primary" id="filtar_buton" @onclick="filtradoPorFecha">Filtar por Fecha</button>
-        </div>
-
-        <div class="col">
-            <button class="btn btn-dark" type="button" @onclick="Saltar">Pag. Siguiente</button>
         </div>
 
         <div class="col">
@@ -93,138 +99,141 @@
         </table>
     }
 
-    <nav aria-label="...">
-        <ul class="pagination pagination-lg">
-            @for (int i = 1; i <= totaldepaginas; i++)
-            {
-                <li class="page-item"><a class="page-link" @onclick="OnInitialized" href="ConsultaVentas/@i">@i</a></li>
-            }
+<nav aria-label="...">
+    <ul class="pagination pagination-lg">
+        @for (int i = 1; i <= totaldepaginas; i++)
+        {
+            <li class="page-item Azul"><a class="page-link Azul" @onclick="OnInitialized" href="ConsultaVentas/@i">@i</a></li>
+        }
+        <li class="page-item Azul"><a class="page-link Azul" @onclick="Saltar"> ► </a></li>
+    </ul>
+</nav>
 
-        </ul>
-    </nav>
 }
-    @code {
+@code {
 
-        List<Ventas> Lista = new List<Ventas>();
+    List<Ventas> Lista = new List<Ventas>();
 
 
-        [Parameter]
-        public int I { get; set; }
-        private int Contador { get; set; }
-        private int contCiclo { get; set; }
+    [Parameter]
+    public int I { get; set; }
+    private int Contador { get; set; }
+    private int contCiclo { get; set; }
 
-        Paginacion paginacion = new Paginacion();
-        public double totaldepaginas { get; set; }
-        Contexto Contexto = new Contexto();
-        double conteo = 0;
-        private void NumSaltar()
+    Paginacion paginacion = new Paginacion();
+    public double totaldepaginas { get; set; }
+    Contexto Contexto = new Contexto();
+    double conteo = 0;
+    private void NumSaltar()
+    {
+        Contador = I - 1;
+        Saltar();
+    }
+
+    private void Saltar()
+    {
+        Contador += paginacion.Pagina;
+        if (Contador >= totaldepaginas)
         {
-            Contador = I - 1;
-            Saltar();
+            Contador = 0;
+        }
+        Lista = Contexto.Ventas
+            .Skip(Contador * paginacion.CantidadMostrar)
+            .Take(paginacion.CantidadMostrar)
+            .ToList();
+    }
+
+    protected override void OnInitialized()
+    {
+
+        conteo = Contexto.Compras.Count();
+        totaldepaginas = Math.Ceiling(conteo / paginacion.CantidadMostrar);
+        Lista = ventascontroller.GetList(p => true);
+        this.Lista = Contexto.Ventas.Take(paginacion.CantidadMostrar).ToList();
+        NumSaltar();
+
+    }
+
+
+    private string filtro;
+    private string Criterio;
+
+    DateTime hastaFecha = DateTime.Now;
+    DateTime desdeFecha = DateTime.Now;
+
+
+    public List<Ventas> listado { get; set; }
+
+
+    private void filtradoPorFecha()
+    {
+        try
+        {
+            Lista = Lista.Where(p => p.FechaVenta >= desdeFecha && p.FechaVenta <= hastaFecha).ToList();
+        }
+        catch (Exception)
+        {
+
+            //wey klok
         }
 
-        private void Saltar()
+    }
+
+    private void Filtrar()
+    {
+
+        try
         {
-            Contador += paginacion.Pagina;
-            if (Contador >= totaldepaginas)
+            int filtroIndex = Int32.Parse(filtro);
+
+            if (Criterio.Trim().Length > 0)
             {
-                Contador = 0;
-            }
-            Lista = Contexto.Ventas
-                .Skip(Contador * paginacion.CantidadMostrar)
-                .Take(paginacion.CantidadMostrar)
-                .ToList();
-        }
-
-        protected override void OnInitialized()
-        {
-            conteo = Contexto.Compras.Count();
-            totaldepaginas = Math.Ceiling(conteo / paginacion.CantidadMostrar);
-            Lista = ventascontroller.GetList(p => true);
-            this.Lista = Contexto.Ventas.Take(paginacion.CantidadMostrar).ToList();
-            NumSaltar();
-        }
-
-
-        private string filtro;
-        private string Criterio;
-
-        DateTime hastaFecha = DateTime.Now;
-        DateTime desdeFecha = DateTime.Now;
-
-
-        public List<Ventas> listado { get; set; }
-
-
-        private void filtradoPorFecha()
-        {
-            try
-            {
-                Lista = Lista.Where(p => p.FechaVenta >= desdeFecha && p.FechaVenta <= hastaFecha).ToList();
-            }
-            catch (Exception)
-            {
-
-                //wey klok
-            }
-
-        }
-
-        private void Filtrar()
-        {
-
-            try
-            {
-                int filtroIndex = Int32.Parse(filtro);
-
-                if (Criterio.Trim().Length > 0)
+                switch (filtroIndex)
                 {
-                    switch (filtroIndex)
-                    {
-                        //Todos
-                        case 0:
-                            conteo = Contexto.Compras.Count();
-                            totaldepaginas = Math.Ceiling(conteo / paginacion.CantidadMostrar);
-                            Lista = ventascontroller.GetList(p => true);
-                            this.Lista = Contexto.Ventas.Take(paginacion.CantidadMostrar).ToList();
-                            break;
+                    //Todos
+                    case 0:
+                        conteo = Contexto.Compras.Count();
+                        totaldepaginas = Math.Ceiling(conteo / paginacion.CantidadMostrar);
+                        Lista = ventascontroller.GetList(p => true);
+                        this.Lista = Contexto.Ventas.Take(paginacion.CantidadMostrar).ToList();
+                        break;
 
-                        //Id
-                        case 1:
-                            int id = 0;
-                            if (int.TryParse(Criterio, out id))
-                            {
-                                id = Convert.ToInt32(Criterio);
-                                listado = ventascontroller.GetList(p => p.VentaId == id);
-                                Lista = listado;
-                            }
-                            break;
-                        //Total
-                        case 2:
-                            decimal total = 0;
-                            if (decimal.TryParse(Criterio, out total))
-                            {
-                                total = Convert.ToInt32(Criterio);
-                                listado = ventascontroller.GetList(p => p.Total == total);
-                                Lista = listado;
-                            }
-                            break;
-                        case 3:
-                            listado = ventascontroller.GetList(p => p.ClientesVentas.Contains(Criterio));
+                    //Id
+                    case 1:
+                        int id = 0;
+                        if (int.TryParse(Criterio, out id))
+                        {
+                            id = Convert.ToInt32(Criterio);
+                            listado = ventascontroller.GetList(p => p.VentaId == id);
                             Lista = listado;
-                            break;
-                    }
+                        }
+                        break;
+                    //Total
+                    case 2:
+                        decimal total = 0;
+                        if (decimal.TryParse(Criterio, out total))
+                        {
+                            total = Convert.ToInt32(Criterio);
+                            listado = ventascontroller.GetList(p => p.Total == total);
+                            Lista = listado;
+                        }
+                        break;
+                    case 3:
+                        listado = ventascontroller.GetList(p => p.ClientesVentas.Contains(Criterio));
+                        Lista = listado;
+                        break;
                 }
-                else
-                {
-                    listado = ventascontroller.GetList(p => true);
-                    Lista = listado;
-                }
-
             }
-            catch (Exception)
+            else
             {
-                //papichulo
+                listado = ventascontroller.GetList(p => true);
+                Lista = listado;
             }
+
+        }
+        catch (Exception)
+        {
+            //papichulo
         }
     }
+}

@@ -31,7 +31,7 @@
     }
 
     .form-register {
-        width: 800px;
+        width: 650px;
         background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
         padding: 30px;
         margin: auto;
@@ -108,8 +108,15 @@
 
                 <div class="col">
                     <label for="Pago">Pago</label>
-                    <InputNumber @bind-Value="Pago" class="form-control"></InputNumber>
-                    <button type="button" class="btn btn-info" @onclick="AgregarCompra">Agregar</button>
+                    <div class="input-group">
+                        <InputNumber @bind-Value="Pago" class="form-control"></InputNumber>
+                        <div class="input-group-append">
+                            <button type="button" class="btn btn-info" @onclick="AgregarCompra">Agregar</button>
+                            <div />
+                            <div />
+                            <div />
+                        </div>
+                    </div>
                 </div>
 
             </div>
