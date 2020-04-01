@@ -17,7 +17,6 @@ namespace ProyectoFinal_Aplicada2.Controllers.Tests
             Categorias categorias = new Categorias();
             categorias.CategoriaId = 0;
             categorias.NombreCategoria = "Pesticidas";
-
             Assert.IsTrue(controller.Guardar(categorias));
         }
 
