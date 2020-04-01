@@ -78,7 +78,7 @@ namespace ProyectoFinal_Aplicada2.Controllers
                 Clientes clientes = contexto.Clientes.Find(id);
                 if(clientes!=null)
                 {
-                    contexto.Entry(contexto).State = EntityState.Deleted;
+                    contexto.Entry(clientes).State = EntityState.Deleted;
                     paso = contexto.SaveChanges() > 0;
                 }
               
