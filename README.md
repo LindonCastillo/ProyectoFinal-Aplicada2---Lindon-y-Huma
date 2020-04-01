@@ -4,10 +4,11 @@
 Este sistema está basado en las operaciones de Corporación de Servicios Múltiples de la Provincia Sánchez Ramírez (COOASAR). Esta es una empresa dedicada a la venta y compra de productos agropecuarios y ganaderos con sede en Cotuí, Provincia Sánchez Ramírez, República Dominicana.  
 
 Cuenta con Menú con todos los registros:
-![Captura - Menu de Registros](https://user-images.githubusercontent.com/50345256/77560086-572c7280-6e93-11ea-82d0-4f6bc7035c66.PNG)
+![Captura2 - Menu de Registros](https://user-images.githubusercontent.com/50345256/78177768-a131cd00-742c-11ea-8717-378dd3b53d2e.PNG)
+
 
 y un menú con todas las consultas:
-![Captura - Menu de Consultas](https://user-images.githubusercontent.com/50345256/77573693-6d442e00-6ea7-11ea-9615-b3cd0c5bd617.PNG)
+![Captura2 - Menu de Consultas](https://user-images.githubusercontent.com/50345256/78177764-a000a000-742c-11ea-8f93-9fef354da4d9.PNG)
 
 
 En caso de intentar entrar a un registro sin estar loguedo o sin los permiso previos saltará este mensaje:
