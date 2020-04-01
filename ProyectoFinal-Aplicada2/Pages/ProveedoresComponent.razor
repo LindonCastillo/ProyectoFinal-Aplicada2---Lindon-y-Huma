@@ -89,10 +89,10 @@
             <div class="form-group">
                 <label for="TipoNegocio">Tipo de negocio</label>
                 <InputSelect @bind-Value="proveedores.TipoNegocio" class="form-control">
-                    <option value="Compra">Compra</option>
-                    <option value="Venta">Venta</option>
+                    <option value="">Elija un Tipo de Proveedor</option>
+                    <option value="Bienes">Bienes</option>
                     <option value="Servicios">Servicios</option>
-                    <option value="Manufactura">Manufactura</option>
+                    <option value="Bienes y Servicios">Bienes y Servicios</option>
                 </InputSelect>
                 <ValidationMessage For="(()=>proveedores.TipoNegocio)"></ValidationMessage>
             </div>

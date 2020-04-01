@@ -10,8 +10,8 @@ using ProyectoFinal_Aplicada2.Data;
 namespace ProyectoFinal_Aplicada2.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20200401013750_cooasar")]
-    partial class cooasar
+    [Migration("20200401151814_pao")]
+    partial class pao
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

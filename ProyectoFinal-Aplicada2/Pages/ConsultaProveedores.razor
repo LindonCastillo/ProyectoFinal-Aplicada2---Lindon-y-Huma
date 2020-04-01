@@ -21,16 +21,20 @@
         </NotAuthorized>
     </AuthorizeView>
 </CascadingAuthenticationState>
+<style>
+    . {
+    }
+
+        .Azul {
+            color: #0094ff;
+        }
+</style>
 
 @if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
 {
     <h3>Consulta de Proveedores</h3>
 
     <div class="form-row">
-        <div class="col">
-            <button class="btn btn-dark" type="button" @onclick="Saltar">Pag. Siguiente</button>
-        </div>
-
         <div class="col">
             <input type="text" class="form-control" placeholder="Criterio" @onfocusin="Filtrar" @onfocusout="Filtrar" @onclick="Filtrar" @bind="Criterio" />
         </div>
@@ -91,19 +95,20 @@
         <ul class="pagination pagination-lg">
             @for (int i = 1; i <= totaldepaginas; i++)
             {
-                <li class="page-item"><a class="page-link" @onclick="OnInitialized" href="ConsultaProveedores/@i">@i</a></li>
+                <li class="page-item Azul"><a class="page-link Azul" @onclick="OnInitialized" href="ConsultaProveedores/@i">@i</a></li>
             }
-
+            <li class="page-item Azul"><a class="page-link Azul" @onclick="Saltar"> ► </a></li>
         </ul>
     </nav>
+
 }
 
-    @code {
-        List<Proveedores> Lista = new List<Proveedores>();
-        Contexto Contexto = new Contexto();
+@code {
+    List<Proveedores> Lista = new List<Proveedores>();
+    Contexto Contexto = new Contexto();
 
 
-protected override void OnInitialized()
+    protected override void OnInitialized()
     {
         conteo = Contexto.Compras.Count();
         totaldepaginas = Math.Ceiling(conteo / paginacion.CantidadMostrar);
@@ -219,4 +224,4 @@ protected override void OnInitialized()
             //papichulo
         }
     }
-    }
+}

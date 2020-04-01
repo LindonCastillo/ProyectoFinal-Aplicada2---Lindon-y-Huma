@@ -23,6 +23,18 @@
     </AuthorizeView>
 </CascadingAuthenticationState>
 
+
+
+<style>
+    .{
+
+    }
+
+    .Azul{
+        color: #0094ff;
+    }
+</style>
+
 @if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
 {
     <h3>Consulta de Categorías</h3>
@@ -75,19 +87,15 @@
         </table>
     }
 
-    <nav aria-label="...">
-        <ul class="pagination pagination-lg">
-            @for (int i = 1; i <= totaldepaginas; i++)
-            {
-                <li class="page-item"><a class="page-link" @onclick="OnInitialized" href="ConsultaTipoCategorias/@i">@i</a></li>
-            }
-
-        </ul>
-    </nav>
-
-    <div class="col">
-        <button class="btn btn-dark" type="button" @onclick="Saltar">Pag. Siguiente</button>
-    </div>
+<nav aria-label="...">
+    <ul class="pagination pagination-lg">
+        @for (int i = 1; i <= totaldepaginas; i++)
+        {
+            <li class="page-item Azul"><a class="page-link Azul" @onclick="OnInitialized" href="ConsultaCategorias/@i">@i</a></li>
+        }
+        <li class="page-item Azul"><a class="page-link Azul" @onclick="Saltar"> ► </a></li>
+    </ul>
+</nav>
 
 }
 
