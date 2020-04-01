@@ -5,7 +5,7 @@ namespace ProyectoFinal_Aplicada2.Migrations
 {
     public partial class cooasar : Migration
     {
-        protected override void Up(MigrationBuilder migrationBuilder)
+        protected override void Up(MigrationBuilder migrationBuilder) 
         {
             migrationBuilder.CreateTable(
                 name: "Categorias",
