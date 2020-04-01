@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using ProyectoFinal_Aplicada2.Models;
+using ProyectoFinal_Aplicada2.Controllers;
 
 namespace ProyectoFinal_Aplicada2.Pages
 {
@@ -14,18 +16,20 @@ namespace ProyectoFinal_Aplicada2.Pages
     {
 
         public string ReturnUrl { get; set; }
-
+        Usuarios Usuarios = new Usuarios();
+        UsuariosControllers UsuariosControllers = new UsuariosControllers();
 
 
         public async Task<ActionResult> OnGetAsync(string paramUsername, string paramPawoord)
         {
-            string ReturnUrl = Url.Content("~/");
-
+            string ReturnUrl = Url.Content("~/");                                     
             try
             {
-                await HttpContext
-                    .SignOutAsync(
-                    CookieAuthenticationDefaults.AuthenticationScheme);
+               
+                
+                    await HttpContext
+                        .SignOutAsync(
+                        CookieAuthenticationDefaults.AuthenticationScheme);             
             }
             catch
             {   }
