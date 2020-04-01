@@ -54,7 +54,7 @@ namespace ProyectoFinal_Aplicada2.Controllers
                     comprasControllers.Guardar(compras);
                 }
 
-               db.Pagos.Add(pagos);
+                db.Pagos.Add(pagos);
                paso = db.SaveChanges() > 0;
             }
             catch (Exception)
@@ -133,7 +133,7 @@ namespace ProyectoFinal_Aplicada2.Controllers
                     foreach (var item in pagos.PagosDetalles)
                     {
                         Compras compras = comprasControllers.Buscar(item.CompraId);
-                        compras.Balance += item.Pago;     
+                        compras.Balance += item.Pago;
                         comprasControllers.Guardar(compras);
                     }
 
