@@ -31,10 +31,6 @@
 
 
         <div class="col">
-            <button class="btn btn-dark" type="button" @onclick="Saltar">Pag. Siguiente</button>
-        </div>
-
-        <div class="col">
             <input type="text" class="form-control" placeholder="Criterio" @onfocusin="Filtrar" @onfocusout="Filtrar" @onclick="Filtrar" @bind="Criterio" />
         </div>
 
@@ -88,6 +84,10 @@
 
         </ul>
     </nav>
+
+    <div class="col">
+        <button class="btn btn-dark" type="button" @onclick="Saltar">Pag. Siguiente</button>
+    </div>
 
 }
 

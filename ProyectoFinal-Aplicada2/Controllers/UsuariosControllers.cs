@@ -150,6 +150,26 @@ namespace ProyectoFinal_Aplicada2.Controllers
             return paso;
         }
 
+        public bool ExisteUsuario()
+        {
+            bool paso = false;
+            Usuarios usuarios = new Usuarios();
+            Contexto contexto = new Contexto();
+            try
+            {
+               
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+
+
+            return paso;
+        }
+
     }
 
 }
