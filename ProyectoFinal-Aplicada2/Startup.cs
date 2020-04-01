@@ -48,14 +48,17 @@ namespace ProyectoFinal_Aplicada2
             services.AddScoped<HttpClient>();
             services.AddRazorPages();
             services.AddServerSideBlazor();
+            //services.AddAuthorization(options =>
+            //{
+            //    options.AddPolicy("EsAdministrador",)
+            //})
 
             //Controladores de la entidades del proyecto
             services.AddScoped<ProductosControllers>();
             services.AddScoped<ProveedoresControllers>();
             services.AddScoped<ComprasControllers>();
             services.AddScoped<VentasControllers>();
-            services.AddScoped<UsuariosControllers>();
-            
+            services.AddScoped<UsuariosControllers>();         
             services.AddScoped<ClientesControllers>();
             services.AddScoped<PagosControllers>();
             services.AddScoped<CategoriasControllers>();

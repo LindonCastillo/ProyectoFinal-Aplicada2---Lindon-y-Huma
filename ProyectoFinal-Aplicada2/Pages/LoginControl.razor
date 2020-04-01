@@ -30,10 +30,20 @@
 @code {
     string Username = "";
     string Password = "";
+
+
+
+
+
     private string encode(string param)
     {
 
+        if(usuariocontroller.VerificarExistenciaYClaveDelUsuario(Username,Password)==false)
+        {
+            return "No se pude";
+        }
+
+
         return HttpUtility.UrlEncode(param);
-        
     }
 }
