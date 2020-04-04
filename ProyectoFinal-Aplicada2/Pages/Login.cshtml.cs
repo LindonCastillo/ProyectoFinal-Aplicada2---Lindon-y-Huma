@@ -25,12 +25,17 @@ namespace ProyectoFinal_Aplicada2.Pages
         List<Usuarios> ListaUsuarios = new List<Usuarios>();
 
 
-        public async Task<ActionResult> OnGetAsync(string paramUsername, string paramPawoord)
+        public async Task<ActionResult> OnGetAsync(string paramUsername, string paramPassword)
         {
             string ReturnUrl = Url.Content("~/");
             bool paso = false;
             try
             {
+                if (paramUsername == null ||paramPassword == null)
+                {
+                    return LocalRedirect(ReturnUrl);
+                }
+
                 await HttpContext
                     .SignOutAsync(
                     CookieAuthenticationDefaults.AuthenticationScheme);
@@ -44,8 +49,10 @@ namespace ProyectoFinal_Aplicada2.Pages
 
             };
 
+            string User = paramUsername;
+            string Pass = paramPassword;
 
-            paso = UsuariosControllers.VerificarExistenciaYClaveDelUsuario(paramUsername, paramPawoord);
+            paso = UsuariosControllers.VerificarExistenciaYClaveDelUsuario(User, Pass);
 
             //if (!paso)
             //{
