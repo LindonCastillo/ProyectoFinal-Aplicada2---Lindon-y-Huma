@@ -22,7 +22,7 @@
                        placeholder="Password"
                        @bind="@Password" />
                 <a class="ml-md-auto btn btn-primary" 
-                    @onclick="Validando"
+                   href="/login?paramUsername=@encode(@Username)&paramPassword=@encode(@Password)"
                    target="_top">Login</a>
             </NotAuthorized>
         </AuthorizeView>
@@ -32,68 +32,13 @@
     string Username = "";
     string Password = "";
     string ReturnUrl;
+
+    //public string User { get; set; }
+    //public string Pass { get; set; }
+
     private string encode(string param)
     {
 
-        if(Username == "dfgdfg")
-        {
-            navigator.NavigateTo("sdf");
-        }
-
         return HttpUtility.UrlEncode(param);
     }
-
-    private bool Verifica()
-    {
-        bool paso = true;
-
-        paso = usuariocontroller.VerificarExistenciaYClaveDelUsuario(Username, Password);
-
-
-        if(!paso)
-        {
-            paso = false;
-            return paso;
-        }
-        return paso;
-
-    }
-
-    private void Validando()
-    {
-        if(Username=="admin" && Password=="12345")
-        {
-            navigator.NavigateTo("/login?paramUsername=@encode(@Username)&paramPassword=@encode(@Password)");
-        } else
-        {
-            List<Usuarios> ListaUsurios = new List<Usuarios>();
-            ListaUsurios = usuariocontroller.GetList(p => true);
-            if(ListaUsurios.Count == 0)
-            {
-                toastService.ShowError("No hay usuarios creados", "Error!");
-                return;
-            } else
-            {
-                bool paso = false;
-                foreach (var item in ListaUsurios)
-                {
-                    if(item.NombreUsuario == Username && item.Clave == Password)
-                    {
-                        paso = true;
-                        break;
-                    }
-                }
-                if(!paso)
-                {
-                    toastService.ShowError("El nombre o clave son incorrectos", "Error!");
-                    return;
-                } else
-                {
-                     navigator.NavigateTo("/login?paramUsername=@encode(@Username)&paramPassword=@encode(@Password)");
-                }
-            }
-
-        }
-    }
-
 }

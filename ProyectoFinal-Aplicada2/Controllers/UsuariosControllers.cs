@@ -133,67 +133,24 @@ namespace ProyectoFinal_Aplicada2.Controllers
 
             try
             {
-                if(contexto.Usuarios.Any(A=>A.NombreUsuario == NombreUsuario))
+                if(contexto.Usuarios.Any(A=>A.NombreUsuario == NombreUsuario && A.Clave == clave))
                 {
-                    if(contexto.Usuarios.Any(A=>A.Clave == clave))
-                    {
-                        paso = true;
-                    }
-                    
+                    paso = true;
+
                 }
 
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-            return paso;
-        }
-
-        public bool ExisteClave( string clave)
-        {
-            bool paso = false;
-            Usuarios usuarios = new Usuarios();
-            Contexto contexto = new Contexto();
-            try
-            {
-               if(contexto.Usuarios.Any(A=>A.Clave == clave))
+                if(NombreUsuario == "Admin" && clave == "12345")
                 {
                     paso = true;
                 }
+
             }
             catch (Exception)
             {
-
                 throw;
             }
             return paso;
         }
-
-        public string DevolverClave(string nombre)
-        {
-           string regresa = "";
-         
-            Contexto contexto = new Contexto();
-            try
-            {
-
-                int id = 0;
-                id = Convert.ToInt32(nombre);
-                Usuarios usuarios = Buscar(id);
-                regresa = usuarios.Clave;
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-
-            return regresa;
-        }
-
-
-      
 
     }
 
