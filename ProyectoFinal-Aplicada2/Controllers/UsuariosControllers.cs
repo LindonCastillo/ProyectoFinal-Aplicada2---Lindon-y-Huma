@@ -150,14 +150,38 @@ namespace ProyectoFinal_Aplicada2.Controllers
             return paso;
         }
 
-        public bool ExisteUsuario()
+        public bool ExisteClave( string clave)
         {
             bool paso = false;
             Usuarios usuarios = new Usuarios();
             Contexto contexto = new Contexto();
             try
             {
-               
+               if(contexto.Usuarios.Any(A=>A.Clave == clave))
+                {
+                    paso = true;
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            return paso;
+        }
+
+        public string DevolverClave(string nombre)
+        {
+           string regresa = "";
+         
+            Contexto contexto = new Contexto();
+            try
+            {
+
+                int id = 0;
+                id = Convert.ToInt32(nombre);
+                Usuarios usuarios = Buscar(id);
+                regresa = usuarios.Clave;
             }
             catch (Exception)
             {
@@ -165,10 +189,11 @@ namespace ProyectoFinal_Aplicada2.Controllers
                 throw;
             }
 
-
-
-            return paso;
+            return regresa;
         }
+
+
+      
 
     }
 
