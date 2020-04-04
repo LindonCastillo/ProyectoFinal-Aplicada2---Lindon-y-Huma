@@ -11,7 +11,7 @@ namespace ProyectoFinal_Aplicada2.Controllers.Tests
     public class ComprasControllersTests
     {
         [TestMethod()]
-        public void GuardarTest()
+        public void GuardarTest() 
         {
             ComprasControllers controller = new ComprasControllers();
             Compras compras = new Compras();

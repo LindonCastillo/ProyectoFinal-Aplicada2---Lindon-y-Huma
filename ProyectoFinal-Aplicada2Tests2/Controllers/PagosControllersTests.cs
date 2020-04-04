@@ -11,7 +11,7 @@ namespace ProyectoFinal_Aplicada2.Controllers.Tests
     public class PagosControllersTests
     {
         [TestMethod()]
-        public void GuardarTest()
+        public void GuardarTest() 
         {
             PagosControllers controller = new PagosControllers();
             Pagos pagos = new Pagos();
