@@ -19,6 +19,24 @@
                 </div>
             </div>
         </NotAuthorized>
+        <Authorized>
+            @if (!NivelDeUsuario)
+            {
+                <div class="card text-center">
+                    <div class="card-header">
+                        No Autorizado
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Atención</h5>
+                        <p class="card-text">Usted no tiene nivel suficiente para acceder aquí.</p>
+                        <a href="MenuRegistros" class="btn btn-primary">Ir al Menú</a>
+                    </div>
+                    <div class="card-footer text-muted">
+                    </div>
+                </div>
+            }
+
+        </Authorized>
     </AuthorizeView>
 </CascadingAuthenticationState>
 
@@ -32,7 +50,7 @@
         }
 </style>
 
-@if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
+@if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated && NivelDeUsuario == true)
 {
     <h3>Consulta de Usuario</h3>
     <div class="row">
@@ -148,8 +166,10 @@
             .ToList();
     }
 
+    private bool NivelDeUsuario;
     protected override void OnInitialized()
     {
+        NivelDeUsuario = AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Administrador");
         conteo = Contexto.Compras.Count();
         totaldepaginas = Math.Ceiling(conteo / paginacion.CantidadMostrar);
         Lista = usuariocontroller.GetList(p => true);

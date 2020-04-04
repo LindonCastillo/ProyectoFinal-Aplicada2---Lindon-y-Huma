@@ -139,7 +139,7 @@ namespace ProyectoFinal_Aplicada2.Controllers
 
                 }
 
-                if(NombreUsuario == "Admin" && clave == "12345")
+                if(NombreUsuario == "Administrador" && clave == "12345")
                 {
                     paso = true;
                 }
@@ -152,14 +152,14 @@ namespace ProyectoFinal_Aplicada2.Controllers
             return paso;
         }
 
-        public string NivelUsuario(string nivelUsuario)
+        public string NivelUsuario(string Usuario)
         {
 
             string nivel = "Cajero";
             Contexto db = new Contexto();
             try
             {
-                nivel = db.Usuarios.Where(A => A.Equals(nivelUsuario)).Select(A => A.Clave).FirstOrDefault();
+                nivel = db.Usuarios.Where(A => A.NombreUsuario.Equals(Usuario)).Select(A => A.NivelUsuario).FirstOrDefault();
             }
             catch (Exception)
             {

@@ -19,6 +19,24 @@
                 </div>
             </div>
         </NotAuthorized>
+        <Authorized>
+            @if (NivelDeUsuario)
+            {
+                <div class="card text-center">
+                    <div class="card-header">
+                        No Autorizado
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Atención</h5>
+                        <p class="card-text">Usted no tiene nivel suficiente para acceder aquí.</p>
+                        <a href="MenuRegistros" class="btn btn-primary">Ir al Menú</a>
+                    </div>
+                    <div class="card-footer text-muted">
+                    </div>
+                </div>
+            }
+
+        </Authorized>
     </AuthorizeView>
 </CascadingAuthenticationState>
 
@@ -31,7 +49,7 @@
         }
 </style>
 
-@if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
+@if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated && NivelDeUsuario == false)
 {
     <h3>Consulta de Pagos</h3>
     <div class="form-row">
@@ -117,9 +135,10 @@
     [Parameter]
     public int I { get; set; }
 
+    private bool NivelDeUsuario;
     protected override void OnInitialized()
     {
-
+        NivelDeUsuario = AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Cajero");
         conteo = contexto.Pagos.Count();
         totaldepaginas = Math.Ceiling(conteo / paginacion.CantidadMostrar);
         Lista = pagoscontroller.GetList(A => true);

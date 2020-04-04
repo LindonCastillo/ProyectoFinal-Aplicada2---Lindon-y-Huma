@@ -68,11 +68,6 @@
             </div>
             
                
-          
-
-
-
-
             <div class="form-group">
                 <label for="Nombres">Nombres</label>
                 <InputText @bind-Value="clientes.Nombres" class="form-control" placeholder="Nombres aquí"></InputText>
@@ -122,6 +117,7 @@
             {
                 clientes = clientescontollers.Buscar(Id);
             }
+            
         }
 
         private void Guardar()

@@ -25,7 +25,18 @@
         <Authorized>
             @if (!NivelDeUsuario)
             {
-               <p class="text-center">No tienes el nivel de usuario suficiente</p>
+                <div class="card text-center">
+                    <div class="card-header">
+                        No Autorizado
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Atención</h5>
+                        <p class="card-text">Usted no tiene nivel suficiente para acceder aquí.</p>
+                        <a href="MenuRegistros" class="btn btn-primary">Ir al Menú</a>
+                    </div>
+                    <div class="card-footer text-muted">
+                    </div>
+                </div>
             }
 
         </Authorized>
@@ -57,7 +68,7 @@
     }
 </style>
 
-@if(AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
+@if(AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated && NivelDeUsuario == true)
 {
     <section class="form-register">
         <h3>Usuarios</h3>
