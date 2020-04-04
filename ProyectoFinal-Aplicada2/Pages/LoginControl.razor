@@ -34,12 +34,6 @@
     string ReturnUrl;
     private string encode(string param)
     {
-
-        if(Username == "dfgdfg")
-        {
-            navigator.NavigateTo("sdf");
-        }
-
         return HttpUtility.UrlEncode(param);
     }
 
@@ -61,6 +55,7 @@
 
     private void Validando()
     {
+
         if(Username=="admin" && Password=="12345")
         {
             navigator.NavigateTo("/login?paramUsername=@encode(@Username)&paramPassword=@encode(@Password)");

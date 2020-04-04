@@ -34,9 +34,6 @@ namespace ProyectoFinal_Aplicada2.Pages
                 await HttpContext
                     .SignOutAsync(
                     CookieAuthenticationDefaults.AuthenticationScheme);
-
-           
-
             }
             catch
             {   }
@@ -50,10 +47,10 @@ namespace ProyectoFinal_Aplicada2.Pages
 
             paso = UsuariosControllers.VerificarExistenciaYClaveDelUsuario(paramUsername, paramPawoord);
 
-            if (!paso)
-            {
-                return LocalRedirect(ReturnUrl);
-            }
+            //if (!paso)
+            //{
+            //    return LocalRedirect(ReturnUrl);
+            //}
 
 
             var claimsIdentity = new ClaimsIdentity(
