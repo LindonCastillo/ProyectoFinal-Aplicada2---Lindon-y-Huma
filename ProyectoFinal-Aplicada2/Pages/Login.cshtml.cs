@@ -45,7 +45,7 @@ namespace ProyectoFinal_Aplicada2.Pages
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, paramUsername),
-                new Claim(ClaimTypes.Role, "Administrator"),
+                new Claim(ClaimTypes.Role, UsuariosControllers.NivelUsuario(paramUsername)),
 
             };
 
@@ -54,10 +54,10 @@ namespace ProyectoFinal_Aplicada2.Pages
 
             paso = UsuariosControllers.VerificarExistenciaYClaveDelUsuario(User, Pass);
 
-            //if (!paso)
-            //{
-            //    return LocalRedirect(ReturnUrl);
-            //}
+            if (!paso)
+            {
+                return LocalRedirect(ReturnUrl);
+            }
 
 
             var claimsIdentity = new ClaimsIdentity(

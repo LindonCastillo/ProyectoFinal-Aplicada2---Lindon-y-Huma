@@ -5,6 +5,8 @@
 
 <CascadingAuthenticationState>
     <AuthorizeView>
+
+       
         <NotAuthorized>
             <div class="card text-center">
                 <div class="card-header">
@@ -19,6 +21,14 @@
                 </div>
             </div>
         </NotAuthorized>
+
+        <Authorized>
+            @if (!NivelDeUsuario)
+            {
+               <p class="text-center">No tienes el nivel de usuario suficiente</p>
+            }
+
+        </Authorized>
     </AuthorizeView>
 </CascadingAuthenticationState>
 
@@ -130,6 +140,8 @@
     [Parameter]
     public int Id { get; set; }
 
+    private bool NivelDeUsuario;
+
     Usuarios usuarios = new Usuarios();
 
     protected override void OnInitialized()
@@ -140,6 +152,7 @@
         {
             usuarios = controller.Buscar(Id);
         }
+        NivelDeUsuario = AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Administrador");
     }
 
     public string Encriptar(string cadenaEncriptada)

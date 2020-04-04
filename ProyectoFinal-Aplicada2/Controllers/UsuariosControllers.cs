@@ -152,6 +152,24 @@ namespace ProyectoFinal_Aplicada2.Controllers
             return paso;
         }
 
+        public string NivelUsuario(string nivelUsuario)
+        {
+
+            string nivel = "Cajero";
+            Contexto db = new Contexto();
+            try
+            {
+                nivel = db.Usuarios.Where(A => A.Equals(nivelUsuario)).Select(A => A.Clave).FirstOrDefault();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return nivel;
+        }
+
     }
 
 }
