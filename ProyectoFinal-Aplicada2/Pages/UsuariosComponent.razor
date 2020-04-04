@@ -57,7 +57,7 @@
     }
 </style>
 
-@if(AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated)
+@if(AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated&&NivelDeUsuario)
 {
     <section class="form-register">
         <h3>Usuarios</h3>
