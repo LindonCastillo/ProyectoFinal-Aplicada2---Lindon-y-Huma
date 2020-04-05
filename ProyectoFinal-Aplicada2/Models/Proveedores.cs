@@ -19,7 +19,7 @@ namespace ProyectoFinal_Aplicada2.Models
         [Required(ErrorMessage = "El campo telefono no puede estar vacío")]
         [MaxLength(10,ErrorMessage ="El campo teléfono no tiene más de diez dígitos")]
         [MinLength(10,ErrorMessage ="El campo teléfono no puede tener menos de diez dígitos")]
-        [RegularExpression("^(?!0+$)(\\+\\d{1,3}[- ]?)?(?!0+$)\\d{10,15}$", ErrorMessage = "Por favor ingrese un No. de teléfono valido")]
+        [RegularExpression("^(?!0+$)(\\+\\d{1,3}[- ]?)?(?!0+$)\\d{10,15}$", ErrorMessage = "Por favor ingrese un No. de teléfono válido")]
 
         public string Telefono { get; set; }
 

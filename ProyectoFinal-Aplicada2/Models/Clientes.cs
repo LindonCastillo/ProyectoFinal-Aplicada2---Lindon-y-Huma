@@ -21,7 +21,7 @@ namespace ProyectoFinal_Aplicada2.Models
         [MaxLength(50, ErrorMessage = "Apellido muy largo")]
         public string Apellidos { get; set; }
 
-      
+        [Required(ErrorMessage = "El campo Número no puede estar vacío")]
         [RegularExpression("^(?!0+$)(\\+\\d{1,3}[- ]?)?(?!0+$)\\d{10,15}$", ErrorMessage = "Por favor ingrese un No. de teléfono válido")]
         [MaxLength(10, ErrorMessage = "El campo teléfono no tiene más de diez dígitos")]
         [MinLength(10, ErrorMessage = "El campo teléfono no puede tener menos de diez dígitos")]

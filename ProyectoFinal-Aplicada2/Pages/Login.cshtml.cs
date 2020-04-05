@@ -35,7 +35,13 @@ namespace ProyectoFinal_Aplicada2.Pages
                 await HttpContext
                     .SignOutAsync(
                     CookieAuthenticationDefaults.AuthenticationScheme);
+
+                if (paramUsername == null || paramPassword == null)
+                {
+                    return LocalRedirect(ReturnUrl);
+                }
             }
+
             catch
             {   }
             var claims = new List<Claim>
