@@ -17,6 +17,7 @@ namespace ProyectoFinal_Aplicada2.Models
         [MaxLength(50, ErrorMessage = "Nombre Persona muy largo")]
         public string NombrePersona { get; set; }
         [Required(ErrorMessage = "El Email Usuario no puede estar vacío")]
+        [EmailAddress(ErrorMessage = "Email inválido")]
         public string EmailUsuario { get; set; }
      
         [Required(ErrorMessage ="El nombre de usuario no puede estar vacio")]
