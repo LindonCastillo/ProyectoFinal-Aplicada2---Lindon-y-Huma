@@ -31,15 +31,10 @@ namespace ProyectoFinal_Aplicada2.Pages
             bool paso = false;
             try
             {
-               
+
                 await HttpContext
                     .SignOutAsync(
                     CookieAuthenticationDefaults.AuthenticationScheme);
-
-                if (paramUsername == null || paramPassword == null)
-                {
-                    return LocalRedirect(ReturnUrl);
-                }
             }
 
             catch
