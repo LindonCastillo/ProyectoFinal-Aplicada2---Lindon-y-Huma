@@ -31,15 +31,17 @@ namespace ProyectoFinal_Aplicada2.Pages
             bool paso = false;
             try
             {
-                if (paramUsername == null ||paramPassword == null)
-                {
-                    return LocalRedirect(ReturnUrl);
-                }
-
+               
                 await HttpContext
                     .SignOutAsync(
                     CookieAuthenticationDefaults.AuthenticationScheme);
+
+                if (paramUsername == null || paramPassword == null)
+                {
+                    return LocalRedirect(ReturnUrl);
+                }
             }
+
             catch
             {   }
             var claims = new List<Claim>
@@ -48,6 +50,10 @@ namespace ProyectoFinal_Aplicada2.Pages
                 new Claim(ClaimTypes.Role, UsuariosControllers.NivelUsuario(paramUsername)),
 
             };
+            if (paramUsername == null || paramPassword == null)
+            {
+                return LocalRedirect(ReturnUrl);
+            }
 
             string User = paramUsername;
             string Pass = paramPassword;
