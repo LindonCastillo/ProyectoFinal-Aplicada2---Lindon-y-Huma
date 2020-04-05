@@ -72,6 +72,7 @@
 <section class="form-register">
     <h3>Categorias</h3>
     <EditForm Model="@categoria" OnValidSubmit="Guardar">
+        <DataAnnotationsValidator/>
         <label for="Id">CategoriaId</label>
             <div class="input-group">
                 <InputNumber @bind-Value="categoria.CategoriaId" class="form-control"></InputNumber>

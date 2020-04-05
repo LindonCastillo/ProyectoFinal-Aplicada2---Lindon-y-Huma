@@ -139,7 +139,7 @@
             <div class="col">
                 <label for="PrecioCompra">Precio de compra</label>
                 <div class="input-group">
-                    <InputNumber @bind-Value="productos.PrecioCompra" class="form-control"></InputNumber>
+                    <InputNumber @bind-Value="productos.PrecioCompra" ReadOnly="true" class="form-control"></InputNumber>
                     <div class="input-group-append">
                         <button class="btn btn-info" @onclick="AgregarProducto" type="button">Agregar</button>
                         <div />
@@ -150,38 +150,41 @@
             </div>
         </div>
         <br />
-
-        <table class="table">
-            <thead class="thead-dark">
-                <tr>
-                    <th>Id</th>
-                    <th>CompraId</th>
-                    <th>ProductoId</th>
-                    <th>Nombre</th>
-                    <th>Cantidad</th>
-                    <th>Precio de Compra</th>
-                    <th>SubTotal</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody class="bg-white">
-                @foreach (var item in compras.ComprasDetalles)
-                {
+        
+        <div class="table-responsive text-nowrap">
+            <table class="table table-striped">
+                <thead class="thead-dark">
                     <tr>
-                        <td>@item.Id</td>
-                        <td>@item.CompraId</td>
-                        <td>@item.ProductoId</td>
-                        <td>@item.Nombre</td>
-                        <td>@item.Cantidad</td>
-                        <td>@item.PrecioCompra</td>
-                        <td>@item.SubTotal</td>
-                        <td><button class="btn btn-outline-danger" @onclick="(() => EliminarDetalle(item))" type="button">Remover</button></td>
+                        <th>Id</th>
+                        <th>CompraId</th>
+                        <th>ProductoId</th>
+                        <th>Nombre</th>
+                        <th>Cantidad</th>
+                        <th>Precio de Compra</th>
+                        <th>SubTotal</th>
+                        <th></th>
                     </tr>
-                }
+                </thead>
+                <tbody class="bg-white">
+                    @foreach (var item in compras.ComprasDetalles)
+                    {
+                        <tr>
+                            <td>@item.Id</td>
+                            <td>@item.CompraId</td>
+                            <td>@item.ProductoId</td>
+                            <td>@item.Nombre</td>
+                            <td>@item.Cantidad</td>
+                            <td>@item.PrecioCompra</td>
+                            <td>@item.SubTotal</td>
+                            <td><button class="btn btn-outline-danger" @onclick="(() => EliminarDetalle(item))" type="button">Remover</button></td>
+                        </tr>
+                    }
 
-            </tbody>
+                </tbody>
 
-        </table>
+            </table>
+        </div>
+
 
         <div class="form-group">
             <label for="Total">Total</label>
