@@ -245,6 +245,20 @@
         productos.PrecioCompra = 0;
     }
 
+    public bool ExisteEnLaBaseDeDatos(int id)
+    {
+        Contexto db = new Contexto();
+        var buscado = db.Compras.Find(id);
+        bool paso = true;
+
+        if (buscado == null)
+        {
+            paso = false;
+        }
+
+        return paso;
+    }
+
     private void Guardar()
     {
         if (compras.ComprasDetalles == null)
@@ -268,11 +282,19 @@
         {
             if (compras.CompraId > 0)
             {
-                comprascontroller.Guardar(compras);
-                toastService.ShowSuccess("Se ha modifcado la compra correctamente", "Modificado!");
-                cantidad = 0;
-                ProductoId = string.Empty;
-                this.compras = new Compras();
+                if (ExisteEnLaBaseDeDatos(compras.CompraId))
+                {
+                    comprascontroller.Guardar(compras);
+                    toastService.ShowSuccess("Se ha modifcado la compra correctamente", "Modificado!");
+                    cantidad = 0;
+                    ProductoId = string.Empty;
+                    this.compras = new Compras();
+                }
+                else
+                {
+                    toastService.ShowError("No se puede modificar una compra que no existe", "No Existe!");
+                }
+
             }
             else if (compras.CompraId == 0)
             {
@@ -286,7 +308,9 @@
             {
                 toastService.ShowError("No se ha podido guardar", "Error!");
             }
+
         }
+
     }
 
     private void Eliminar()

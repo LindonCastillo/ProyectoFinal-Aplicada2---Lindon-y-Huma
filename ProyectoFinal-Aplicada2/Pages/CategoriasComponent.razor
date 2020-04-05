@@ -116,13 +116,35 @@
         NivelDeUsuario = AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Cajero");
     }
 
+    public bool ExisteEnLaBaseDeDatos(int id)
+    {
+        Contexto db = new Contexto();
+        var buscado = db.Categorias.Find(id);
+        bool paso = true;
+
+        if (buscado == null)
+        {
+            paso = false;
+        }
+
+        return paso;
+    }
+
     private void Guardar()
     {
         if (categoria.CategoriaId > 0)
         {
-            categoriascontrollers.Guardar(categoria);
-            toastService.ShowSuccess("Has modificado exitosamente", "Modificado!");
-            Nuevo();
+            if (ExisteEnLaBaseDeDatos(categoria.CategoriaId))
+            {
+                categoriascontrollers.Guardar(categoria);
+                toastService.ShowSuccess("Has modificado exitosamente", "Modificado!");
+                Nuevo();
+            }
+            else
+            {
+                toastService.ShowError("No se puede modificar una categoria que no existe", "No Existe!");
+            }
+
         }
         else if (categoria.CategoriaId == 0)
         {

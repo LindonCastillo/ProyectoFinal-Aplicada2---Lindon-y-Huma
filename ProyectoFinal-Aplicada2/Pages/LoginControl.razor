@@ -15,11 +15,11 @@
         </Authorized>
         <NotAuthorized>
             <input type="text"
-                   placeholder="User Name"
+                   placeholder="Usuario"
                    @bind="@Username" />
             &nbsp;&nbsp;
             <input type="password"
-                   placeholder="Password"
+                   placeholder="Clave"
                    @bind="@Password" />
             <a class="ml-md-auto btn btn-primary"
                href="/login?paramUsername=@encode(@Username)&paramPassword=@encode(@Password)"

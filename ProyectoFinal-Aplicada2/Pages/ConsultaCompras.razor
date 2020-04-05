@@ -77,7 +77,6 @@
                 <option value="0">Todos</option>
                 <option value="1">Id</option>
                 <option value="2">ProveedorId</option>
-                <option value="3">Itbis</option>
                 <option value="4">Balance</option>
                 <option value="5">Descripción</option>
             </select>
@@ -98,7 +97,6 @@
                     <th>Id</th>
                     <th>Fecha de compra</th>
                     <th>Nombre de Proveedor</th>
-                    <th>Itbis</th>
                     <th>Descripción</th>
                     <th>Balance</th>
                     <th></th>
@@ -111,7 +109,6 @@
                         <td>@item.CompraId</td>
                         <td>@item.FechaCompra.ToString("dd/MM/yyyy")</td>
                         <td>@item.NombreProveedor</td>
-                        <td>@item.Itbis</td>
                         <td>@item.DescripcionCompra</td>
                         <td>@item.Balance</td>
                         <td><a class="btn btn-outline-info" href="Compras/@item.CompraId">Ver</a></td>
@@ -246,16 +243,6 @@
                         listado = comprascontroller.GetList(p => p.NombreProveedor == NombreProv);
                         Lista = listado;
 
-                        break;
-                    //Itbis
-                    case 3:
-                        decimal Itbis = 0;
-                        if (decimal.TryParse(Criterio, out Itbis))
-                        {
-                            Itbis = Convert.ToDecimal(Criterio);
-                            listado = comprascontroller.GetList(p => p.Itbis == Itbis);
-                            Lista = listado;
-                        }
                         break;
                     //Balance
                     case 4:

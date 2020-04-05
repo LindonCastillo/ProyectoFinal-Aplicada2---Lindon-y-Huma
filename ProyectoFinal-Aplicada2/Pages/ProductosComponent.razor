@@ -169,13 +169,35 @@
         this.productos = new Productos();
     }
 
+    public bool ExisteEnLaBaseDeDatos(int id)
+    {
+        Contexto db = new Contexto();
+        var buscado = db.Productos.Find(id);
+        bool paso = true;
+
+        if (buscado == null)
+        {
+
+            paso = false;
+        }
+
+        return paso;
+    }
+
     private void Guardar()
     {
         if (productos.ProductoId > 0)
         {
-            productoscontrollers.Guardar(productos);
-            toastService.ShowSuccess("Has modificado el producto exitosamente", "Modificado!");
-            this.productos = new Productos();
+            if (ExisteEnLaBaseDeDatos(productos.ProductoId))
+            {
+                productoscontrollers.Guardar(productos);
+                toastService.ShowSuccess("Has modificado el producto exitosamente", "Modificado!");
+                this.productos = new Productos();
+            }
+            else
+            {
+                toastService.ShowError("No se puede modificar un producto que no existe", "No Existe!");
+            }
 
         }
         else if (productos.ProductoId == 0)

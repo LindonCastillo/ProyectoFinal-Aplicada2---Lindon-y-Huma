@@ -209,6 +209,20 @@
 
     }
 
+    public bool ExisteEnLaBaseDeDatos(int id)
+    {
+        Contexto db = new Contexto();
+        var buscado = db.Pagos.Find(id);
+        bool paso = true;
+
+        if (buscado == null)
+        {
+            paso = false;
+        }
+
+        return paso;
+    }
+
     private void Guardar()
     {
         if (pagos.PagosDetalles == null)
@@ -225,9 +239,17 @@
 
         if (pagos.PagoId > 0)
         {
-            pagoscontroller.Guardar(pagos);
-            toastService.ShowSuccess("Has modificado el pago exitosamente", "Modificado!");
-            Nuevo();
+            if (ExisteEnLaBaseDeDatos(pagos.PagoId))
+            {
+                pagoscontroller.Guardar(pagos);
+                toastService.ShowSuccess("Has modificado el pago exitosamente", "Modificado!");
+                Nuevo();
+            }
+            else
+            {
+                toastService.ShowError("No se puede modificar un pago que no existe", "No Existe!");
+            }
+
         }
         else if (pagos.PagoId == 0)
         {
