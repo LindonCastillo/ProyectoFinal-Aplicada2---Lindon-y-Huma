@@ -76,7 +76,7 @@ En la consulta de Compras se verán todos los registros creados de la entidad de
 ![Captura - Consulta de Compras](https://user-images.githubusercontent.com/50345256/78574161-9ba30100-77f7-11ea-9f35-01fb91684b79.PNG)
 
 ### Clientes
-![Captura - Registro de Clientes](https://user-images.githubusercontent.com/50345256/78520898-1f2c0600-7796-11ea-8a98-5a6a35b0e367.PNG)
+![Captura - Consulta de Clientes](https://user-images.githubusercontent.com/50345256/78574449-048a7900-77f8-11ea-841c-bc1f071dddb6.PNG)
 
 ### Ventas
 En la consulta de Ventas se verán todos los registros creados de la entidad de Ventas. 
@@ -90,6 +90,8 @@ En la consulta de Pagos se verán todos los registros creados de la entidad de P
 	Visual Studio - Utilando la herramienta (Blazor App)
 
 	SQLite y SQL Server
+
+ Azure - App Service
 
 	Google Chrome
 
