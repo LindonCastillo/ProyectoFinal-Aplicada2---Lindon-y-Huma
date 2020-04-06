@@ -44,6 +44,7 @@ El registro de Compras representa la adquisición de bienes a la empresa.
 
 
 ### Clientes
+El registro de Clientes representa la adquisición de nuevos Clientes al sistema informático de COOASAR.
 ![Captura - Registro de Clientes 2](https://user-images.githubusercontent.com/50345256/78521346-87c7b280-7797-11ea-9342-b75575b2db88.PNG)
 
 ### Ventas
@@ -60,33 +61,35 @@ El registro de Pagos representa la redención de aquellas compras que hayamos he
 En este apartado el sistema ofrece la facilidad de consultar (dependiendo del nivel de usuario) los registros creados de cada una de las entidades existentes. Asimismo, para la comodidad del usuario todas las consultas paginan, así como tambien se puede filtrar por el campo especificado que el usuario desee. Además de lo anterior, por cada registro hecho, se ofrece la operatividad de ir al formulario de cada registro hecho, esto con el botón "Ver".
 
 ### Categorías
+En la consulta de Categorías se verán o mostrarán todos los registros creados de la entidad de Categorías. 
 ![Captura - Consulta de Categorias](https://user-images.githubusercontent.com/50345256/78520911-22bf8d00-7796-11ea-829a-9ec9f7bc5363.PNG)
 
 ### Usuarios
-En la consulta de Usuarios se verán todos los registros creados de la entidad de Usuarios. 
+En la consulta de Usuarios se verán o mostrarán todos los registros creados de la entidad de Usuarios. 
 ![Captura - Consulta de Usuarios](https://user-images.githubusercontent.com/50345256/78521259-4d5e1580-7797-11ea-9060-cfaa3e6a24ec.PNG)
 
 ### Productos
-En la consulta de Productos se verán todos los registros creados de la entidad de Productos. 
+En la consulta de Productos se verán o mostrarán todos los registros creados de la entidad de Productos. 
 ![Captura - Consulta de Productos](https://user-images.githubusercontent.com/50345256/78521255-4b945200-7797-11ea-847b-97a54e2e675c.PNG)
 
 ### Proveedores
-En la consulta de Proveedores se verán todos los registros creados de la entidad de Proveedores. 
+En la consulta de Proveedores se verán o mostrarán todos los registros creados de la entidad de Proveedores. 
 ![Captura - Consulta de Proveedores](https://user-images.githubusercontent.com/50345256/78521256-4c2ce880-7797-11ea-87c4-f81e843dae5e.PNG)
 
 ### Compras
-En la consulta de Compras se verán todos los registros creados de la entidad de Compras. 
+En la consulta de Compras se verán o mostrarán todos los registros creados de la entidad de Compras. 
 ![Captura - Consulta de Compras](https://user-images.githubusercontent.com/50345256/78574161-9ba30100-77f7-11ea-9f35-01fb91684b79.PNG)
 
 ### Clientes
+En la consulta de Clientes se verán o mostrarán todos los registros de la entidad de Clientes.
 ![Captura - Consulta de Clientes](https://user-images.githubusercontent.com/50345256/78574449-048a7900-77f8-11ea-841c-bc1f071dddb6.PNG)
 
 ### Ventas
-En la consulta de Ventas se verán todos los registros creados de la entidad de Ventas. 
+En la consulta de Ventas se verán o mostrarán todos los registros creados de la entidad de Ventas. 
 ![Captura - Consulta de Ventas](https://user-images.githubusercontent.com/50345256/78575436-5a135580-77f9-11ea-8717-656b5daf3d18.PNG)
 
 ### Pagos
-En la consulta de Pagos se verán todos los registros creados de la entidad de Pagos. 
+En la consulta de Pagos se verán o mostrarán todos los registros creados de la entidad de Pagos. 
 ![Captura - Consulta de Pagos](https://user-images.githubusercontent.com/50345256/78575431-57186500-77f9-11ea-9c15-40279f71a979.PNG)
 
 ## Construido con 🛠️
