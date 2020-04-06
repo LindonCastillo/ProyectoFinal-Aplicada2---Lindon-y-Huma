@@ -19,7 +19,7 @@ En caso de intentar entrar a un registro sin estar loguedo o sin los permiso pre
 En este sistema se implementarion los registros de Usuarios, Productos, Proveedores, Compras, Ventas y Pagos, descristos a contuniación.
 
 ### Categorías
-![Captura - Consulta de Categorias](https://user-images.githubusercontent.com/50345256/78520911-22bf8d00-7796-11ea-829a-9ec9f7bc5363.PNG)
+![Captura - Registro de Categorias](https://user-images.githubusercontent.com/50345256/78521107-cb6dec80-7796-11ea-9cc4-3473505f0ed2.PNG)
 
 ### Usuarios
 El registro de Usuarios conHsiste en crear, modificar, eliminar y leer Usuarios. En este sistema se maneja tres tipos de Usuarios, que son Administrador, Cajero y Contador. El Administrador es el tipo de usuario que posee los mayores privilegios, este tiene acceso a todos los registros y consultas que ofrece el sistema. El Contador tiene acceso a todos los registros y consultas, excepto a al Registro de Usuarios. Por último, el cajero tendrá acceso al registro y consulta de Productos, Proveedores y Ventas.
@@ -37,6 +37,7 @@ El registro de Proveedores se encarga de Introducir todos aquellos suplidores co
  
 ### Compras
 El registro de Compras representa la adquisición de bienes a la empresa.
+
 ![Captura - Registro de Compras (Detalle)](https://user-images.githubusercontent.com/50345256/78520899-1fc49c80-7796-11ea-8a27-16efd26b07c4.PNG)
 
 ### Ventas
@@ -51,6 +52,10 @@ El registro de Pagos representa la redención de aquellas compras que hayamos he
 
 ## Consultas:
 En este apartado el sistema ofrece la facilidad de consultar (dependiendo del nivel de usuario) los registros creados de cada una de las entidades existentes. Asimismo, para la comodidad del usuario todas las consultas paginan, así como tambien se puede filtrar por el campo especificado que el usuario desee. Además de lo anterior, por cada registro hecho, se ofrece la operatividad de ir al formulario de cada registro hecho, esto con el botón "Ver".
+
+### Categorías
+![Captura - Consulta de Categorias](https://user-images.githubusercontent.com/50345256/78520911-22bf8d00-7796-11ea-829a-9ec9f7bc5363.PNG)
+
 ### Usuarios
 En la consulta de Usuarios se verán todos los registros creados de la entidad de Usuarios. 
 ![Captura - Consulta de Usuarios](https://user-images.githubusercontent.com/50345256/77363801-bec6ae80-6d29-11ea-8800-3fc7d4a4df27.PNG)
