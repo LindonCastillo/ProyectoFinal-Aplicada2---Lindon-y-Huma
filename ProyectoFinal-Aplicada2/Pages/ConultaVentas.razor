@@ -192,7 +192,7 @@
                 {
                     //Todos
                     case 0:
-                        conteo = Contexto.Compras.Count();
+                        conteo = Contexto.Ventas.Count();
                         totaldepaginas = Math.Ceiling(conteo / paginacion.CantidadMostrar);
                         Lista = ventascontroller.GetList(p => true);
                         this.Lista = Contexto.Ventas.Take(paginacion.CantidadMostrar).ToList();
