@@ -102,6 +102,8 @@
     </section>
 
 }
+<br />
+<br />
 
 
     @code {
@@ -117,16 +119,36 @@
             {
                 clientes = clientescontollers.Buscar(Id);
             }
-            
+
         }
 
+        public bool ExisteEnLaBaseDeDatos(int id)
+        {
+            Contexto db = new Contexto();
+            var buscado = db.Clientes.Find(id);
+            bool paso = true;
+
+            if (buscado == null)
+            {
+                paso = false;
+            }
+
+            return paso;
+        }
         private void Guardar()
         {
             if (clientes.ClienteId > 0)
             {
-                clientescontollers.Guardar(clientes);
-                toastService.ShowSuccess("Has modificado el cliente exitosamente", "Modificado!");
-                Nuevo();
+                if (ExisteEnLaBaseDeDatos(clientes.ClienteId))
+                {
+                    clientescontollers.Guardar(clientes);
+                    toastService.ShowSuccess("Has modificado el cliente exitosamente", "Modificado!");
+                    Nuevo();
+                }
+                else
+                {
+                    toastService.ShowError("No se puede modificar un cliente que no existe", "No Existe!");
+                }
             }
             else if (clientes.ClienteId == 0)
             {

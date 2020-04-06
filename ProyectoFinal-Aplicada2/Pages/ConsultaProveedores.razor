@@ -40,7 +40,7 @@
         </div>
 
         <div class="col">
-            <select class="form-control" @onclick="Filtrar" @bind="filtro">
+            <select class="form-control" @onclick="Filtrar" @onfocusin="Filtrar" @onfocusout="Filtrar" @bind="filtro">
                 <option value="0">Todos</option>
                 <option value="1">Id</option>
                 <option value="2">Nombre Proveedor</option>
@@ -110,7 +110,7 @@
 
     protected override void OnInitialized()
     {
-        conteo = Contexto.Compras.Count();
+        conteo = Contexto.Proveedores.Count();
         totaldepaginas = Math.Ceiling(conteo / paginacion.CantidadMostrar);
         Lista = proveedorescontrollers.GetList(p => true);
         this.Lista = Contexto.Proveedores.Take(paginacion.CantidadMostrar).ToList();
@@ -170,7 +170,7 @@
                 {
                     //Todos
                     case 0:
-                        conteo = Contexto.Compras.Count();
+                        conteo = Contexto.Proveedores.Count();
                         totaldepaginas = Math.Ceiling(conteo / paginacion.CantidadMostrar);
                         Lista = proveedorescontrollers.GetList(p => true);
                         this.Lista = Contexto.Proveedores.Take(paginacion.CantidadMostrar).ToList();
@@ -189,26 +189,32 @@
                     //Nombre
                     case 2:
                         listado = proveedorescontrollers.GetList(p => p.NombreProveedor.Contains(Criterio));
+                        Lista = listado;
                         break;
                     //Telefono
                     case 3:
                         listado = proveedorescontrollers.GetList(p => p.Telefono.Contains(Criterio));
+                        Lista = listado;
                         break;
                     //Direccion
                     case 4:
                         listado = proveedorescontrollers.GetList(p => p.Direcciones.Contains(Criterio));
+                        Lista = listado;
                         break;
                     //RNC
                     case 5:
                         listado = proveedorescontrollers.GetList(p => p.RNC.Contains(Criterio));
+                        Lista = listado;
                         break;
                     //TipoNegocio
                     case 6:
                         listado = proveedorescontrollers.GetList(p => p.TipoNegocio.Contains(Criterio));
+                        Lista = listado;
                         break;
                     //TipoMoneda
                     case 7:
                         listado = proveedorescontrollers.GetList(p => p.TipoMoneda.Contains(Criterio));
+                        Lista = listado;
                         break;
                 }
             }

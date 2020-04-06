@@ -198,15 +198,37 @@
     private bool NivelDeUsuario;
     protected override void OnInitialized()
     {
-        if (Id > 0)
+        try
         {
-            pagos = pagoscontroller.Buscar(Id);
+            if (Id > 0)
+            {
+                pagos = pagoscontroller.Buscar(Id);
+            }
+            ListaCompras = comprascontroller.GetList(p => true);
+            NivelDeUsuario = AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Cajero");
+            compras = new Compras();
+
         }
-        ListaCompras = comprascontroller.GetList(p => true);
-        NivelDeUsuario = AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Cajero");
-        compras = new Compras();
+        catch (Exception)
+        {
 
+            toastService.ShowWarning("No hay ninguna Compra agregada", "No hay Compras!");
+        }
 
+    }
+
+    public bool ExisteEnLaBaseDeDatos(int id)
+    {
+        Contexto db = new Contexto();
+        var buscado = db.Pagos.Find(id);
+        bool paso = true;
+
+        if (buscado == null)
+        {
+            paso = false;
+        }
+
+        return paso;
     }
 
     private void Guardar()
@@ -225,9 +247,17 @@
 
         if (pagos.PagoId > 0)
         {
-            pagoscontroller.Guardar(pagos);
-            toastService.ShowSuccess("Has modificado el pago exitosamente", "Modificado!");
-            Nuevo();
+            if (ExisteEnLaBaseDeDatos(pagos.PagoId))
+            {
+                pagoscontroller.Guardar(pagos);
+                toastService.ShowSuccess("Has modificado el pago exitosamente", "Modificado!");
+                Nuevo();
+            }
+            else
+            {
+                toastService.ShowError("No se puede modificar un pago que no existe", "No Existe!");
+            }
+
         }
         else if (pagos.PagoId == 0)
         {
@@ -301,12 +331,6 @@
         if (Pago < 1)
         {
             toastService.ShowWarning("El pago debe ser mayor que cero", "Error");
-            paso = false;
-        }
-
-        if (string.IsNullOrEmpty(TipoPago))
-        {
-            toastService.ShowWarning("El tipo de pago es igual a cero", "Tipo pago vacío");
             paso = false;
         }
 

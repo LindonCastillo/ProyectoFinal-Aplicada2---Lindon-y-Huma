@@ -203,7 +203,8 @@
  </section>
 }
 
-
+<br />
+<br />
 
 @code {
 
@@ -226,15 +227,24 @@
     private bool NivelDeUsuario;
     protected override void OnInitialized()
     {
-        if (Id > 0)
+        try
         {
-            compras = comprascontroller.Buscar(Id);
+            if (Id > 0)
+            {
+                compras = comprascontroller.Buscar(Id);
+            }
+
+            NivelDeUsuario = AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Cajero");
+            listaProductos = productoscontrollers.GetList(p => true);
+            ProveedorLista = proveedorescontrollers.GetList(p => true);
+            productos = new Productos();
+        }
+        catch (Exception)
+        {
+
+            toastService.ShowWarning("No hay ningún Proveedor o Producto agregado", "No hay Porveedores o Productos!");
         }
 
-        NivelDeUsuario = AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Cajero");
-        listaProductos = productoscontrollers.GetList(p => true);
-        ProveedorLista = proveedorescontrollers.GetList(p => true);
-        productos = new Productos();
     }
 
     private void Nuevo()
@@ -243,6 +253,37 @@
         ProductoId = string.Empty;
         cantidad = 0;
         productos.PrecioCompra = 0;
+    }
+
+    public bool ExistenPagos()
+    {
+        bool paso = false;
+        List<PagosDetalle> listapagos = new List<PagosDetalle>();
+        listapagos = pagoscontroller.GetListPagos(D => true);
+        foreach (var item in listapagos)
+        {
+            if(item.CompraId == compras.CompraId)
+            {
+                paso = true;
+                break;
+            }
+        }
+
+        return paso;
+    }
+
+    public bool ExisteEnLaBaseDeDatos(int id)
+    {
+        Contexto db = new Contexto();
+        var buscado = db.Compras.Find(id);
+        bool paso = true;
+
+        if (buscado == null)
+        {
+            paso = false;
+        }
+
+        return paso;
     }
 
     private void Guardar()
@@ -268,11 +309,25 @@
         {
             if (compras.CompraId > 0)
             {
-                comprascontroller.Guardar(compras);
-                toastService.ShowSuccess("Se ha modifcado la compra correctamente", "Modificado!");
-                cantidad = 0;
-                ProductoId = string.Empty;
-                this.compras = new Compras();
+                if (ExistenPagos())
+                {
+                    toastService.ShowWarning("No se puede modificar una compra si tiene un pago", "Tiene Un Pago!");
+                    return;
+                }
+
+                if (ExisteEnLaBaseDeDatos(compras.CompraId))
+                {
+                    comprascontroller.Guardar(compras);
+                    toastService.ShowSuccess("Se ha modifcado la compra correctamente", "Modificado!");
+                    cantidad = 0;
+                    ProductoId = string.Empty;
+                    this.compras = new Compras();
+                }
+                else
+                {
+                    toastService.ShowError("No se puede modificar una compra que no existe", "No Existe!");
+                }
+
             }
             else if (compras.CompraId == 0)
             {
@@ -286,11 +341,19 @@
             {
                 toastService.ShowError("No se ha podido guardar", "Error!");
             }
+
         }
+
     }
 
     private void Eliminar()
     {
+        if (ExistenPagos())
+        {
+            toastService.ShowWarning("No se puede eliminar una compra si tiene un pago", "Tiene Un Pago!");
+            return;
+        }
+
         if (comprascontroller.Eliminar(compras.CompraId))
         {
             toastService.ShowInfo("Has eliminado correctamente", "Eliminado!");
@@ -312,7 +375,7 @@
         }
         else
         {
-            toastService.ShowWarning("No se pudo econtrar la compra", "No encontrado!");
+            toastService.ShowWarning("No se pudo encontrar la compra", "No encontrado!");
         }
     }
 

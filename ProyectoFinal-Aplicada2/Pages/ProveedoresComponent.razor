@@ -164,13 +164,35 @@
         NivelDeUsuario = AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Cajero");
     }
 
+    public bool ExisteEnLaBaseDeDatos(int id)
+    {
+        Contexto db = new Contexto();
+        var buscado = db.Proveedores.Find(id);
+        bool paso = true;
+
+        if (buscado == null)
+        {
+
+            paso = false;
+        }
+
+        return paso;
+    }
+
     private void Guardar()
     {
         if (proveedores.ProveedoresId > 0)
         {
-            proveedorescontrollers.Guardar(proveedores);
-            toastService.ShowSuccess("Has modificado el proveedor exitosamente", "Modificado!");
-            this.proveedores = new Proveedores();
+            if (ExisteEnLaBaseDeDatos(proveedores.ProveedoresId))
+            {
+                proveedorescontrollers.Guardar(proveedores);
+                toastService.ShowSuccess("Has modificado el proveedor exitosamente", "Modificado!");
+                this.proveedores = new Proveedores();
+            }
+            else
+            {
+                toastService.ShowError("No se puede modificar un proveedor que no existe", "No Existe!");
+            }
 
         }
         else if (proveedores.ProveedoresId == 0)

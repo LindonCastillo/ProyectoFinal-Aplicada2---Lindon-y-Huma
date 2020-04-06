@@ -169,7 +169,8 @@
             <button type="button" class="btn btn-danger" @onclick="Eliminar">Eliminar</button>
         </EditForm>
     </section>
-
+    <br />
+    <br />
 }
 @code {
 
@@ -193,12 +194,21 @@
 
     protected override void OnInitialized()
     {
-        if (Id > 0)
+        try
         {
-            ventas = ventascontroller.Buscar(Id);
+            if (Id > 0)
+            {
+                ventas = ventascontroller.Buscar(Id);
+            }
+            MiLista = productoscontrollers.GetList(A => true);
+            ListaClientes = clientescontollers.GetList(P => true);
         }
-        MiLista = productoscontrollers.GetList(A => true);
-        ListaClientes = clientescontollers.GetList(P => true);
+        catch (Exception)
+        {
+
+            toastService.ShowWarning("No hay ningún Productos o Clientes agregados", "No hay Clientes o Productos!");
+        }
+
     }
 
     private void CargarProducto()
@@ -224,6 +234,21 @@
         precioVenta = 0;
     }
 
+    public bool ExisteEnLaBaseDeDatos(int id)
+    {
+        Contexto db = new Contexto();
+        var buscado = db.Ventas.Find(id);
+        bool paso = true;
+
+        if (buscado == null)
+        {
+
+            paso = false;
+        }
+
+        return paso;
+    }
+
     private void Guardar()
     {
         if (ventas.VentasDetalles.Count == 0)
@@ -232,12 +257,18 @@
             return;
         }
 
-
         if (ventas.VentaId > 0)
         {
-            ventascontroller.Guardar(ventas);
-            toastService.ShowSuccess("Has modificado la venta exitosamente", "Modificado!");
-            Nuevo();
+            if (ExisteEnLaBaseDeDatos(ventas.VentaId))
+            {
+                ventascontroller.Guardar(ventas);
+                toastService.ShowSuccess("Has modificado la venta exitosamente", "Modificado!");
+                Nuevo();
+            }
+            else
+            {
+                toastService.ShowError("No se puede modificar un pago que no existe", "No Existe!");
+            }
         }
         else if (ventas.VentaId == 0)
         {
