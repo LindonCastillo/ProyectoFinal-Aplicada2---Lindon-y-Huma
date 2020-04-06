@@ -70,7 +70,7 @@
 @if (AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated && NivelDeUsuario == false)
 {
 <section class="form-register">
-    <h3>Categorias</h3>
+    <h3>Categorías</h3>
     <EditForm Model="@categoria" OnValidSubmit="Guardar">
         <DataAnnotationsValidator/>
         <label for="Id">CategoriaId</label>
