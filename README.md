@@ -16,33 +16,38 @@ En caso de intentar entrar a un registro sin estar loguedo o sin los permiso pre
 
 
 ## Registros:
-En este sistema se implementarion los registros de Usuarios, Productos, Proveedores, Compras, Ventas y Pagos, descristos a contuniación. 
+En este sistema se implementarion los registros de Usuarios, Productos, Proveedores, Compras, Ventas y Pagos, descristos a contuniación.
+
+### Categorías
+![Captura - Consulta de Categorias](https://user-images.githubusercontent.com/50345256/78520911-22bf8d00-7796-11ea-829a-9ec9f7bc5363.PNG)
+
 ### Usuarios
 El registro de Usuarios conHsiste en crear, modificar, eliminar y leer Usuarios. En este sistema se maneja tres tipos de Usuarios, que son Administrador, Cajero y Contador. El Administrador es el tipo de usuario que posee los mayores privilegios, este tiene acceso a todos los registros y consultas que ofrece el sistema. El Contador tiene acceso a todos los registros y consultas, excepto a al Registro de Usuarios. Por último, el cajero tendrá acceso al registro y consulta de Productos, Proveedores y Ventas.
 
-![Captura - Registro de Usuario 2](https://user-images.githubusercontent.com/50345256/77574084-f6f3fb80-6ea7-11ea-9ebc-973403d58aa6.PNG)
+![Captura - Registro de Usuario 2](https://user-images.githubusercontent.com/50345256/78520908-218e6000-7796-11ea-9a7e-a6b75f40a9ff.PNG)
 
 ### Productos
 El registro de Productos representa la entrada de mercancía a la empresa, aquí se tendrá la libertad de elegir el porciento de ganancia para cada producto.
 
-![Captura - Registro de Productos](https://user-images.githubusercontent.com/50345256/77363694-8d4de300-6d29-11ea-93cd-bcabc941b044.PNG)
+![Captura - Registro de Productos](https://user-images.githubusercontent.com/50345256/78520902-205d3300-7796-11ea-9721-1fb38617e367.PNG)
 
 ### Proveedores
 El registro de Proveedores se encarga de Introducir todos aquellos suplidores con los que negocia la empresa.
-![Captura - Registro de Proveedores](https://user-images.githubusercontent.com/50345256/77363695-8d4de300-6d29-11ea-91b5-d561eddd467b.PNG)
+![Captura - Registro de Proveedores](https://user-images.githubusercontent.com/50345256/78520905-20f5c980-7796-11ea-8a52-d2c5aebb70f2.PNG)
  
 ### Compras
 El registro de Compras representa la adquisición de bienes a la empresa.
-![Captura - Registro de Compras (Detalle)](https://user-images.githubusercontent.com/50345256/77363775-b40c1980-6d29-11ea-8998-9d03e6c32204.PNG)
+![Captura - Registro de Compras (Detalle)](https://user-images.githubusercontent.com/50345256/78520899-1fc49c80-7796-11ea-8a27-16efd26b07c4.PNG)
 
 ### Ventas
 El registro de Ventas representa el despacho de productos por parte de la empresa, este registro, al igual que el Compras, afecta el campo Cantidad de Productos. 
 
-![Captura - Registro de Ventas (Detalle)](https://user-images.githubusercontent.com/50345256/77363782-b7070a00-6d29-11ea-861d-f139618f652b.PNG)
+![Captura - Registro de Ventas (Detalle)](https://user-images.githubusercontent.com/50345256/78520910-2226f680-7796-11ea-8953-fb81be812303.PNG)
+
 
 ### Pagos
 El registro de Pagos representa la redención de aquellas compras que hayamos hecho previamente, cuando se efectúa un pago, el sistema automáticamente afecta el campo Balance de Compras. 
-![Captura - Registro de Pagos (Detalle)](https://user-images.githubusercontent.com/50345256/77363692-8c1cb600-6d29-11ea-8a90-202ae720e849.PNG)
+![Captura - Registro de Pagos (Detalle)](https://user-images.githubusercontent.com/50345256/78520901-205d3300-7796-11ea-9114-a2e0a2f66655.PNG)
 
 ## Consultas:
 En este apartado el sistema ofrece la facilidad de consultar (dependiendo del nivel de usuario) los registros creados de cada una de las entidades existentes. Asimismo, para la comodidad del usuario todas las consultas paginan, así como tambien se puede filtrar por el campo especificado que el usuario desee. Además de lo anterior, por cada registro hecho, se ofrece la operatividad de ir al formulario de cada registro hecho, esto con el botón "Ver".
@@ -61,6 +66,9 @@ En la consulta de Proveedores se verán todos los registros creados de la entida
 En la consulta de Compras se verán todos los registros creados de la entidad de Compras. 
 ![Captura - Consulta de Compras](https://user-images.githubusercontent.com/50345256/77363793-bd958180-6d29-11ea-813c-324cc6fbe359.PNG)
 
+### Clientes
+![Captura - Registro de Clientes](https://user-images.githubusercontent.com/50345256/78520898-1f2c0600-7796-11ea-8a98-5a6a35b0e367.PNG)
+
 ### Ventas
 En la consulta de Ventas se verán todos los registros creados de la entidad de Ventas. 
 ![Captura - Consulta de Ventas](https://user-images.githubusercontent.com/50345256/77363802-bf5f4500-6d29-11ea-9b57-3cbf663cb35e.PNG)
@@ -72,7 +80,7 @@ En la consulta de Pagos se verán todos los registros creados de la entidad de P
 ## Construido con 🛠️
 	Visual Studio - Utilando la herramienta (Blazor App)
 
-	SQLite
+	SQLite y SQL Server
 
 	Google Chrome
 
