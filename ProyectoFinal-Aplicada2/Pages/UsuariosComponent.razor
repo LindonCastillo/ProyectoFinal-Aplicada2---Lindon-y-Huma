@@ -90,19 +90,19 @@
 
             <div class="form-group">
                 <label for="NombrePersona_text">Nombre</label>
-                <InputText id="NombrePersona_text" placeholder="Tu nombre" class="form-control" @bind-Value="usuarios.NombrePersona"></InputText>
+                <InputText id="NombrePersona_text" class="form-control" @bind-Value="usuarios.NombrePersona"></InputText>
                 <ValidationMessage For="(() => usuarios.NombrePersona)" />
             </div>
 
 
             <div class="form-group">
                 <label for="NombreUsuario _text">Nombre de usuario</label>
-                <InputText id="NombreUsuario_text" placeholder="Nombre de usuario" class="form-control" @bind-Value="usuarios.NombreUsuario"></InputText>
+                <InputText id="NombreUsuario_text" class="form-control" @bind-Value="usuarios.NombreUsuario"></InputText>
                 <ValidationMessage For="(() => usuarios.NombreUsuario)" />
             </div>
             <div class="form-group">
                 <label for="EmailUsuario_text">Email</label>
-                <InputText id="EmailUsuario_text" class="form-control" placeholder="" @bind-Value="usuarios.EmailUsuario"></InputText>
+                <InputText id="EmailUsuario_text" class="form-control" @bind-Value="usuarios.EmailUsuario"></InputText>
                 <ValidationMessage For="(() => usuarios.EmailUsuario)" />
             </div>
 
