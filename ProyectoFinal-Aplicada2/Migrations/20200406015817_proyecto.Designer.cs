@@ -10,8 +10,8 @@ using ProyectoFinal_Aplicada2.Data;
 namespace ProyectoFinal_Aplicada2.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20200406010434_ok")]
-    partial class ok
+    [Migration("20200406015817_proyecto")]
+    partial class proyecto
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

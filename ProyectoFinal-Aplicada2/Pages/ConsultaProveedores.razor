@@ -110,7 +110,7 @@
 
     protected override void OnInitialized()
     {
-        conteo = Contexto.Compras.Count();
+        conteo = Contexto.Proveedores.Count();
         totaldepaginas = Math.Ceiling(conteo / paginacion.CantidadMostrar);
         Lista = proveedorescontrollers.GetList(p => true);
         this.Lista = Contexto.Proveedores.Take(paginacion.CantidadMostrar).ToList();
