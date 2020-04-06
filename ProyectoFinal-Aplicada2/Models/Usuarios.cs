@@ -49,6 +49,7 @@ namespace ProyectoFinal_Aplicada2.Models
             ConfirmarClave = string.Empty;
             NivelUsuario = string.Empty;
             FechaIngreso = DateTime.Now;
+            NombreUsuario = string.Empty;
         }
     }
 }

@@ -68,8 +68,8 @@
     }
 </style>
 
-@if(AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated && NivelDeUsuario == true)
-{
+@*@if(AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.Identity.IsAuthenticated && NivelDeUsuario == true)*@
+    //{
     <section class="form-register">
         <h3>Usuarios</h3>
         <EditForm Model="@usuarios" OnValidSubmit="Guardar">
@@ -142,7 +142,7 @@
             </div>
         </EditForm>
     </section>
-}
+@*}*@
 
 <br />
 <br />
