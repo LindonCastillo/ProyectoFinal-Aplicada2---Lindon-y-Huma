@@ -38,7 +38,8 @@ El registro de Proveedores se encarga de Introducir todos aquellos suplidores co
 ### Compras
 El registro de Compras representa la adquisición de bienes a la empresa.
 
-![Captura - Registro de Compras (Detalle)](https://user-images.githubusercontent.com/50345256/78520899-1fc49c80-7796-11ea-8a27-16efd26b07c4.PNG)
+![Captura - Registro de Compras (Detalle)](https://user-images.githubusercontent.com/50345256/78575762-c8581800-77f9-11ea-9284-edef7b4175c5.PNG)
+
 
 ### Clientes
 ![Captura - Registro de Clientes 2](https://user-images.githubusercontent.com/50345256/78521346-87c7b280-7797-11ea-9342-b75575b2db88.PNG)
