@@ -10,8 +10,8 @@ using ProyectoFinal_Aplicada2.Data;
 namespace ProyectoFinal_Aplicada2.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20200401193335_Iniciando")]
-    partial class Iniciando
+    [Migration("20200406010434_ok")]
+    partial class ok
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -61,6 +61,7 @@ namespace ProyectoFinal_Aplicada2.Migrations
                         .HasMaxLength(50);
 
                     b.Property<string>("Numero")
+                        .IsRequired()
                         .HasColumnType("nvarchar(10)")
                         .HasMaxLength(10);
 
@@ -175,7 +176,7 @@ namespace ProyectoFinal_Aplicada2.Migrations
 
                     b.HasIndex("PagoId");
 
-                    b.ToTable("PagosDetalle");
+                    b.ToTable("PagosDetalles");
                 });
 
             modelBuilder.Entity("ProyectoFinal_Aplicada2.Models.Productos", b =>

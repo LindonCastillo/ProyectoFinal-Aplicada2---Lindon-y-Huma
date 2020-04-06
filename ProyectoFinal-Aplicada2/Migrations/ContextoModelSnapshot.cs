@@ -59,6 +59,7 @@ namespace ProyectoFinal_Aplicada2.Migrations
                         .HasMaxLength(50);
 
                     b.Property<string>("Numero")
+                        .IsRequired()
                         .HasColumnType("nvarchar(10)")
                         .HasMaxLength(10);
 
@@ -173,7 +174,7 @@ namespace ProyectoFinal_Aplicada2.Migrations
 
                     b.HasIndex("PagoId");
 
-                    b.ToTable("PagosDetalle");
+                    b.ToTable("PagosDetalles");
                 });
 
             modelBuilder.Entity("ProyectoFinal_Aplicada2.Models.Productos", b =>

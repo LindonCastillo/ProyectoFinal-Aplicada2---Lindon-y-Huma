@@ -193,12 +193,21 @@
 
     protected override void OnInitialized()
     {
-        if (Id > 0)
+        try
         {
-            ventas = ventascontroller.Buscar(Id);
+            if (Id > 0)
+            {
+                ventas = ventascontroller.Buscar(Id);
+            }
+            MiLista = productoscontrollers.GetList(A => true);
+            ListaClientes = clientescontollers.GetList(P => true);
         }
-        MiLista = productoscontrollers.GetList(A => true);
-        ListaClientes = clientescontollers.GetList(P => true);
+        catch (Exception)
+        {
+
+            toastService.ShowWarning("No hay ningún Productos o Clientes agregados", "No hay Clientes o Productos!");
+        }
+
     }
 
     private void CargarProducto()

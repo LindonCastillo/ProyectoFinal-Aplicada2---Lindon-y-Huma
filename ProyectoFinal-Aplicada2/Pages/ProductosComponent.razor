@@ -156,12 +156,20 @@
     private bool NivelDeUsuario;
     protected override void OnInitialized()
     {
-        if (Id > 0)
+        try
         {
-            productos = productoscontrollers.Buscar(Id);
+            if (Id > 0)
+            {
+                productos = productoscontrollers.Buscar(Id);
+            }
+            ListaCategorias = categoriascontrollers.GetList(P => true);
+            NivelDeUsuario = AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Cajero");
         }
-        ListaCategorias = categoriascontrollers.GetList(P => true);
-        NivelDeUsuario = AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Cajero");
+        catch (Exception)
+        {
+
+            toastService.ShowWarning("No hay ninguna categoria de Producto agregada", "No hay Categorias!");
+        }
     }
 
     private void Nuevo()

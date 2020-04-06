@@ -198,14 +198,22 @@
     private bool NivelDeUsuario;
     protected override void OnInitialized()
     {
-        if (Id > 0)
+        try
         {
-            pagos = pagoscontroller.Buscar(Id);
-        }
-        ListaCompras = comprascontroller.GetList(p => true);
-        NivelDeUsuario = AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Cajero");
-        compras = new Compras();
+            if (Id > 0)
+            {
+                pagos = pagoscontroller.Buscar(Id);
+            }
+            ListaCompras = comprascontroller.GetList(p => true);
+            NivelDeUsuario = AuthenticationStateProvider.GetAuthenticationStateAsync().Result.User.IsInRole("Cajero");
+            compras = new Compras();
 
+        }
+        catch (Exception)
+        {
+
+            toastService.ShowWarning("No hay ninguna Compra agregada", "No hay Compras!");
+        }
 
     }
 
@@ -323,12 +331,6 @@
         if (Pago < 1)
         {
             toastService.ShowWarning("El pago debe ser mayor que cero", "Error");
-            paso = false;
-        }
-
-        if (string.IsNullOrEmpty(TipoPago))
-        {
-            toastService.ShowWarning("El tipo de pago es igual a cero", "Tipo pago vacío");
             paso = false;
         }
 

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ProyectoFinal_Aplicada2.Migrations
 {
-    public partial class Iniciando : Migration
+    public partial class ok : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -28,7 +28,7 @@ namespace ProyectoFinal_Aplicada2.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nombres = table.Column<string>(maxLength: 50, nullable: false),
                     Apellidos = table.Column<string>(maxLength: 50, nullable: false),
-                    Numero = table.Column<string>(maxLength: 10, nullable: true),
+                    Numero = table.Column<string>(maxLength: 10, nullable: false),
                     Direccion = table.Column<string>(maxLength: 100, nullable: false)
                 },
                 constraints: table =>
@@ -164,7 +164,7 @@ namespace ProyectoFinal_Aplicada2.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PagosDetalle",
+                name: "PagosDetalles",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -176,9 +176,9 @@ namespace ProyectoFinal_Aplicada2.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PagosDetalle", x => x.Id);
+                    table.PrimaryKey("PK_PagosDetalles", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PagosDetalle_Pagos_PagoId",
+                        name: "FK_PagosDetalles_Pagos_PagoId",
                         column: x => x.PagoId,
                         principalTable: "Pagos",
                         principalColumn: "PagoId",
@@ -215,8 +215,8 @@ namespace ProyectoFinal_Aplicada2.Migrations
                 column: "CompraId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PagosDetalle_PagoId",
-                table: "PagosDetalle",
+                name: "IX_PagosDetalles_PagoId",
+                table: "PagosDetalles",
                 column: "PagoId");
 
             migrationBuilder.CreateIndex(
@@ -237,7 +237,7 @@ namespace ProyectoFinal_Aplicada2.Migrations
                 name: "ComprasDetalle");
 
             migrationBuilder.DropTable(
-                name: "PagosDetalle");
+                name: "PagosDetalles");
 
             migrationBuilder.DropTable(
                 name: "Productos");

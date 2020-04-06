@@ -180,5 +180,21 @@ namespace ProyectoFinal_Aplicada2.Controllers
             }
             return lista;
         }
+
+        public List<PagosDetalle> GetListPagos(Expression<Func<PagosDetalle, bool>> expression)
+        {
+            List<PagosDetalle> lista = new List<PagosDetalle>();
+            Contexto db = new Contexto();
+            try
+            {
+                lista = db.PagosDetalles.Where(expression).ToList();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            return lista;
+        }
     }
 }
