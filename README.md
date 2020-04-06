@@ -80,11 +80,11 @@ En la consulta de Compras se verán todos los registros creados de la entidad de
 
 ### Ventas
 En la consulta de Ventas se verán todos los registros creados de la entidad de Ventas. 
-![Captura - Consulta de Ventas](https://user-images.githubusercontent.com/50345256/77363802-bf5f4500-6d29-11ea-9b57-3cbf663cb35e.PNG)
+![Captura - Consulta de Ventas](https://user-images.githubusercontent.com/50345256/78575436-5a135580-77f9-11ea-8717-656b5daf3d18.PNG)
 
 ### Pagos
 En la consulta de Pagos se verán todos los registros creados de la entidad de Pagos. 
-![Captura - Consulta de Pagos](https://user-images.githubusercontent.com/50345256/77363794-be2e1800-6d29-11ea-8af3-9c1291223681.PNG)
+![Captura - Consulta de Pagos](https://user-images.githubusercontent.com/50345256/78575431-57186500-77f9-11ea-9c15-40279f71a979.PNG)
 
 ## Construido con 🛠️
 	Visual Studio - Utilando la herramienta (Blazor App)
