@@ -38,7 +38,10 @@ El registro de Proveedores se encarga de Introducir todos aquellos suplidores co
 ### Compras
 El registro de Compras representa la adquisición de bienes a la empresa.
 
+### Clientes
 ![Captura - Registro de Compras (Detalle)](https://user-images.githubusercontent.com/50345256/78520899-1fc49c80-7796-11ea-8a27-16efd26b07c4.PNG)
+
+![Captura - Registro de Clientes 2](https://user-images.githubusercontent.com/50345256/78521346-87c7b280-7797-11ea-9342-b75575b2db88.PNG)
 
 ### Ventas
 El registro de Ventas representa el despacho de productos por parte de la empresa, este registro, al igual que el Compras, afecta el campo Cantidad de Productos. 
@@ -58,14 +61,15 @@ En este apartado el sistema ofrece la facilidad de consultar (dependiendo del ni
 
 ### Usuarios
 En la consulta de Usuarios se verán todos los registros creados de la entidad de Usuarios. 
-![Captura - Consulta de Usuarios](https://user-images.githubusercontent.com/50345256/77363801-bec6ae80-6d29-11ea-8800-3fc7d4a4df27.PNG)
+![Captura - Consulta de Usuarios](https://user-images.githubusercontent.com/50345256/78521259-4d5e1580-7797-11ea-9060-cfaa3e6a24ec.PNG)
 
 ### Productos
 En la consulta de Productos se verán todos los registros creados de la entidad de Productos. 
-![Captura - Consulta de Productos](https://user-images.githubusercontent.com/50345256/77363796-be2e1800-6d29-11ea-928b-e1e61caa0295.PNG)
+![Captura - Consulta de Productos](https://user-images.githubusercontent.com/50345256/78521255-4b945200-7797-11ea-847b-97a54e2e675c.PNG)
+
 ### Proveedores
 En la consulta de Proveedores se verán todos los registros creados de la entidad de Proveedores. 
-![Captura - Consulta de Proveedores](https://user-images.githubusercontent.com/50345256/77363800-bec6ae80-6d29-11ea-8ef9-b6da040e198e.PNG)
+![Captura - Consulta de Proveedores](https://user-images.githubusercontent.com/50345256/78521256-4c2ce880-7797-11ea-87c4-f81e843dae5e.PNG)
 
 ### Compras
 En la consulta de Compras se verán todos los registros creados de la entidad de Compras. 
